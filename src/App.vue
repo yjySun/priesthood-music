@@ -1,6 +1,5 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png" />
-  <HelloWorld :msg="msg1" />
+  <router-view></router-view>
 </template>
 
 <script setup lang="ts">
@@ -8,7 +7,6 @@
 
   const msg1 = 'Hello Vue 3 + TypeScript + Vite'
 </script>
-
 
 <style>
   #app {
