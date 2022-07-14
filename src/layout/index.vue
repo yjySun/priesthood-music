@@ -21,9 +21,9 @@
   </div>
 </template>
 <script lang="ts" setup>
-  import { AsideMenu } from './Menu/index'
-  import { PlayFooter } from './Footer/index'
-  import { MainView } from './Main/index'
+  import { AsideMenu } from './components/Menu/index'
+  import { PlayFooter } from './components/Footer/index'
+  import { MainView } from './components/Main/index'
 </script>
 <style lang="scss">
   .layout {
