@@ -1,10 +1,11 @@
 import { App } from 'vue'
 import { createRouter, createWebHashHistory, RouteRecordRaw } from 'vue-router'
-import { PageEnum } from '@/enums/pageEnum'
+import { BaseRoutes } from './base'
+
+const allRouteList: RouteRecordRaw[] = []
+const routeModuleList: RouteRecordRaw[] = []
 
 const modules = import.meta.globEager('./modules/**/*.ts')
-
-const routeModuleList: RouteRecordRaw[] = []
 
 Object.keys(modules).forEach((key) => {
   const mod = modules[key].default || {}
@@ -12,20 +13,11 @@ Object.keys(modules).forEach((key) => {
   routeModuleList.push(...modList)
 })
 
-export const RootRoute: RouteRecordRaw = {
-  path: '/',
-  name: 'Root',
-  redirect: PageEnum.BASE_HOME,
-  meta: {
-    title: 'Root'
-  }
-}
-
-routeModuleList.push(RootRoute)
+allRouteList.push(...BaseRoutes, ...routeModuleList)
 
 const router = createRouter({
   history: createWebHashHistory(),
-  routes: routeModuleList,
+  routes: allRouteList,
   strict: true,
   scrollBehavior: () => ({ left: 0, top: 0 })
 })
@@ -35,3 +27,5 @@ export function setupRouter(app: App) {
 }
 
 export default router
+
+export const moduleRoutes = [...routeModuleList]

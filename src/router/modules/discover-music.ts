@@ -14,23 +14,23 @@ import { Layout } from '@/router/constant'
  * */
 const routes: Array<RouteRecordRaw> = [
   {
-    path: '/dashboard',
+    path: '/discover-music',
     // name: 'System',
-    redirect: '/dashboard/menu',
+    redirect: '/discover-music/discover-music',
     component: Layout,
     meta: {
-      title: '系统设置',
+      title: '发现音乐',
       // icon: renderIcon(OptionsSharp),
       sort: 1
     },
     children: [
       {
-        path: 'menu',
-        name: 'menu',
+        path: 'discover-music',
+        name: 'discover-music',
         meta: {
-          title: '菜单权限管理'
+          title: '发现音乐'
         },
-        component: () => import('@/components/HelloWorld.vue')
+        component: () => import('@/views/discover-music/index.vue')
       }
     ]
   }

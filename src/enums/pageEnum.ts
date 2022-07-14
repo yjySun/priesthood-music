@@ -3,5 +3,5 @@ export enum PageEnum {
   BASE_LOGIN = '/login',
   BASE_LOGIN_NAME = 'Login',
   // 首页
-  BASE_HOME = '/dashboard',
+  BASE_HOME = '/discover-music',
 }
