@@ -34,9 +34,12 @@
 
     .el-header {
       background-color: #ec4141;
+      padding: 0;
+      margin: 0;
     }
 
     .el-aside {
+      width: 200px;
       background-color: rgb(76, 0, 255);
     }
 
