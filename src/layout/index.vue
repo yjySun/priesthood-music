@@ -3,7 +3,9 @@
     <el-scrollbar>
       <div class="common-layout">
         <el-container style="height: 100%">
-          <el-header>Header</el-header>
+          <el-header>
+            <Header />
+          </el-header>
           <el-container>
             <el-aside>
               <AsideMenu />
@@ -21,6 +23,7 @@
   </div>
 </template>
 <script lang="ts" setup>
+  import { Header } from './components/Header/index'
   import { AsideMenu } from './components/Menu/index'
   import { PlayFooter } from './components/Footer/index'
   import { MainView } from './components/Main/index'
