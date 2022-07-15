@@ -1,9 +1,13 @@
 import { createApp } from 'vue'
 import App from './App.vue'
-import router, { setupRouter } from './router';
+import router, { setupRouter } from '@/router'
+import { setupElementPlusIcon } from '@/plugins'
 
 async function bootstrap() {
   const app = createApp(App)
+
+  //加载elementPlus图标
+  setupElementPlusIcon(app)
 
   // 挂载路由
   await setupRouter(app)
@@ -13,7 +17,7 @@ async function bootstrap() {
 
   app.mount('#app', true)
 }
-  
-  void bootstrap();
+
+void bootstrap()
 
 // createApp(App).mount('#app')
