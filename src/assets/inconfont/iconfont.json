@@ -6,6 +6,13 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "487023",
+      "name": "人",
+      "font_class": "ren",
+      "unicode": "e61a",
+      "unicode_decimal": 58906
+    },
+    {
       "icon_id": "4956289",
       "name": "暂停",
       "font_class": "zanting",

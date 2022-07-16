@@ -5,21 +5,36 @@
     </div>
     <div class="move-back-search">
       <div class="move-back">
-        <i class="iconfont icon-arrow-left-bold back" @click="$router.go(-1)"></i>
-        <i class="iconfont icon-arrow-right-bold forward" @click="$router.go(1)"></i>
+        <i class="iconfont icon-arrow-left-bold"></i>
+        <i class="iconfont icon-arrow-right-bold"></i>
       </div>
       <div class="search">
-        <el-input placeholder="请输入内容" :prefix-icon="Search" size="mini" v-model="searchInput" />
+        <el-input
+          class="search-input"
+          placeholder="请输入内容"
+          :prefix-icon="Search"
+          size="mini"
+          v-model="searchInput"
+        />
       </div>
+    </div>
+    <div class="user-avatar">
+      <i class="iconfont icon-ren"></i>
+      <div class="username">未登录</div>
     </div>
   </div>
 </template>
 <script lang="ts" setup>
+  import { ref } from 'vue'
   import { Search } from '@element-plus/icons-vue'
+
+  const searchInput = ref()
 </script>
 <style lang="scss">
+  @import './header-element.scss';
+
   .custom-header {
-    $header-height: 60px;
+    $header-height: 55px;
 
     width: 100%;
     height: $header-height;
@@ -33,8 +48,8 @@
       align-items: center;
 
       img {
-        margin-left: -20px;
-        transform: scale(0.7);
+        margin-left: -30px;
+        transform: scale(0.6);
       }
     }
 
@@ -55,11 +70,33 @@
           font-size: 20px;
           transform: scale(0.8);
           padding: 6px;
-          height: 20px;
-          width: 20px;
           border-radius: 50%;
           margin: 0 3px;
+          cursor: pointer;
         }
+      }
+    }
+
+    .user-avatar {
+      flex: 1;
+      height: $header-height;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      padding-right: 70px;
+
+      i {
+        font-size: 35px;
+        background: #e6e6e6;
+        color: white;
+        border-radius: 50%;
+        cursor: pointer;
+      }
+
+      .username {
+        color: white;
+        margin-left: 10px;
+        cursor: pointer;
       }
     }
   }

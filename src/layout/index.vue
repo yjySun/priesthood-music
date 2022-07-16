@@ -3,7 +3,7 @@
     <el-scrollbar>
       <div class="common-layout">
         <el-container style="height: 100%">
-          <el-header>
+          <el-header height="55px">
             <Header />
           </el-header>
           <el-container>
