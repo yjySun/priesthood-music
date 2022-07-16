@@ -13,6 +13,12 @@ Object.keys(modules).forEach((key) => {
   routeModuleList.push(...modList)
 })
 
+function sortRoute(a, b) {
+  return (a.meta?.sort || 0) - (b.meta?.sort || 0);
+}
+
+routeModuleList.sort(sortRoute);
+
 allRouteList.push(...BaseRoutes, ...routeModuleList)
 
 const router = createRouter({
