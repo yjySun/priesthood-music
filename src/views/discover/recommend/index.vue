@@ -7,7 +7,7 @@
 </template>
 <script lang="ts" setup>
   import { h, render } from 'vue'
-  import { renderIcon } from '@/utils/index'
+  import { renderIcon } from '@/utils/menu'
   import { Search } from '@element-plus/icons-vue'
   
   const iCon = renderIcon('icon-arrow-left-bold', null, ['aa', 'bb'])

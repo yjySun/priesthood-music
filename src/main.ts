@@ -19,5 +19,3 @@ async function bootstrap() {
 }
 
 void bootstrap()
-
-// createApp(App).mount('#app')
