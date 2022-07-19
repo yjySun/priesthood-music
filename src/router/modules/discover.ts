@@ -1,7 +1,7 @@
 import { RouteRecordRaw } from 'vue-router'
 import { Layout } from '@/router/constant'
 import { Search } from '@element-plus/icons-vue'
-import { renderIcon } from '@/utils/menu'
+import { renderIcon } from '@/utils/icon'
 
 /**
  * @param name 路由名称, 必须设置, 且不能重名

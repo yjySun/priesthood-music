@@ -42,7 +42,7 @@
       width: 200px;
       box-sizing: border-box;
       border-right: 1px solid #ccc;
-      background-color: rgb(76, 0, 255);
+      background-color: goldenrod;
     }
 
     .el-footer {

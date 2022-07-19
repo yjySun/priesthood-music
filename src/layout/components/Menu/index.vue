@@ -1,108 +1,107 @@
 <template>
-  <!-- <el-menu :default-active="state.defaultActive" class="el-menu-vertical" @open="handleOpen" @close="handleClose">
-    <el-menu-item :index="item.path" :key="i" v-for="(item, i) in moduleRoutes">
-      <el-icon><icon-menu /></el-icon>
-      <span>{{ item.meta.title }}</span>
-    </el-menu-item>
-  </el-menu> -->
-  <YMenu :options="state.menuOptions" />
+  <el-menu :default-active="state.defaultActive" class="el-menu-vertical" @open="handleOpen" @close="handleClose">
+    <MenuTree :menuOptions="menuOptions" />
+  </el-menu>
 </template>
 <script lang="ts" setup>
   import { ref, reactive } from 'vue'
   import { moduleRoutes } from '@/router/index'
   import { PageEnum } from '@/enums/pageEnum'
-  // import { MenuOption } from '../../../utils/menu/type'
-  import { generateMenu, renderIcon, YMenu } from '@/utils/menu'
-  import { MenuOption } from '@/utils/menu/type'
+  import { renderIcon } from '@/utils/icon'
+  import { MenuOption } from './type'
+  import { Search } from '@element-plus/icons-vue'
+  import MenuTree from './MenuTree.vue'
 
   console.log(moduleRoutes)
 
-  // const Menu = generateMenu()
-
   const state = reactive({
-    defaultActive: PageEnum.BASE_HOME,
-    menuOptions: [
-      {
-        label: '发现音乐',
-        index: '/discover',
-        icon: renderIcon('icon-bofang'),
-        children: {
-          type: 'group'
-        }
-      }
-    ]
+    defaultActive: PageEnum.BASE_HOME
   })
 
   const menuOptions: ref<MenuOption[]> = [
     {
       label: '且听风吟',
-      key: 'hear-the-wind-sing',
-      icon: renderIcon(BookIcon)
+      index: '/discover',
+      key: '1',
+      icon: renderIcon(Search),
+      disabled: true
     },
     {
       label: '1973年的弹珠玩具',
-      key: 'pinball-1973',
-      icon: renderIcon(BookIcon),
+      icon: renderIcon('icon-skin'),
+      index: '/dis',
       disabled: true,
+      key: '2',
       children: [
         {
+          key: '2-1',
           label: '鼠',
-          key: 'rat'
+          index: '/dis'
         }
       ]
     },
     {
       label: '寻羊冒险记',
-      key: 'a-wild-sheep-chase',
-      icon: renderIcon(BookIcon),
-      disabled: true
+      icon: renderIcon('icon-skin'),
+      index: '/discover',
+      disabled: true,
+      key: '3'
     },
     {
       label: '舞，舞，舞',
-      key: 'dance-dance-dance',
-      icon: renderIcon(BookIcon),
+      icon: renderIcon('icon-skin'),
+      index: '/discover',
+      key: '4',
       children: [
         {
           type: 'group',
           label: '人物',
-          key: 'people',
+          key: '4-1',
           children: [
             {
+              index: '/discover',
+              key: '4-1-1',
               label: '叙事者',
-              key: 'narrator',
-              icon: renderIcon(PersonIcon)
+              icon: renderIcon('icon-skin')
             },
             {
+              index: '/discover',
               label: '羊男',
-              key: 'sheep-man',
-              icon: renderIcon(PersonIcon)
+              key: '4-1-2',
+              icon: renderIcon('icon-skin')
             }
           ]
         },
         {
+          index: '/discover',
           label: '饮品',
-          key: 'beverage',
-          icon: renderIcon(WineIcon),
+          icon: renderIcon('icon-skin'),
+          key: '5',
           children: [
             {
+              index: '/discover',
+              key: '5-1',
               label: '威士忌',
               key: 'whisky'
             }
           ]
         },
         {
+          index: '/discover',
           label: '食物',
-          key: 'food',
+          key: '6',
           children: [
             {
+              key: '6-1',
               label: '三明治',
-              key: 'sandwich'
+              index: '/discover'
             }
           ]
         },
         {
+          index: '/discover',
           label: '过去增多，未来减少',
-          key: 'the-past-increases-the-future-recedes'
+          key: '7'
         }
       ]
     }
