@@ -14,20 +14,29 @@ import { Layout } from '@/router/constant'
  * */
 const routes: Array<RouteRecordRaw> = [
   {
-    path: '/discover',
-    name: 'discover',
-    redirect: '/discover/recommend',
+    path: '/video',
+    name: 'video',
+    redirect: '/video/video',
     component: Layout,
     meta: {
-      title: '发现音乐',
-      sort: 1
+      title: '视频',
+      sort: 2,
+      subMenu: false
     },
     children: [
       {
-        path: 'recommend',
-        name: 'recommend',
+        path: 'video',
+        name: 'video',
         meta: {
-          title: '个性推荐'
+          title: '视频'
+        },
+        component: () => import('@/views/discover/recommend/index.vue')
+      },
+      {
+        path: 'mv',
+        name: 'mv',
+        meta: {
+          title: 'MV'
         },
         component: () => import('@/views/discover/recommend/index.vue')
       }

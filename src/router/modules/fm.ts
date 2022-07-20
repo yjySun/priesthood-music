@@ -14,20 +14,20 @@ import { Layout } from '@/router/constant'
  * */
 const routes: Array<RouteRecordRaw> = [
   {
-    path: '/discover',
-    name: 'discover',
-    redirect: '/discover/recommend',
+    path: '/fm',
+    name: 'fm',
+    redirect: '/fm/personal_fm',
     component: Layout,
     meta: {
-      title: '发现音乐',
-      sort: 1
+      title: '私人FM',
+      sort: 3
     },
     children: [
       {
-        path: 'recommend',
-        name: 'recommend',
+        path: 'personal_fm',
+        name: 'personal_fm',
         meta: {
-          title: '个性推荐'
+          title: '私人FM'
         },
         component: () => import('@/views/discover/recommend/index.vue')
       }

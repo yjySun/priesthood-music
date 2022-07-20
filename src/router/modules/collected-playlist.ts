@@ -1,5 +1,6 @@
 import { RouteRecordRaw } from 'vue-router'
 import { Layout } from '@/router/constant'
+import { renderIcon } from '@/utils/icon'
 
 /**
  * @param name 路由名称, 必须设置, 且不能重名
@@ -14,20 +15,21 @@ import { Layout } from '@/router/constant'
  * */
 const routes: Array<RouteRecordRaw> = [
   {
-    path: '/discover',
-    name: 'discover',
-    redirect: '/discover/recommend',
+    path: '/collected-playlist',
+    name: 'collected-playlist',
+    redirect: '/collected-playlist/playlist',
     component: Layout,
     meta: {
-      title: '发现音乐',
-      sort: 1
+      title: '收藏的歌单',
+      sort: 6,
+      groupMenu: true
     },
     children: [
       {
-        path: 'recommend',
-        name: 'recommend',
+        path: 'playlist/:id',
+        name: 'playlist',
         meta: {
-          title: '个性推荐'
+          icon: renderIcon('icon-gedan')
         },
         component: () => import('@/views/discover/recommend/index.vue')
       }
