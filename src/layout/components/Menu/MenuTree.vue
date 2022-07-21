@@ -3,12 +3,12 @@
     <!-- 如果当前有子菜单，则显示 el-submenu ，在el-subment 里调用 递归组件 -->
     <el-sub-menu
       v-if="menuOption.children && menuOption.children.length > 0 && (!menuOption.type || menuOption.type !== 'group')"
-      :index="menuOption.index"
+      :index="menuOption.path"
       :key="menuOption.key"
     >
       <template #title>
         <Icon v-if="menuOption.icon" :iconNode="menuOption.icon" />
-        <span>{{ menuOption.label }}</span>
+        <span>{{ menuOption.title }}</span>
       </template>
 
       <!-- 调用自身  此处是重点-->
@@ -18,15 +18,15 @@
     <el-menu-item-group
       v-else-if="menuOption.type && menuOption.type === 'group'"
       :key="menuOption.key"
-      :title="menuOption.label"
+      :title="menuOption.title"
     >
       <MenuTreeChild :menuOptions="menuOption.children"></MenuTreeChild>
     </el-menu-item-group>
 
     <!-- 如果没有子菜单，则显示当前内容 -->
-    <el-menu-item v-else :index="menuOption.index" :key="menuOption.key">
+    <el-menu-item v-else :index="menuOption.path" :key="menuOption.key">
       <Icon v-if="menuOption.icon" :iconNode="menuOption.icon" />
-      {{ menuOption.label }}
+      {{ menuOption.title }}
     </el-menu-item>
   </template>
 </template>

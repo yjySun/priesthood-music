@@ -14,10 +14,10 @@ Object.keys(modules).forEach((key) => {
 })
 
 function sortRoute(a, b) {
-  return (a.meta?.sort || 0) - (b.meta?.sort || 0);
+  return (a.meta?.sort || 0) - (b.meta?.sort || 0)
 }
 
-routeModuleList.sort(sortRoute);
+routeModuleList.sort(sortRoute)
 
 allRouteList.push(...BaseRoutes, ...routeModuleList)
 
@@ -34,4 +34,4 @@ export function setupRouter(app: App) {
 
 export default router
 
-export const moduleRoutes = [...routeModuleList]
+export const moduleRoutes: RouteRecordRaw[] = [...routeModuleList]
