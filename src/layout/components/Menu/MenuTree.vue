@@ -8,7 +8,7 @@
     >
       <template #title>
         <Icon v-if="menuOption.icon" :iconNode="menuOption.icon" />
-        <span>{{ menuOption.title }}</span>
+        <span class="sub-label">{{ menuOption.title }}</span>
       </template>
 
       <!-- 调用自身  此处是重点-->
@@ -26,7 +26,7 @@
     <!-- 如果没有子菜单，则显示当前内容 -->
     <el-menu-item v-else :index="menuOption.path" :key="menuOption.key">
       <Icon v-if="menuOption.icon" :iconNode="menuOption.icon" />
-      {{ menuOption.title }}
+      <span class="item-label">{{ menuOption.title }}</span>
     </el-menu-item>
   </template>
 </template>
