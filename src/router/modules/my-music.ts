@@ -1,6 +1,5 @@
 import { RouteRecordRaw } from 'vue-router'
 import { Layout } from '@/router/constant'
-import { Star } from '@element-plus/icons-vue'
 import { renderIcon } from '@/utils/icon'
 
 /**
@@ -49,7 +48,7 @@ const routes: Array<RouteRecordRaw> = [
         name: 'icon-yun',
         meta: {
           title: '我的收藏',
-          icon: renderIcon(Star)
+          icon: renderIcon('icon-shoucang')
         },
         component: () => import('@/views/discover/recommend/index.vue')
       }
