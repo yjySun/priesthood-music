@@ -1,7 +1,9 @@
 <template>
-  <el-menu :default-active="state.defaultActive" class="el-menu-vertical" @open="handleOpen" @close="handleClose">
-    <MenuTree :menuOptions="menuOptions" />
-  </el-menu>
+  <div class="aside-menu">
+    <el-menu :default-active="state.defaultActive" class="el-menu-vertical" @open="handleOpen" @close="handleClose">
+      <MenuTree :menuOptions="menuOptions" />
+    </el-menu>
+  </div>
 </template>
 <script lang="ts" setup>
   import { ref, reactive } from 'vue'
@@ -16,4 +18,6 @@
 
   const menuOptions: ref<MenuOption[]> = generatorDynamicMenu()
 </script>
-<style scoped></style>
+<style lang="scss">
+  @import './menu-element.scss';
+</style>
