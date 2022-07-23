@@ -33,9 +33,9 @@
     height: 100%;
 
     .el-header {
-      background-color: #ec4141;
       padding: 0;
       margin: 0;
+      background-color: #ec4141;
     }
 
     .el-aside {
@@ -46,7 +46,12 @@
     }
 
     .el-footer {
-      background-color: green;
+      padding: 0;
+      margin: 0;
+      height: 70px;
+      border-top: 1px solid #ccc;
+      box-sizing: border-box;
+      background-color: #fff;
     }
 
     .common-layout {

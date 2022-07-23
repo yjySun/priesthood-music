@@ -6,6 +6,13 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "7594052",
+      "name": "24gl-playlist",
+      "font_class": "music-list",
+      "unicode": "ea6f",
+      "unicode_decimal": 60015
+    },
+    {
       "icon_id": "1718319",
       "name": "日历1",
       "font_class": "rili1",
@@ -277,13 +284,6 @@
       "font_class": "skin",
       "unicode": "e743",
       "unicode_decimal": 59203
-    },
-    {
-      "icon_id": "7594158",
-      "name": "24gf-playlist",
-      "font_class": "music-list",
-      "unicode": "ea82",
-      "unicode_decimal": 60034
     },
     {
       "icon_id": "8341784",

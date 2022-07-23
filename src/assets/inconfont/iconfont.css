@@ -1,8 +1,8 @@
 @font-face {
   font-family: "iconfont"; /* Project id 3525807 */
-  src: url('iconfont.woff2?t=1658375154923') format('woff2'),
-       url('iconfont.woff?t=1658375154923') format('woff'),
-       url('iconfont.ttf?t=1658375154923') format('truetype');
+  src: url('iconfont.woff2?t=1658571614920') format('woff2'),
+       url('iconfont.woff?t=1658571614920') format('woff'),
+       url('iconfont.ttf?t=1658571614920') format('truetype');
 }
 
 .iconfont {
@@ -11,6 +11,10 @@
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-music-list:before {
+  content: "\ea6f";
 }
 
 .icon-rili1:before {
@@ -167,10 +171,6 @@
 
 .icon-skin:before {
   content: "\e743";
-}
-
-.icon-music-list:before {
-  content: "\ea82";
 }
 
 .icon-shangyishou:before {

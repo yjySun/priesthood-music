@@ -9,11 +9,11 @@ export default defineConfig({
   plugins: [
     vue(),
     AutoImport({
-      resolvers: [ElementPlusResolver()],
+      resolvers: [ElementPlusResolver()]
     }),
     Components({
-      resolvers: [ElementPlusResolver()],
-    }),
+      resolvers: [ElementPlusResolver()]
+    })
   ],
   resolve: {
     alias: {
@@ -23,5 +23,13 @@ export default defineConfig({
   },
   server: {
     port: 3301,
-  },
-});
+    open: true,
+    proxy: {
+      '/api': {
+        target: 'https://priesthood-music-1jd9vpdgg-yjysun.vercel.app',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api/, '')
+      }
+    }
+  }
+})
