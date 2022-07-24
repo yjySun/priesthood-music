@@ -45,6 +45,10 @@
       background-color: goldenrod;
     }
 
+    .el-main {
+      padding: 20px 0 0 0;
+    }
+
     .el-footer {
       padding: 0;
       margin: 0;

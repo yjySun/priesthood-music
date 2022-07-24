@@ -29,7 +29,31 @@ const routes: Array<RouteRecordRaw> = [
         meta: {
           title: '个性推荐'
         },
-        component: () => import('@/views/discover/recommend/index.vue')
+        component: () => import('@/views/discover/index.vue')
+      },
+      {
+        path: 'song-list',
+        name: 'song-list',
+        meta: {
+          title: '歌单'
+        },
+        component: () => import('@/views/discover/index.vue')
+      },
+      {
+        path: 'ranking-list',
+        name: 'ranking-list',
+        meta: {
+          title: '排行榜'
+        },
+        component: () => import('@/views/discover/index.vue')
+      },
+      {
+        path: 'singer',
+        name: 'singer',
+        meta: {
+          title: '歌手'
+        },
+        component: () => import('@/views/discover/index.vue')
       }
     ]
   }
