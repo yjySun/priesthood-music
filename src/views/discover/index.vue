@@ -40,7 +40,7 @@
   const router = useRouter()
 
   const state = reactive({
-    activeName: DiscoverEnum.properties[DiscoverEnum.SONG_LIST].path
+    activeName: DiscoverEnum.properties[DiscoverEnum.RECOMMEND].path
   })
 
   const handleClick = (tab: TabsPaneContext, event: Event) => {
