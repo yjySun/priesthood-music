@@ -31,8 +31,6 @@
   const searchInput = ref()
 </script>
 <style lang="scss">
-  @import './header-element.scss';
-
   .custom-header {
     $header-height: 55px;
 

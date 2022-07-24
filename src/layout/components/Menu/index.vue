@@ -18,6 +18,4 @@
 
   const menuOptions: ref<MenuOption[]> = generatorDynamicMenu()
 </script>
-<style lang="scss">
-  @import './menu-element.scss';
-</style>
+<style lang="scss"></style>

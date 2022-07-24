@@ -47,8 +47,6 @@
 </template>
 <script lang="ts" setup></script>
 <style lang="scss">
-  @import './footer-element.scss';
-
   .paly-footer {
     height: 100%;
     display: flex;

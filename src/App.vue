@@ -4,6 +4,6 @@
 
 <script setup lang="ts"></script>
 
-<style>
-  @import '@/styles/common.scss';
+<style lang="scss">
+  @import '@/styles/index.scss';
 </style>

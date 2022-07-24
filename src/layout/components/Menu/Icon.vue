@@ -10,4 +10,4 @@
 
   const Icon = props.iconNode
 </script>
-<style scoped></style>
+<style lang="scss"></style>
