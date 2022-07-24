@@ -139,3 +139,60 @@
         }
     }
 }
+
+//discover css
+.discover {
+
+    .discover-tabs {
+        height: 100%;
+        position: relative;
+        border: none;
+
+        $head-tab-height: 42px;
+
+        .el-tabs__header {
+            height: $head-tab-height;
+            border: none;
+            background-color: #ffffff;
+
+            .el-tabs__item {
+                padding: 0 15px !important;
+                color: #303133;
+                border: none;
+                position: relative;
+                top: -1px;
+                transition: none !important;
+
+                &:first-child {
+                    text-align: center;
+                    margin-left: 20px;
+                }
+
+                &:hover {
+                    color: #303133 !important;
+                }
+            }
+
+            .el-tabs__item.is-active {
+                font-weight: 900;
+                color: #303133;
+                font-size: 20px;
+
+                .head-title {
+                    border-bottom: 3px solid #ec4141 !important;
+                }
+            }
+
+        }
+
+        .el-tabs__content {
+            position: absolute;
+            top: $head-tab-height;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            padding: 0 !important;
+        }
+
+    }
+}

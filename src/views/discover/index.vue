@@ -1,28 +1,28 @@
 <template>
   <div class="discover">
-    <el-tabs v-model="state.activeName" class="discover-tabs" @tab-click="handleClick">
-      <el-tab-pane
-        :label="DiscoverEnum.properties[DiscoverEnum.RECOMMEND].title"
-        :name="DiscoverEnum.properties[DiscoverEnum.RECOMMEND].path"
-      >
+    <el-tabs class="discover-tabs" type="border-card" v-model="state.activeName" @tab-click="handleClick">
+      <el-tab-pane :name="DiscoverEnum.properties[DiscoverEnum.RECOMMEND].path">
+        <template #label>
+          <div class="head-title">{{ DiscoverEnum.properties[DiscoverEnum.RECOMMEND].title }}</div>
+        </template>
         <Recommend />
       </el-tab-pane>
-      <el-tab-pane
-        :label="DiscoverEnum.properties[DiscoverEnum.SONG_LIST].title"
-        :name="DiscoverEnum.properties[DiscoverEnum.SONG_LIST].path"
-      >
+      <el-tab-pane :name="DiscoverEnum.properties[DiscoverEnum.SONG_LIST].path">
+        <template #label>
+          <div class="head-title">{{ DiscoverEnum.properties[DiscoverEnum.SONG_LIST].title }}</div>
+        </template>
         <SongList />
       </el-tab-pane>
-      <el-tab-pane
-        :label="DiscoverEnum.properties[DiscoverEnum.RANKING_LIST].title"
-        :name="DiscoverEnum.properties[DiscoverEnum.RANKING_LIST].path"
-      >
+      <el-tab-pane :name="DiscoverEnum.properties[DiscoverEnum.RANKING_LIST].path">
+        <template #label>
+          <div class="head-title">{{ DiscoverEnum.properties[DiscoverEnum.RANKING_LIST].title }}</div>
+        </template>
         <RankingList />
       </el-tab-pane>
-      <el-tab-pane
-        :label="DiscoverEnum.properties[DiscoverEnum.SINGER].title"
-        :name="DiscoverEnum.properties[DiscoverEnum.SINGER].path"
-      >
+      <el-tab-pane :name="DiscoverEnum.properties[DiscoverEnum.SINGER].path">
+        <template #label>
+          <div class="head-title">{{ DiscoverEnum.properties[DiscoverEnum.SINGER].title }}</div>
+        </template>
         <Singer />
       </el-tab-pane>
     </el-tabs>
@@ -48,10 +48,6 @@
     router.push({
       path: tab.paneName //目标路由地址
     })
-  }
-
-  const generatePane = () => {
-    moduleRoutes.forEach((item) => {})
   }
 </script>
 <style lang="scss">

@@ -41,8 +41,6 @@
     .el-aside {
       width: 200px;
       box-sizing: border-box;
-      border-right: 1px solid #ccc;
-      background-color: goldenrod;
     }
 
     .el-main {
