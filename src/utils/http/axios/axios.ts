@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { RequestEnum } from '@/enums/httpEnum'
+import { useUserStore } from '@/store/modules/user'
 
 // 设置接口超时时间
 axios.defaults.timeout = 30000
@@ -21,41 +21,16 @@ axios.interceptors.response.use(
     return config
   },
   (err) => {
-    console.log([err])
+    console.log('error info:', [err])
     if (err.response.data.msg == '需要登录') {
-      //   vuex.state.isLogin = false
+      const userStore = useUserStore()
+      userStore.setIsLogin(false)
+
       console.log('need login')
     } else {
       console.log(err.response.data.msg)
     }
   }
 )
-
-export const request = (requestModel) => {
-  return new Promise((resolve, reject) => {
-    let promise
-    if (requestModel.method.toUpperCase() === RequestEnum.GET) {
-      promise = axios({
-        method: RequestEnum.GET,
-        url: requestModel.url,
-        params: requestModel.params
-      })
-    } else if (requestModel.method.toUpperCase() === RequestEnum.POST) {
-      promise = axios({
-        method: RequestEnum.GET,
-        url: requestModel.url,
-        data: requestModel.params
-      })
-    }
-
-    promise
-      .then((res) => {
-        resolve(res)
-      })
-      .catch((err) => {
-        reject(err)
-      })
-  })
-}
 
 export default axios

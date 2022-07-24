@@ -196,3 +196,63 @@
 
     }
 }
+
+//手机号登录输入框 css
+.login-dialog {
+
+    .phone-login {
+
+        .el-input__wrapper {
+            background-color: #ffffff !important;
+            border: 1px solid #dcdfe6;
+            box-shadow: none !important;
+            border-radius: 0 !important;
+        }
+
+        .el-input-group__prepend {
+            background-color: #ffffff !important;
+            border-radius: 0 !important;
+            box-shadow: none !important;
+            border: 1px solid #dcdfe6 !important;
+        }
+
+        .input-phone {
+
+            .el-input__wrapper {
+                border-bottom: none !important;
+                border-left: none !important;
+            }
+
+            .el-input-group__prepend {
+                border-bottom: none !important;
+            }
+        }
+
+        .input-password {
+            .el-input__wrapper {
+                border-left: none !important;
+            }
+        }
+
+    }
+
+}
+
+//登录dialog css
+.login-dialog {
+    .el-dialog.is-draggable {
+        height: 500px !important;
+
+        .el-dialog__headerbtn:hover {
+            i {
+                color: var(--el-color-info)
+            }
+        }
+
+        .login-button {
+            .el-button {
+                width: 250px;
+            }
+        }
+    }
+}

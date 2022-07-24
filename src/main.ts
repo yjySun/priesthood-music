@@ -1,10 +1,14 @@
 import { createApp } from 'vue'
 import App from './App.vue'
 import router, { setupRouter } from '@/router'
+import { setupStore } from '@/store'
 import { setupElementPlusIcon } from '@/plugins'
 
 async function bootstrap() {
   const app = createApp(App)
+
+  // 挂载状态管理
+  setupStore(app)
 
   //加载elementPlus图标
   setupElementPlusIcon(app)

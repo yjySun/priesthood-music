@@ -19,16 +19,29 @@
       </div>
     </div>
     <div class="user-avatar">
-      <i class="iconfont icon-ren"></i>
-      <div class="username">未登录</div>
+      <i class="iconfont icon-ren" @click="openLogin"></i>
+      <div class="username" @click="openLogin">未登录</div>
     </div>
   </div>
+
+  <Login ref="login" />
 </template>
 <script lang="ts" setup>
-  import { ref } from 'vue'
+  import { ref, reactive } from 'vue'
   import { Search } from '@element-plus/icons-vue'
+  import { request } from '@/utils/http/axios/axios'
+  import { Login } from '@/components/Login'
 
-  const searchInput = ref()
+  const login = ref<any>()
+
+  const state = reactive({
+    searchInput: ''
+  })
+
+  const openLogin = () => {
+    const { open } = login.value
+    open()
+  }
 </script>
 <style lang="scss">
   .custom-header {

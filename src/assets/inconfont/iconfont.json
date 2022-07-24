@@ -6,6 +6,13 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "10932499",
+      "name": "netease-cloud-music-line",
+      "font_class": "priesthood-music-logo",
+      "unicode": "e6a5",
+      "unicode_decimal": 59045
+    },
+    {
       "icon_id": "7594052",
       "name": "24gl-playlist",
       "font_class": "music-list",
