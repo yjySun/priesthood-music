@@ -52,8 +52,6 @@
 </script>
 <style lang="scss">
   .discover {
-    background-color: #03776a;
-    // width: 100%;
     height: 100%;
   }
 </style>
