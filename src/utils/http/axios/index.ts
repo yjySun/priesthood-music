@@ -21,7 +21,11 @@ export const request = (requestModel: RequestModel): Promise<any> => {
 
     promise
       .then((res) => {
-        resolve(res)
+        if (!requestModel.returnResData) {
+          resolve(res.data)
+        } else {
+          resolve(res)
+        }
       })
       .catch((err) => {
         reject(err)

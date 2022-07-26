@@ -1,8 +1,6 @@
 import { request } from '@/utils/http/axios'
 import { RequestEnum } from '@/enums/httpEnum'
 
-const timestamp = new Date().getTime()
-
 /**
  * @description: 手机号密码登录
  * @param {any} params
@@ -25,10 +23,7 @@ export const getQRcodeKey = (params: any): Promise<any> => {
   return request({
     url: '/login/qr/key',
     method: RequestEnum.GET,
-    params: {
-      timestamp,
-      ...params
-    }
+    params
   })
 }
 
@@ -41,10 +36,7 @@ export const generateQRcode = (params: any): Promise<any> => {
   return request({
     url: '/login/qr/create',
     method: RequestEnum.GET,
-    params: {
-      timestamp,
-      ...params
-    }
+    params
   })
 }
 
@@ -57,9 +49,6 @@ export const checkQRcode = (params: any): Promise<any> => {
   return request({
     url: '/login/qr/check',
     method: RequestEnum.GET,
-    params: {
-      timestamp,
-      ...params
-    }
+    params
   })
 }
