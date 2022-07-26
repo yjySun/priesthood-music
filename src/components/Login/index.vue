@@ -41,8 +41,9 @@
               </el-icon>
             </template>
           </el-input>
+          <div class="hint">{{ state.hint }}</div>
           <div class="login-button">
-            <el-button color="#ec4141">登录</el-button>
+            <el-button color="#ec4141" @click="handlePhoneLogin">登录</el-button>
           </div>
         </div>
       </div>
@@ -55,8 +56,9 @@
 </template>
 <script lang="ts" setup>
   import { reactive, ref, defineExpose, onMounted } from 'vue'
-  import { getQRcodeKey, generateQRcode, checkQRcode } from '@/api/login'
+  import { phoneLogin, getQRcodeKey, generateQRcode, checkQRcode } from '@/api/login'
   import { Lock } from '@element-plus/icons-vue'
+  import { el } from 'element-plus/es/locale'
 
   const state = reactive(source())
 
@@ -67,7 +69,8 @@
       password: '',
       qrCode: '',
       qrLogin: true, //默认显示扫码登录
-      qrCodeExpired: false
+      qrCodeExpired: false,
+      hint: ''
     }
   }
 
@@ -113,6 +116,31 @@
     }, 2000)
   }
 
+  const handlePhoneLogin = () => {
+    if (!state.phone) {
+      state.hint = '请输入手机号'
+    } else if (!state.password) {
+      state.hint = '请输入登录密码'
+    } else {
+      phoneLogin({ phone: state.phone, password: state.password, timestamp: new Date().getTime() }).then((res) => {
+        console.log(res)
+        if (res) {
+          if (res.data.code === 200) {
+            console.log('登陆成功')
+          } else if (res.data.code === 400) {
+            state.hint = '手机号错误'
+          } else if (res.data.code === 502) {
+            state.hint = res.data.message
+          } else {
+            state.hint = '登录失败，请稍后重试'
+          }
+        } else {
+          state.hint = '该手机号尚未注册'
+        }
+      })
+    }
+  }
+
   const open = () => {
     state.visible = true
 
@@ -141,6 +169,7 @@
 <style lang="scss">
   .login-dialog {
     position: relative;
+
     .scan-QRcode {
       .title {
         font-size: 30px;
@@ -175,6 +204,13 @@
 
       .account {
         margin-top: 50px;
+
+        .hint {
+          margin-top: 10px;
+          color: red;
+          font-size: 12px;
+          text-align: left;
+        }
       }
 
       .login-button {

@@ -22,13 +22,11 @@ axios.interceptors.response.use(
   },
   (err) => {
     console.log('error info:', [err])
-    if (err.response.data.msg == '需要登录') {
+    if (err.response.msg == '需要登录') {
       const userStore = useUserStore()
       userStore.setIsLogin(false)
 
       console.log('need login')
-    } else {
-      console.log(err.response.data.msg)
     }
   }
 )

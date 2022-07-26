@@ -10,7 +10,8 @@ export const phoneLogin = (params: any): Promise<any> => {
   return request({
     url: '/login/cellphone',
     method: RequestEnum.GET,
-    params
+    params,
+    returnRes: true
   })
 }
 

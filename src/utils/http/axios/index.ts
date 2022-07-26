@@ -21,7 +21,7 @@ export const request = (requestModel: RequestModel): Promise<any> => {
 
     promise
       .then((res) => {
-        if (!requestModel.returnResData) {
+        if (!requestModel.returnRes) {
           resolve(res.data)
         } else {
           resolve(res)
