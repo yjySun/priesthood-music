@@ -58,17 +58,25 @@
   import { getQRcodeKey, generateQRcode, checkQRcode } from '@/api/login'
   import { Lock } from '@element-plus/icons-vue'
 
-  const state = reactive({
-    visible: false,
-    phone: '',
-    password: '',
-    qrCode: '',
-    qrLogin: true, //默认显示扫码登录
-    qrCodeExpired: false
-  })
+  const state = reactive(source())
+
+  function source() {
+    return {
+      visible: false,
+      phone: '',
+      password: '',
+      qrCode: '',
+      qrLogin: true, //默认显示扫码登录
+      qrCodeExpired: false
+    }
+  }
 
   onMounted(() => {})
 
+  /**
+   * @description: 生成二维码
+   * @return {*}
+   */
   const QRcode = () => {
     getQRcodeKey({ timestamp: new Date().getTime() }).then((res) => {
       let key = res.data.unikey
@@ -76,26 +84,33 @@
       generateQRcode({ key, qrimg: true, timestamp: new Date().getTime() }).then((res) => {
         state.qrCode = res.data.qrimg
 
-        //定时检查二维码状态
-        const timer = setInterval(async () => {
-          const statusRes = await checkQRcode({ key, timestamp: new Date().getTime() })
-
-          if (statusRes.code === 800) {
-            state.qrCodeExpired = true
-            clearInterval(timer)
-          }
-          if (statusRes.code === 803) {
-            console.log('等成功', statusRes.code)
-
-            // 这一步会返回cookie
-            clearInterval(timer)
-            alert('授权登录成功')
-            // await this.getLoginStatus(statusRes.cookie)
-            // localStorage.setItem('cookie', statusRes.cookie)
-          }
-        }, 2000)
+        checkQRcodeStatus()
       })
     })
+  }
+
+  /**
+   * @description: 定时检查二维码状态
+   * @return {*}
+   */
+  const checkQRcodeStatus = () => {
+    const timer = setInterval(async () => {
+      const statusRes = await checkQRcode({ key, timestamp: new Date().getTime() })
+
+      if (statusRes.code === 800) {
+        state.qrCodeExpired = true
+        clearInterval(timer)
+      }
+      if (statusRes.code === 803) {
+        console.log('等成功', statusRes.code)
+
+        // 这一步会返回cookie
+        clearInterval(timer)
+        alert('授权登录成功')
+        // await this.getLoginStatus(statusRes.cookie)
+        // localStorage.setItem('cookie', statusRes.cookie)
+      }
+    }, 2000)
   }
 
   const open = () => {
@@ -104,13 +119,19 @@
     QRcode()
   }
 
+  /**
+   * @description: 重置数据
+   * @return {*}
+   */
+  const reset = () => {
+    const originalSource = source()
+    for (let key in originalSource) {
+      state[key] = originalSource[key]
+    }
+  }
+
   const close = () => {
-    state.visible = false
-    state.phone = ''
-    state.password = ''
-    state.qrCode = ''
-    state.qrLogin = true
-    state.qrCodeExpired = false
+    reset()
   }
 
   defineExpose({
