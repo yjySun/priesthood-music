@@ -84,7 +84,7 @@
       generateQRcode({ key, qrimg: true, timestamp: new Date().getTime() }).then((res) => {
         state.qrCode = res.data.qrimg
 
-        checkQRcodeStatus()
+        checkQRcodeStatus(key)
       })
     })
   }
@@ -93,7 +93,7 @@
    * @description: 定时检查二维码状态
    * @return {*}
    */
-  const checkQRcodeStatus = () => {
+  const checkQRcodeStatus = (key) => {
     const timer = setInterval(async () => {
       const statusRes = await checkQRcode({ key, timestamp: new Date().getTime() })
 
