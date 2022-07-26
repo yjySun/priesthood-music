@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia'
 
 export interface IUserState {
+  userId: string
   nickname: string
   avatar: string
   info: any
@@ -9,12 +10,16 @@ export interface IUserState {
 
 export const useUserStore = defineStore('userStore', {
   state: (): IUserState => ({
+    userId: '',
     nickname: '',
     avatar: '',
     info: '',
     isLogin: false
   }),
   getters: {
+    getUserId(): string {
+      return this.userId
+    },
     getNickname(): string {
       return this.nickname
     },
@@ -29,6 +34,9 @@ export const useUserStore = defineStore('userStore', {
     }
   },
   actions: {
+    setUserId(userId: string) {
+      this.userId = userId
+    },
     setNickname(nickname: string) {
       this.nickname = nickname
     },

@@ -58,10 +58,11 @@
   import { reactive, ref, defineExpose, onMounted } from 'vue'
   import { phoneLogin, getQRcodeKey, generateQRcode, checkQRcode } from '@/api/login'
   import { Lock } from '@element-plus/icons-vue'
-  import { el } from 'element-plus/es/locale'
+  import { useUserStore } from '@/store/modules/user'
+
+  const userStore = useUserStore()
 
   const state = reactive(source())
-
   function source() {
     return {
       visible: false,
@@ -110,6 +111,7 @@
         // 这一步会返回cookie
         clearInterval(timer)
         alert('授权登录成功')
+        userStore.setIsLogin(true)
         // await this.getLoginStatus(statusRes.cookie)
         // localStorage.setItem('cookie', statusRes.cookie)
       }
@@ -127,6 +129,7 @@
         if (res) {
           if (res.data.code === 200) {
             console.log('登陆成功')
+            userStore.setIsLogin(true)
           } else if (res.data.code === 400) {
             state.hint = '手机号错误'
           } else if (res.data.code === 502) {
