@@ -1,5 +1,5 @@
 <template>
-  <div class="login-dialog">
+  <div class="login-dialog" v-if="state.visible">
     <el-dialog
       v-model="state.visible"
       width="350px"
@@ -105,9 +105,12 @@
   }
 
   const close = () => {
-    state.qrLogin = true
+    state.visible = false
     state.phone = ''
     state.password = ''
+    state.qrCode = ''
+    state.qrLogin = true
+    state.qrCodeExpired = false
   }
 
   defineExpose({
