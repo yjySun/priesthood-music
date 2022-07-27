@@ -62,10 +62,14 @@
   import { reactive, ref, defineExpose, onMounted, defineEmits } from 'vue'
   import { phoneLogin, getQRcodeKey, generateQRcode, checkQRcode } from '@/api/login'
   import { Lock } from '@element-plus/icons-vue'
+  import { storeToRefs } from 'pinia'
   import { USER_ID } from '@/store/mutation-types'
   import { Loading } from '@/components/Loading'
+  import { useLoginStore } from '@/store/modules/login'
 
   const emit = defineEmits(['getUserProfile'])
+  const loginStore = useLoginStore()
+  const { errorMsg } = storeToRefs(loginStore)
 
   const state = reactive(source())
   function source() {
@@ -156,7 +160,12 @@
             state.hint = '登录失败，请稍后重试'
           }
         } else {
-          state.hint = '该手机号尚未注册'
+          if (!!errorMsg) {
+            let error = JSON.parse(JSON.stringify(errorMsg))
+            state.hint = error['_object'].errorMsg
+          } else {
+            state.hint = '该手机号尚未注册'
+          }
         }
       })
     }
