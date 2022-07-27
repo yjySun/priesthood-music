@@ -27,24 +27,30 @@
       <div v-if="!state.qrLogin" class="phone-login">
         <i class="iconfont icon-priesthood-music-logo"></i>
         <div class="account">
-          <el-input v-model="state.phone" placeholder="请输入手机号" class="input-phone">
-            <template #prepend>
-              <span>+86</span>
-            </template>
-          </el-input>
-          <el-input
-            v-model="state.password"
-            placeholder="请输入密码"
-            type="password"
-            show-password
-            class="input-password"
-          >
-            <template #prepend>
-              <el-icon>
-                <Lock />
-              </el-icon>
-            </template>
-          </el-input>
+          <el-form label-width="0">
+            <el-form-item>
+              <el-input v-model="state.phone" placeholder="请输入手机号" class="input-phone" autocomplete="true">
+                <template #prepend>
+                  <span>+86</span>
+                </template>
+              </el-input>
+            </el-form-item>
+            <el-form-item>
+              <el-input
+                v-model="state.password"
+                placeholder="请输入密码"
+                type="password"
+                show-password
+                class="input-password"
+              >
+                <template #prepend>
+                  <el-icon>
+                    <Lock />
+                  </el-icon>
+                </template>
+              </el-input>
+            </el-form-item>
+          </el-form>
           <div class="hint">{{ state.hint }}</div>
           <div class="login-button">
             <el-button color="#ec4141" @click="handlePhoneLogin">登录</el-button>
@@ -244,10 +250,16 @@
           font-size: 12px;
           text-align: left;
         }
+
+        .el-form-item {
+          margin-bottom: 0 !important;
+        }
       }
 
       .login-button {
-        margin-top: 40px;
+        position: absolute;
+        top: 300px;
+        left: 55px;
       }
     }
 

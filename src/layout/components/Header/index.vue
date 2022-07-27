@@ -14,7 +14,7 @@
           placeholder="请输入内容"
           :prefix-icon="Search"
           size="mini"
-          v-model="searchInput"
+          v-model="state.searchInput"
         />
       </div>
     </div>
