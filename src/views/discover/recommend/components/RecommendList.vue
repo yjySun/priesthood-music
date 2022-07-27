@@ -21,10 +21,9 @@
   .recommend-list {
     .list-card {
       display: flex;
-      gap: 40px;
+      gap: 2%;
       flex-wrap: wrap;
       justify-content: center;
-      max-width: 1300px;
 
       .list-card-item {
         width: 17%;

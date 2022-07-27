@@ -83,7 +83,8 @@
 
       h3 {
         text-align: left;
-        margin-left: 2%;
+        margin-left: 4%;
+        // padding-left: 2%;
       }
     }
   }
