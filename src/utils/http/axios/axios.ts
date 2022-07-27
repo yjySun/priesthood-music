@@ -5,6 +5,7 @@ import { useUserStore } from '@/store/modules/user'
 axios.defaults.timeout = 30000
 // 接口
 axios.defaults.baseURL = import.meta.env.VITE_GLOB_API_URL_PREFIX
+axios.defaults.withCredentials = true
 
 // 请求拦截器，内部根据返回值，重新组装，统一管理。
 axios.interceptors.request.use(
@@ -24,7 +25,7 @@ axios.interceptors.response.use(
     console.log('error info:', [err])
     if (err.response.msg == '需要登录') {
       const userStore = useUserStore()
-      userStore.setIsLogin(false)
+      userStore.setProfile({})
 
       console.log('need login')
     }

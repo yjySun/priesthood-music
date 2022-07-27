@@ -56,7 +56,7 @@
 </template>
 <script lang="ts" setup>
   import { reactive, ref, defineExpose, onMounted } from 'vue'
-  import { phoneLogin, getQRcodeKey, generateQRcode, checkQRcode } from '@/api/login'
+  import { phoneLogin, getQRcodeKey, generateQRcode, checkQRcode, getLoginStatus } from '@/api/login'
   import { Lock } from '@element-plus/icons-vue'
   import { useUserStore } from '@/store/modules/user'
 
@@ -100,20 +100,18 @@
   const checkQRcodeStatus = (key) => {
     const timer = setInterval(async () => {
       const statusRes = await checkQRcode({ key, timestamp: new Date().getTime() })
-
+      console.log('statusRes', statusRes)
       if (statusRes.code === 800) {
+        //二维码过期
         state.qrCodeExpired = true
         clearInterval(timer)
       }
       if (statusRes.code === 803) {
-        console.log('等成功', statusRes.code)
+        // 登陆成功
+        let loginStatus = await getLoginStatus()
+        userStore.setProfile(loginStatus.profile)
 
-        // 这一步会返回cookie
         clearInterval(timer)
-        alert('授权登录成功')
-        userStore.setIsLogin(true)
-        // await this.getLoginStatus(statusRes.cookie)
-        // localStorage.setItem('cookie', statusRes.cookie)
       }
     }, 2000)
   }
@@ -125,11 +123,10 @@
       state.hint = '请输入登录密码'
     } else {
       phoneLogin({ phone: state.phone, password: state.password, timestamp: new Date().getTime() }).then((res) => {
-        console.log(res)
         if (res) {
           if (res.data.code === 200) {
-            console.log('登陆成功')
-            userStore.setIsLogin(true)
+            //登陆成功
+            userStore.setProfile(loginStatus.profile)
           } else if (res.data.code === 400) {
             state.hint = '手机号错误'
           } else if (res.data.code === 502) {

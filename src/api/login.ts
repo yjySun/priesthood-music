@@ -53,3 +53,17 @@ export const checkQRcode = (params: any): Promise<any> => {
     params
   })
 }
+
+
+/**
+ * @description: 获取登录状态
+ * @param {any} params
+ * @return {*}
+ */
+export const getLoginStatus = (params: any): Promise<any> => {
+  return request({
+    url: '/login/status',
+    method: RequestEnum.GET,
+    params
+  })
+}
