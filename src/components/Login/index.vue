@@ -10,7 +10,11 @@
     >
       <div v-if="state.qrLogin" class="scan-QRcode">
         <div class="title">扫码登录</div>
-        <img class="qr-img" :src="state.qrCode" alt="" />
+        <div class="qr-img-div">
+          <Loading :loading="state.loading">
+            <img class="qr-img" :src="state.qrCode" alt="" />
+          </Loading>
+        </div>
         <div>使用网易云音乐APP扫码登录</div>
         <div v-if="state.qrCodeExpired" class="mask">
           <div class="mask-title">二维码已失效</div>
@@ -20,7 +24,7 @@
         </div>
       </div>
 
-      <div v-else class="phone-login">
+      <div v-if="!state.qrLogin" class="phone-login">
         <i class="iconfont icon-priesthood-music-logo"></i>
         <div class="account">
           <el-input v-model="state.phone" placeholder="请输入手机号" class="input-phone">
@@ -59,6 +63,7 @@
   import { phoneLogin, getQRcodeKey, generateQRcode, checkQRcode } from '@/api/login'
   import { Lock } from '@element-plus/icons-vue'
   import { USER_ID } from '@/store/mutation-types'
+  import { Loading } from '@/components/Loading'
 
   const emit = defineEmits(['getUserProfile'])
 
@@ -66,6 +71,7 @@
   function source() {
     return {
       visible: false,
+      loading: true,
       phone: '',
       password: '',
       qrCode: '',
@@ -87,6 +93,7 @@
 
       generateQRcode({ key, qrimg: true, timestamp: new Date().getTime() }).then((res) => {
         state.qrCode = res.data.qrimg
+        state.loading = false
 
         checkQRcodeStatus(key)
       })
@@ -121,6 +128,7 @@
    */
   const refreshQRCode = () => {
     state.qrCodeExpired = false
+    state.loading = true
     QRcode()
   }
 
@@ -188,7 +196,9 @@
         font-size: 30px;
       }
 
-      .qr-img {
+      .qr-img-div {
+        position: relative;
+        height: 180px;
         margin-top: 20px;
       }
 
@@ -202,6 +212,7 @@
         padding-top: 40px;
         box-sizing: border-box;
         color: #ffffff;
+        z-index: 20;
 
         .mask-button {
           margin-top: 10px;
