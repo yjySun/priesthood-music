@@ -17,7 +17,7 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
   return {
     base: VITE_BASE_URL,
     plugins: [
-      vue(),
+      vue({ reactivityTransform: true }),
       AutoImport({
         resolvers: [ElementPlusResolver()]
       }),

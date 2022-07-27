@@ -1,6 +1,6 @@
 <template>
-  <Loading :loading="state.loading">
-    <div class="recommend">
+  <div class="recommend">
+    <Loading :loading="state.loading">
       <!-- 轮播图 -->
       <Banner v-if="state.banners.length > 0" :banners="state.banners" />
       <!-- 推荐歌单 -->
@@ -8,8 +8,8 @@
         <h3>推荐歌单<i class="iconfont icon-arrow-right-bold"></i></h3>
         <RecommendList :musicList="state.musicList" />
       </div>
-    </div>
-  </Loading>
+    </Loading>
+  </div>
 </template>
 <script lang="ts" setup>
   import { reactive, onMounted } from 'vue'
