@@ -54,7 +54,6 @@ export const checkQRcode = (params: any): Promise<any> => {
   })
 }
 
-
 /**
  * @description: 获取登录状态
  * @param {any} params

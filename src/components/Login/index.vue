@@ -15,7 +15,7 @@
         <div v-if="state.qrCodeExpired" class="mask">
           <div class="mask-title">二维码已失效</div>
           <div class="mask-button">
-            <el-button type="primary">点击刷新</el-button>
+            <el-button type="primary" @click="refreshQRCode">点击刷新</el-button>
           </div>
         </div>
       </div>
@@ -55,12 +55,12 @@
   </div>
 </template>
 <script lang="ts" setup>
-  import { reactive, ref, defineExpose, onMounted } from 'vue'
-  import { phoneLogin, getQRcodeKey, generateQRcode, checkQRcode, getLoginStatus } from '@/api/login'
+  import { reactive, ref, defineExpose, onMounted, defineEmits } from 'vue'
+  import { phoneLogin, getQRcodeKey, generateQRcode, checkQRcode } from '@/api/login'
   import { Lock } from '@element-plus/icons-vue'
-  import { useUserStore } from '@/store/modules/user'
+  import { USER_ID } from '@/store/mutation-types'
 
-  const userStore = useUserStore()
+  const emit = defineEmits(['getUserProfile'])
 
   const state = reactive(source())
   function source() {
@@ -100,7 +100,6 @@
   const checkQRcodeStatus = (key) => {
     const timer = setInterval(async () => {
       const statusRes = await checkQRcode({ key, timestamp: new Date().getTime() })
-      console.log('statusRes', statusRes)
       if (statusRes.code === 800) {
         //二维码过期
         state.qrCodeExpired = true
@@ -108,14 +107,27 @@
       }
       if (statusRes.code === 803) {
         // 登陆成功
-        let loginStatus = await getLoginStatus()
-        userStore.setProfile(loginStatus.profile)
+        state.visible = false
+        emit('getUserProfile')
 
         clearInterval(timer)
       }
     }, 2000)
   }
 
+  /**
+   * @description: 刷新二维码
+   * @return {*}
+   */
+  const refreshQRCode = () => {
+    state.qrCodeExpired = false
+    QRcode()
+  }
+
+  /**
+   * @description: 手机号密码登录
+   * @return {*}
+   */
   const handlePhoneLogin = () => {
     if (!state.phone) {
       state.hint = '请输入手机号'
@@ -126,7 +138,8 @@
         if (res) {
           if (res.data.code === 200) {
             //登陆成功
-            userStore.setProfile(loginStatus.profile)
+            state.visible = false
+            emit('getUserProfile', res.data.profile)
           } else if (res.data.code === 400) {
             state.hint = '手机号错误'
           } else if (res.data.code === 502) {

@@ -19,24 +19,62 @@
       </div>
     </div>
     <div class="user-avatar">
-      <i class="iconfont icon-ren" @click="openLogin"></i>
-      <div class="username" @click="openLogin">未登录</div>
+      <div v-if="!state.profile" class="out-login">
+        <i class="iconfont icon-ren" @click="openLogin"></i>
+        <div class="username" @click="openLogin">未登录</div>
+      </div>
+      <div v-else class="in-login">
+        <img :src="state.profile.avatarUrl" alt="" />
+        <div class="nickname">{{ state.profile.nickname }}</div>
+      </div>
     </div>
   </div>
 
-  <Login ref="login" />
+  <Login ref="login" @getUserProfile="getUserProfile" />
 </template>
 <script lang="ts" setup>
-  import { ref, reactive } from 'vue'
+  import { ref, reactive, onMounted } from 'vue'
   import { Search } from '@element-plus/icons-vue'
   import { request } from '@/utils/http/axios/axios'
   import { Login } from '@/components/Login'
+  import { getAccountInfo } from '@/api/user'
+  import { createStorage } from '@/utils/Storage'
+  import { USER_ID } from '@/store/mutation-types'
 
+  const Storage = createStorage({ storage: localStorage })
   const login = ref<any>()
 
   const state = reactive({
-    searchInput: ''
+    searchInput: '',
+    profile: null
   })
+
+  onMounted(() => {
+    getCurrentUserInfo()
+  })
+
+  /**
+   * @description: 获取登录用户的信息
+   * @return {*}
+   */
+  const getCurrentUserInfo = async () => {
+    const res = await getAccountInfo()
+    if (res.profile) {
+      state.profile = res.profile
+      Storage.set(USER_ID, res.profile.userId)
+    } else {
+      console.log('请登录')
+    }
+  }
+
+  /**
+   * @description: 赋值用户信息
+   * @param {*} val
+   * @return {*}
+   */
+  const getUserProfile = () => {
+    getCurrentUserInfo()
+  }
 
   const openLogin = () => {
     const { open } = login.value
@@ -96,18 +134,40 @@
       justify-content: flex-end;
       padding-right: 70px;
 
-      i {
-        font-size: 35px;
-        background: #e6e6e6;
-        color: white;
-        border-radius: 50%;
-        cursor: pointer;
+      .out-login {
+        display: flex;
+        align-items: center;
+
+        i {
+          font-size: 35px;
+          background: #e6e6e6;
+          color: white;
+          border-radius: 50%;
+          cursor: pointer;
+        }
+
+        .username {
+          display: inline-block;
+          color: white;
+          margin-left: 10px;
+          cursor: pointer;
+        }
       }
 
-      .username {
-        color: white;
-        margin-left: 10px;
-        cursor: pointer;
+      .in-login {
+        display: flex;
+        align-items: center;
+
+        img {
+          width: 40px;
+          height: 40px;
+          border-radius: 20px;
+        }
+
+        .nickname {
+          margin-left: 10px;
+          color: rgba(255, 255, 255, 0.9);
+        }
       }
     }
   }
