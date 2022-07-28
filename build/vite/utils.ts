@@ -1,6 +1,5 @@
 // 读取所有环境变量
 export function wrapperEnv(envConf) {
-  console.log('env', envConf)
   const ret: any = {}
 
   for (const envName of Object.keys(envConf)) {

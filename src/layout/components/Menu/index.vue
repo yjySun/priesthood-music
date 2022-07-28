@@ -34,7 +34,6 @@
   const { proxy } = getCurrentInstance()
 
   proxy.$bus.on('haveLogin', () => {
-    console.log('nihao');
     
     getMenuList()
   })

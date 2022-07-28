@@ -9,10 +9,6 @@
 
   const props = defineProps<{
     loading: boolean
-    marginTop: {
-      type: string
-      required: false
-    }
   }>()
 </script>
 <style lang="scss">

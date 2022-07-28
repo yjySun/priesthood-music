@@ -39,7 +39,7 @@
   import { Login } from '@/components/Login'
   import { getAccountInfo } from '@/api/user'
   import { createStorage } from '@/utils/Storage'
-  import { USER_ID } from '@/store/mutation-types'
+  import { USER_ID, IS_LOGIN } from '@/store/mutation-types'
   import { useUserStore } from '@/store/modules/user'
 
   const userStore = useUserStore()
@@ -65,6 +65,7 @@
       state.profile = res.profile
       userStore.setIsLogin(true)
       Storage.set(USER_ID, res.profile.userId)
+      Storage.set(IS_LOGIN, true)
     } else {
       console.log('请登录')
     }

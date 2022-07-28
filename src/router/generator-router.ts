@@ -2,22 +2,19 @@ import { VNode } from 'vue'
 import { RouteRecordRaw } from 'vue-router'
 import { moduleRoutes } from './index'
 import { MenuOption, SubMenuOption, MenuGroupOption, MenuItemOption } from '@/layout/components/Menu/type'
-import { storeToRefs } from 'pinia'
-import { useUserStore } from '@/store/modules/user'
 import { getUserPayList } from '@/api/user'
 import { createStorage } from '@/utils/Storage'
-import { USER_ID } from '@/store/mutation-types'
+import { USER_ID, IS_LOGIN } from '@/store/mutation-types'
 
 const Storage = createStorage({ storage: localStorage })
-const userStore = useUserStore()
-const { getIsLogin } = storeToRefs(userStore)
-const loginStatus = getIsLogin
 
 /**
  * @description: 动态生成菜单
  * @return {*}
  */
 export const generatorDynamicMenu = async () => {
+  const loginStatus = Storage.get(IS_LOGIN)
+
   let playlist: Array<any> = []
   let menuOptions: MenuOption[] = []
 
@@ -56,7 +53,7 @@ export const generatorDynamicMenu = async () => {
       }
     }
 
-    menuOptions.push(generatorAnyMenu(moduleRoute))
+    menuOptions.push(generatorAnyMenu(moduleRoute, loginStatus))
   })
 
   return menuOptions
@@ -67,16 +64,16 @@ export const generatorDynamicMenu = async () => {
  * @param {RouteRecordRaw} route
  * @return {MenuOption}
  */
-function generatorAnyMenu(route: RouteRecordRaw): MenuOption {
+function generatorAnyMenu(route: RouteRecordRaw, loginStatus: boolean): MenuOption {
   let menuOption: MenuOption = {}
 
   if (!route.meta?.loginVisible || route.meta?.loginVisible == false) {
-    menuOption = generateItem(route, menuOption)
+    menuOption = generateItem(route, menuOption, loginStatus)
   } else {
     //需要登录才能显示
     if (loginStatus) {
       //用户已经登录
-      menuOption = generateItem(route, menuOption)
+      menuOption = generateItem(route, menuOption, loginStatus)
     }
   }
 
@@ -89,7 +86,7 @@ function generatorAnyMenu(route: RouteRecordRaw): MenuOption {
  * @param {MenuOption} menuOption
  * @return {*}
  */
-function generateItem(route: RouteRecordRaw, menuOption: MenuOption): MenuOption {
+function generateItem(route: RouteRecordRaw, menuOption: MenuOption, loginStatus: boolean): MenuOption {
   //不需要登录显示menu
   if (route.meta?.subMenu && route.meta?.subMenu === true) {
     let subMenu: SubMenuOption = {
@@ -107,7 +104,7 @@ function generateItem(route: RouteRecordRaw, menuOption: MenuOption): MenuOption
     if (route.children) {
       let children = []
       route.children.forEach((item) => {
-        children.push(generatorAnyMenu(item))
+        children.push(generatorAnyMenu(item, loginStatus))
       })
       subMenu.children = children
     }
@@ -127,7 +124,7 @@ function generateItem(route: RouteRecordRaw, menuOption: MenuOption): MenuOption
     if (route.children) {
       let children = []
       route.children.forEach((item) => {
-        children.push(generatorAnyMenu(item))
+        children.push(generatorAnyMenu(item, loginStatus))
       })
       groupMenu.children = children
     }
