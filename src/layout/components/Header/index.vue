@@ -40,13 +40,15 @@
   import { getAccountInfo } from '@/api/user'
   import { createStorage } from '@/utils/Storage'
   import { USER_ID } from '@/store/mutation-types'
+  import { useUserStore } from '@/store/modules/user'
 
+  const userStore = useUserStore()
   const Storage = createStorage({ storage: localStorage })
   const login = ref<any>()
 
   const state = reactive({
     searchInput: '',
-    profile: null
+    profile: {}
   })
 
   onMounted(() => {
@@ -61,6 +63,7 @@
     const res = await getAccountInfo()
     if (res.profile) {
       state.profile = res.profile
+      userStore.setIsLogin(true)
       Storage.set(USER_ID, res.profile.userId)
     } else {
       console.log('请登录')
