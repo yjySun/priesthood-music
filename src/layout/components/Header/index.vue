@@ -63,9 +63,9 @@
     const res = await getAccountInfo()
     if (res.profile) {
       state.profile = res.profile
-      userStore.setIsLogin(true)
-      Storage.set(USER_ID, res.profile.userId)
       Storage.set(IS_LOGIN, true)
+      Storage.set(USER_ID, res.profile.userId)
+      proxy.$bus.emit('haveLogin')
     } else {
       console.log('请登录')
     }
@@ -78,9 +78,15 @@
    * @param {*} val
    * @return {*}
    */
-  const getUserProfile = async () => {
-    await getCurrentUserInfo()
-    proxy.$bus.emit('haveLogin')
+  const getUserProfile = async (profile) => {
+    if (profile) {
+      state.profile = profile
+      Storage.set(USER_ID, state.profile.userId)
+      Storage.set(IS_LOGIN, true)
+      proxy.$bus.emit('haveLogin')
+    } else {
+      await getCurrentUserInfo()
+    }
   }
 
   const openLogin = () => {

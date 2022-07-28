@@ -33,9 +33,8 @@
 
   const { proxy } = getCurrentInstance()
 
-  proxy.$bus.on('haveLogin', () => {
-    
-    getMenuList()
+  proxy.$bus.on('haveLogin', async () => {
+    await getMenuList()
   })
 </script>
 <style lang="scss"></style>
