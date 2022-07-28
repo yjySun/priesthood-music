@@ -78,8 +78,8 @@
    * @param {*} val
    * @return {*}
    */
-  const getUserProfile = () => {
-    getCurrentUserInfo()
+  const getUserProfile = async () => {
+    await getCurrentUserInfo()
     proxy.$bus.emit('haveLogin')
   }
 
