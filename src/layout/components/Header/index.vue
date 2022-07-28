@@ -48,7 +48,7 @@
 
   const state = reactive({
     searchInput: '',
-    profile: {}
+    profile: ''
   })
 
   onMounted(() => {
