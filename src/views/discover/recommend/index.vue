@@ -16,7 +16,6 @@
   import Banner from './components/Banner.vue'
   import RecommendList from './components/RecommendList.vue'
   import { getBanner, getRecommendMusicList } from '@/api/discover/recommend'
-  import { Loading } from '@/components/Loading'
 
   const state = reactive({
     loading: true,

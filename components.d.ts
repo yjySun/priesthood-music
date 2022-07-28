@@ -28,6 +28,7 @@ declare module '@vue/runtime-core' {
     ElTabs: typeof import('element-plus/es')['ElTabs']
     Loading: typeof import('element-plus/es')['ElLoadingDirective']
     Login: typeof import('./src/components/Login/index.vue')['default']
+    MusicList: typeof import('./src/components/MusicList/index.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
   }

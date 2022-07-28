@@ -36,7 +36,6 @@
   import { ref, reactive, onMounted, getCurrentInstance } from 'vue'
   import { Search } from '@element-plus/icons-vue'
   import { request } from '@/utils/http/axios/axios'
-  import { Login } from '@/components/Login'
   import { getLoginStatus } from '@/api/login'
   import { createStorage } from '@/utils/Storage'
   import { USER_ID, IS_LOGIN } from '@/store/mutation-types'

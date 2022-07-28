@@ -70,7 +70,6 @@
   import { Lock } from '@element-plus/icons-vue'
   import { storeToRefs } from 'pinia'
   import { USER_ID } from '@/store/mutation-types'
-  import { Loading } from '@/components/Loading'
   import { useLoginStore } from '@/store/modules/login'
   import { storage } from '@/utils/Storage'
   import { COOKIE } from '@/store/mutation-types'
