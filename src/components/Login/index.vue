@@ -72,6 +72,8 @@
   import { USER_ID } from '@/store/mutation-types'
   import { Loading } from '@/components/Loading'
   import { useLoginStore } from '@/store/modules/login'
+  import { storage } from '@/utils/Storage'
+  import { COOKIE } from '@/store/mutation-types'
 
   const emit = defineEmits(['getUserProfile'])
   const loginStore = useLoginStore()
@@ -124,6 +126,7 @@
       }
       if (statusRes.code === 803) {
         // 登陆成功
+        storage.set(COOKIE)
         state.visible = false
         emit('getUserProfile')
 

@@ -37,10 +37,11 @@
   import { Search } from '@element-plus/icons-vue'
   import { request } from '@/utils/http/axios/axios'
   import { Login } from '@/components/Login'
-  import { getAccountInfo } from '@/api/user'
+  import { getLoginStatus } from '@/api/login'
   import { createStorage } from '@/utils/Storage'
   import { USER_ID, IS_LOGIN } from '@/store/mutation-types'
   import { useUserStore } from '@/store/modules/user'
+  import { COOKIE } from '@/store/mutation-types'
 
   const userStore = useUserStore()
   const Storage = createStorage({ storage: localStorage })
@@ -60,11 +61,12 @@
    * @return {*}
    */
   const getCurrentUserInfo = async () => {
-    const res = await getAccountInfo()
-    if (res.profile) {
-      state.profile = res.profile
+    const res = await getLoginStatus({ cookie: Storage.get(COOKIE), timestamp: new Date().getTime() })
+
+    if (res.data.profile) {
+      state.profile = res.data.profile
       Storage.set(IS_LOGIN, true)
-      Storage.set(USER_ID, res.profile.userId)
+      Storage.set(USER_ID, res.data.profile.userId)
       proxy.$bus.emit('haveLogin')
     } else {
       console.log('请登录')
