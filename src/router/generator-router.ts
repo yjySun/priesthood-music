@@ -34,6 +34,8 @@ export const generatorDynamicMenu = async () => {
         const createdList = playlist.slice(0, index)
         const collectedList = playlist.slice(index)
 
+        createdList[0].name = '我喜欢的音乐'
+
         const anyList =
           moduleRoute.children[0].meta?.type === CREATED_LIST_TYPE
             ? createdList
