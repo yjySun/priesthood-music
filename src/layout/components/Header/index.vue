@@ -33,7 +33,7 @@
   <Login ref="login" @getUserProfile="getUserProfile" />
 </template>
 <script lang="ts" setup>
-  import { ref, reactive, onMounted } from 'vue'
+  import { ref, reactive, onMounted, getCurrentInstance } from 'vue'
   import { Search } from '@element-plus/icons-vue'
   import { request } from '@/utils/http/axios/axios'
   import { Login } from '@/components/Login'
@@ -70,6 +70,8 @@
     }
   }
 
+  const { proxy } = getCurrentInstance()
+
   /**
    * @description: 赋值用户信息
    * @param {*} val
@@ -77,6 +79,7 @@
    */
   const getUserProfile = () => {
     getCurrentUserInfo()
+    proxy.$bus.emit('haveLogin')
   }
 
   const openLogin = () => {

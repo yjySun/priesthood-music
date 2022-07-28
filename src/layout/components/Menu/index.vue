@@ -6,7 +6,7 @@
   </div>
 </template>
 <script lang="ts" setup>
-  import { ref, reactive, onMounted } from 'vue'
+  import { ref, reactive, onMounted, getCurrentInstance } from 'vue'
   import { PageEnum } from '@/enums/pageEnum'
   import { MenuOption } from './type'
   import { generatorDynamicMenu } from '@/router/generator-router'
@@ -18,9 +18,25 @@
   })
 
   onMounted(() => {
+    getMenuList()
+  })
+
+  /**
+   * @description: 获取菜单数据
+   * @return {*}
+   */
+  const getMenuList = () => {
     generatorDynamicMenu().then((res) => {
       state.menuOptions = res
     })
+  }
+
+  const { proxy } = getCurrentInstance()
+
+  proxy.$bus.on('haveLogin', () => {
+    console.log('nihao');
+    
+    getMenuList()
   })
 </script>
 <style lang="scss"></style>
