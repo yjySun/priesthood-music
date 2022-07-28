@@ -13,3 +13,12 @@ export const getAccountInfo = (params: any): Promise<any> => {
     params
   })
 }
+
+export const getUserPayList = (params: any): Promise<any> => {
+  return request({
+    url: '/user/playlist',
+    method: RequestEnum.GET,
+    params
+  })
+}
+

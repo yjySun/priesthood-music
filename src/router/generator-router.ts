@@ -4,7 +4,11 @@ import { moduleRoutes } from './index'
 import { MenuOption, SubMenuOption, MenuGroupOption, MenuItemOption } from '@/layout/components/Menu/type'
 import { storeToRefs } from 'pinia'
 import { useUserStore } from '@/store/modules/user'
+import { getUserPayList } from '@/api/user'
+import { createStorage } from '@/utils/Storage'
+import { USER_ID } from '@/store/mutation-types'
 
+const Storage = createStorage({ storage: localStorage })
 const userStore = useUserStore()
 const { getIsLogin } = storeToRefs(userStore)
 const loginStatus = getIsLogin
@@ -13,10 +17,43 @@ const loginStatus = getIsLogin
  * @description: 动态生成菜单
  * @return {*}
  */
-export const generatorDynamicMenu = () => {
+export const generatorDynamicMenu = async () => {
+  let playlist: Array<any> = []
   let menuOptions: MenuOption[] = []
 
+  if (loginStatus) {
+    const res = await getUserPayList({ uid: Storage.get(USER_ID), timestamp: new Date().getTime })
+    playlist = res.playlist
+  }
+
   moduleRoutes.forEach((moduleRoute) => {
+    //动态歌单
+    const ROUTER_NAME = 'playlist'
+    const LIST_TYPE = 'created'
+    if (moduleRoute.children[0].name === ROUTER_NAME) {
+      const index = playlist.findIndex((item) => item.subscribed === true)
+      const createdList = playlist.slice(0, index)
+      const collectedList = playlist.slice(index)
+      const anyList = moduleRoute.children[0].meta?.type === LIST_TYPE ? createdList : collectedList
+
+      const originalName = moduleRoute.children[0].name
+      const originalIcon = moduleRoute.children[0].meta?.icon
+
+      moduleRoute.children = []
+      anyList.forEach((item) => {
+        const route = {
+          path: '/' + ROUTER_NAME + '/' + item.id,
+          name: originalName,
+          redirect: '',
+          meta: {
+            title: item.name,
+            icon: originalIcon
+          }
+        }
+        moduleRoute.children.push(route)
+      })
+    }
+
     menuOptions.push(generatorAnyMenu(moduleRoute))
   })
 

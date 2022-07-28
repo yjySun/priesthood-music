@@ -31,6 +31,7 @@ const routes: Array<RouteRecordRaw> = [
         path: 'playlist/:id',
         name: 'playlist',
         meta: {
+          type: 'collected',
           icon: renderIcon('icon-gedan')
         },
         component: () => import('@/views/discover/recommend/index.vue')
