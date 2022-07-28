@@ -27,31 +27,33 @@ export const generatorDynamicMenu = async () => {
   }
 
   moduleRoutes.forEach((moduleRoute) => {
-    //动态歌单
-    const ROUTER_NAME = 'playlist'
-    const LIST_TYPE = 'created'
-    if (moduleRoute.children[0].name === ROUTER_NAME) {
-      const index = playlist.findIndex((item) => item.subscribed === true)
-      const createdList = playlist.slice(0, index)
-      const collectedList = playlist.slice(index)
-      const anyList = moduleRoute.children[0].meta?.type === LIST_TYPE ? createdList : collectedList
+    if (loginStatus) {
+      //动态歌单
+      const ROUTER_NAME = 'playlist'
+      const LIST_TYPE = 'created'
+      if (moduleRoute.children[0].name === ROUTER_NAME) {
+        const index = playlist.findIndex((item) => item.subscribed === true)
+        const createdList = playlist.slice(0, index)
+        const collectedList = playlist.slice(index)
+        const anyList = moduleRoute.children[0].meta?.type === LIST_TYPE ? createdList : collectedList
 
-      const originalName = moduleRoute.children[0].name
-      const originalIcon = moduleRoute.children[0].meta?.icon
+        const originalName = moduleRoute.children[0].name
+        const originalIcon = moduleRoute.children[0].meta?.icon
 
-      moduleRoute.children = []
-      anyList.forEach((item) => {
-        const route = {
-          path: '/' + ROUTER_NAME + '/' + item.id,
-          name: originalName,
-          redirect: '',
-          meta: {
-            title: item.name,
-            icon: originalIcon
+        moduleRoute.children = []
+        anyList.forEach((item) => {
+          const route = {
+            path: '/' + ROUTER_NAME + '/' + item.id,
+            name: originalName,
+            redirect: '',
+            meta: {
+              title: item.name,
+              icon: originalIcon
+            }
           }
-        }
-        moduleRoute.children.push(route)
-      })
+          moduleRoute.children.push(route)
+        })
+      }
     }
 
     menuOptions.push(generatorAnyMenu(moduleRoute))
