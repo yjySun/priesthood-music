@@ -29,10 +29,17 @@ export const generatorDynamicMenu = async () => {
       const ROUTER_NAME = 'playlist'
       const CREATED_LIST_TYPE = 'created'
       const COLLECTED_LIST_TYPE = 'collected'
-      if (moduleRoute.children[0].name === ROUTER_NAME) {
+
+      if (!!moduleRoute.children && moduleRoute.children.length > 0 && moduleRoute.children[0].name === ROUTER_NAME) {
         const index = playlist.findIndex((item) => item.subscribed === true)
-        const createdList = playlist.slice(0, index)
-        const collectedList = playlist.slice(index)
+        let createdList = []
+        let collectedList = []
+        if (index === -1) {
+          createdList = playlist
+        } else {
+          createdList = playlist.slice(0, index)
+          collectedList = playlist.slice(index)
+        }
 
         createdList[0].name = '我喜欢的音乐'
 
