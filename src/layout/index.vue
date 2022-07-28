@@ -40,7 +40,26 @@
 
     .el-aside {
       width: 200px;
+      height: 100%;
       box-sizing: border-box;
+      position: relative;
+      border-right: 1px solid #cccccc;
+
+      &::-webkit-scrollbar-thumb {
+        /*滑块部分*/
+        border-radius: 5px;
+        background-color: #cccccc;
+      }
+
+      &::-webkit-scrollbar {
+        width: 0.6vw;
+        height: 1px;
+      }
+
+      & {
+        scrollbar-color: #cccccc #fff; /* 滑块颜色  滚动条背景颜色 */
+        scrollbar-width: thin; /* 滚动条宽度有三种：thin、auto、none */
+      }
     }
 
     .el-main {

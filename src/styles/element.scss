@@ -30,11 +30,16 @@
 
 //menu css
 .aside-menu {
-    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
 
     .el-menu {
         padding-top: 5px;
         height: 100%;
+        border-right: none !important;
 
         .el-menu-item {
             $item-height: 45px;
@@ -64,6 +69,9 @@
                 line-height: $item-height - 4px;
                 width: 100%;
                 text-align: left;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
 
                 &:hover {
                     background-color: #f5f5f6;
