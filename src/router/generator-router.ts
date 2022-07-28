@@ -33,7 +33,6 @@ export const generatorDynamicMenu = async () => {
         const index = playlist.findIndex((item) => item.subscribed === true)
         const createdList = playlist.slice(0, index)
         const collectedList = playlist.slice(index)
-        console.log(moduleRoute.children[0].meta)
 
         const anyList =
           moduleRoute.children[0].meta?.type === CREATED_LIST_TYPE
@@ -60,8 +59,6 @@ export const generatorDynamicMenu = async () => {
         })
       }
     }
-
-    console.log('moduleRoute', moduleRoute)
 
     menuOptions.push(generatorAnyMenu(moduleRoute, loginStatus))
   })
