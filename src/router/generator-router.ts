@@ -27,14 +27,22 @@ export const generatorDynamicMenu = async () => {
     if (loginStatus) {
       //动态歌单
       const ROUTER_NAME = 'playlist'
-      const LIST_TYPE = 'created'
+      const CREATED_LIST_TYPE = 'created'
+      const COLLECTED_LIST_TYPE = 'collected'
       if (moduleRoute.children[0].name === ROUTER_NAME) {
         const index = playlist.findIndex((item) => item.subscribed === true)
         const createdList = playlist.slice(0, index)
         const collectedList = playlist.slice(index)
-        const anyList = moduleRoute.children[0].meta?.type === LIST_TYPE ? createdList : collectedList
+        console.log(moduleRoute.children[0].meta)
 
-        const originalName = moduleRoute.children[0].name
+        const anyList =
+          moduleRoute.children[0].meta?.type === CREATED_LIST_TYPE
+            ? createdList
+            : moduleRoute.children[0].meta?.type === COLLECTED_LIST_TYPE
+            ? collectedList
+            : []
+
+        const originalName = <string>moduleRoute.children[0].meta?.name
         const originalIcon = moduleRoute.children[0].meta?.icon
 
         moduleRoute.children = []
@@ -52,6 +60,8 @@ export const generatorDynamicMenu = async () => {
         })
       }
     }
+
+    console.log('moduleRoute', moduleRoute)
 
     menuOptions.push(generatorAnyMenu(moduleRoute, loginStatus))
   })
