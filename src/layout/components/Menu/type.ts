@@ -22,4 +22,4 @@ export interface MenuItemOption extends CommonOption {
   route?: object
 }
 
-export type MenuOption = MenuItemOption | SubMenuOption | MenuGroupOption
+export type MenuOption = MenuItemOption | SubMenuOption | MenuGroupOption | {}

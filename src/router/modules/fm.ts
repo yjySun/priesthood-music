@@ -10,6 +10,7 @@ import { Layout } from '@/router/constant'
  * @param meta.subMenu 是否有子级菜单，默认false
  * @param meta.groupMenu 是否为分组菜单，默认false
  * @param meta.sort 排序越小越排前
+ * @param meta.loginVisible 登录显示, 默认false
  *
  * */
 const routes: Array<RouteRecordRaw> = [

@@ -59,7 +59,7 @@ export const checkQRcode = (params: any): Promise<any> => {
  * @param {any} params
  * @return {*}
  */
-export const getLoginStatus = (params: any): Promise<any> => {
+export const getLoginStatus = (params?: any): Promise<any> => {
   return request({
     url: '/login/status',
     method: RequestEnum.GET,
