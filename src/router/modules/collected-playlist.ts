@@ -16,9 +16,9 @@ import { renderIcon } from '@/utils/icon'
  * */
 const routes: Array<RouteRecordRaw> = [
   {
-    path: '/collected-playlist',
-    name: 'collected-playlist',
-    redirect: '/collected-playlist/playlist',
+    path: '/collected',
+    name: 'collected',
+    redirect: '/collected/collected-playlist/:id',
     component: Layout,
     meta: {
       title: '收藏的歌单',
@@ -28,13 +28,13 @@ const routes: Array<RouteRecordRaw> = [
     },
     children: [
       {
-        path: 'playlist/:id',
-        name: 'playlist',
+        path: 'collected-playlist/:id',
+        name: 'collected-playlist',
         meta: {
           type: 'collected',
           icon: renderIcon('icon-gedan')
         },
-        component: () => import('@/views/discover/recommend/index.vue')
+        component: () => import('@/components/MusicList/index.vue')
       }
     ]
   }

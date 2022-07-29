@@ -26,11 +26,16 @@ export const generatorDynamicMenu = async () => {
   moduleRoutes.forEach((moduleRoute) => {
     if (loginStatus) {
       //动态歌单
-      const ROUTER_NAME = 'playlist'
+      const CREATED_ROUTER_NAME = 'created-playlist'
+      const COLLECTED_ROUTER_NAME = 'collected-playlist'
       const CREATED_LIST_TYPE = 'created'
       const COLLECTED_LIST_TYPE = 'collected'
 
-      if (!!moduleRoute.children && moduleRoute.children.length > 0 && moduleRoute.children[0].name === ROUTER_NAME) {
+      if (
+        !!moduleRoute.children &&
+        moduleRoute.children.length > 0 &&
+        (moduleRoute.children[0].name === CREATED_ROUTER_NAME || moduleRoute.children[0].name === COLLECTED_ROUTER_NAME)
+      ) {
         const index = playlist.findIndex((item) => item.subscribed === true)
         let createdList = []
         let collectedList = []
@@ -52,17 +57,20 @@ export const generatorDynamicMenu = async () => {
 
         const originalName = <string>moduleRoute.children[0].meta?.name
         const originalIcon = moduleRoute.children[0].meta?.icon
+        const originalComponent = moduleRoute.children[0].component
 
+        let pathName = <string>moduleRoute.children[0].name
         moduleRoute.children = []
         anyList.forEach((item) => {
           const route = {
-            path: '/' + ROUTER_NAME + '/' + item.id,
+            path: '/' + pathName + '/' + item.id,
             name: originalName,
             redirect: '',
             meta: {
               title: item.name,
               icon: originalIcon
-            }
+            },
+            component: originalComponent
           }
           moduleRoute.children.push(route)
         })
