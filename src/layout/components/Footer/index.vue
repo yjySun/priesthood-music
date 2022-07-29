@@ -1,5 +1,12 @@
 <template>
   <div class="paly-footer">
+    <audio
+      src="https://ci-sycdn.kuwo.cn/c03a56882bb2f956e080a7c22c92ba7c/62e3813e/resource/n2/67/80/2690011765.mp3"
+      autoplay="autoplay"
+      @pause="pauseMusic"
+      @play="playMusic"
+      ref="audioPlayer"
+    ></audio>
     <div class="music-avatar">
       <div class="avatar">
         <img src="@/assets/img/album.jpg" alt="" />
@@ -19,7 +26,8 @@
           <i class="iconfont icon-shangyishou"></i>
         </span>
         <span class="operate-button play-pause">
-          <i class="iconfont icon-bofang"></i>
+          <i v-if="!state.playState" class="iconfont icon-bofang" @click="playMusic"></i>
+          <i v-else class="iconfont icon-zanting" @click="pauseMusic"></i>
         </span>
         <span class="operate-button next">
           <i class="iconfont icon-xiayishou"></i>
@@ -45,7 +53,37 @@
     </div>
   </div>
 </template>
-<script lang="ts" setup></script>
+<script lang="ts" setup>
+  import { reactive, ref } from 'vue'
+  import { $ref } from 'vue/macros'
+
+  const audioPlayer = $ref<any>()
+
+  const state = reactive({
+    playState: false,
+    playUrl: '@/assets/等你归来.mp3',
+    duration: 0,
+    currentTime: 0
+  })
+
+  /**
+   * @description: 播放音乐
+   * @return {*}
+   */
+  const playMusic = () => {
+    state.playState = true
+    audioPlayer.play()
+  }
+
+  /**
+   * @description: 暂停音乐
+   * @return {*}
+   */
+  const pauseMusic = () => {
+    state.playState = false
+    audioPlayer.pause()
+  }
+</script>
 <style lang="scss">
   .paly-footer {
     height: 100%;
@@ -99,6 +137,7 @@
         .operate-button {
           display: inline-block;
           margin-left: 40px;
+          cursor: pointer;
 
           &:first-child {
             margin-left: 0 !important;
