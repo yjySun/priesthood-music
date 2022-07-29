@@ -6,6 +6,13 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "15816641",
+      "name": "004喇叭-3",
+      "font_class": "laba",
+      "unicode": "e811",
+      "unicode_decimal": 59409
+    },
+    {
       "icon_id": "10932499",
       "name": "netease-cloud-music-line",
       "font_class": "priesthood-music-logo",
@@ -312,13 +319,6 @@
       "font_class": "bofangjilu",
       "unicode": "e8ad",
       "unicode_decimal": 59565
-    },
-    {
-      "icon_id": "15816640",
-      "name": "004喇叭-2",
-      "font_class": "laba",
-      "unicode": "e80f",
-      "unicode_decimal": 59407
     },
     {
       "icon_id": "15816642",

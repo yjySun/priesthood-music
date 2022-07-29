@@ -42,10 +42,17 @@
 
     <div class="sound">
       <div class="sound-icon horn">
-        <i class="iconfont icon-laba"></i>
+        <i v-if="!state.mute" class="iconfont icon-laba" @click="changeMute"></i>
+        <i v-else class="iconfont icon-laba-no" @click="changeMute"></i>
       </div>
       <div class="sound-slider">
-        <el-slider class="sound-slider" v-model="value1" size="small" :show-tooltip="false" />
+        <el-slider
+          class="sound-slider"
+          v-model="state.volume"
+          size="small"
+          :show-tooltip="false"
+          @input="changeVolume"
+        />
       </div>
       <div class="sound-icon music-list">
         <i class="iconfont icon-music-list"></i>
@@ -54,34 +61,79 @@
   </div>
 </template>
 <script lang="ts" setup>
-  import { reactive, ref } from 'vue'
+  import { el } from 'element-plus/es/locale'
+  import { onMounted, reactive, ref } from 'vue'
   import { $ref } from 'vue/macros'
 
   const audioPlayer = $ref<any>()
 
   const state = reactive({
-    playState: false,
-    playUrl: '@/assets/等你归来.mp3',
-    duration: 0,
-    currentTime: 0
+    playState: false, //播放状态
+    mute: false, //静音
+    playUrl: '',
+    duration: 0, //总播放时长
+    currentTime: 0, //当前播放时间
+    volume: 70, //音量，默认70%
+    volumeSave: 0 //静音前保存的音量
+  })
+
+  onMounted(() => {
+    changeVolume()
   })
 
   /**
    * @description: 播放音乐
-   * @return {*}
+   * @param {*}
+   * @return {void}
    */
-  const playMusic = () => {
+  const playMusic = (): void => {
     state.playState = true
     audioPlayer.play()
   }
 
   /**
    * @description: 暂停音乐
-   * @return {*}
+   * @param {*}
+   * @return {void}
    */
-  const pauseMusic = () => {
+  const pauseMusic = (): void => {
     state.playState = false
     audioPlayer.pause()
+  }
+
+  /**
+   * @description: 改变声音大小
+   * @param {*}
+   * @return {void}
+   */
+  const changeVolume = (newVolume): void => {
+    audioPlayer.volume = state.volume / 100
+
+    if (state.volume <= 0) {
+      state.volumeSave = state.volume
+      state.mute = true
+    } else {
+      state.mute = false
+    }
+  }
+
+  /**
+   * @description: 是否静音
+   * @param {*}
+   * @return {void}
+   */
+  const changeMute = (): void => {
+    let volume: number = 0
+    state.mute = !state.mute
+    if (state.mute) {
+      state.volumeSave = state.volume
+      state.volume = 0
+    } else {
+      volume = state.volumeSave
+      state.volume = state.volumeSave
+    }
+
+    audioPlayer.volume = volume / 100
   }
 </script>
 <style lang="scss">
@@ -188,6 +240,7 @@
         i {
           font-size: 20px;
           font-weight: bold;
+          cursor: pointer;
         }
 
         &.horn {

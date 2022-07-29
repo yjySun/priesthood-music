@@ -1,8 +1,8 @@
 @font-face {
   font-family: "iconfont"; /* Project id 3525807 */
-  src: url('iconfont.woff2?t=1658671547514') format('woff2'),
-       url('iconfont.woff?t=1658671547514') format('woff'),
-       url('iconfont.ttf?t=1658671547514') format('truetype');
+  src: url('iconfont.woff2?t=1659078561155') format('woff2'),
+       url('iconfont.woff?t=1659078561155') format('woff'),
+       url('iconfont.ttf?t=1659078561155') format('truetype');
 }
 
 .iconfont {
@@ -11,6 +11,10 @@
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-laba:before {
+  content: "\e811";
 }
 
 .icon-priesthood-music-logo:before {
@@ -187,10 +191,6 @@
 
 .icon-bofangjilu:before {
   content: "\e8ad";
-}
-
-.icon-laba:before {
-  content: "\e80f";
 }
 
 .icon-laba-no:before {
