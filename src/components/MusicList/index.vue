@@ -30,7 +30,29 @@
             <span>分享</span>
           </div>
         </div>
-        <div class="abstract">简介</div>
+        <div class="list-abstract">
+          <div class="tags">
+            <div>标签：</div>
+            <div class="tag-item">流行</div>
+            <div class="tag-item">摇滚</div>
+          </div>
+          <div class="quantity">
+            <div>
+              <div>歌曲：</div>
+              <div class="content">300</div>
+            </div>
+            <div class="plays">
+              <div>播放：</div>
+              <div class="content">1.2亿</div>
+            </div>
+          </div>
+          <div class="abstract">
+            <div>简介：</div>
+            <div class="content">
+              私人雷达，每日更新，收藏你的最爱私人雷达，每日更新，收藏你的最爱私人雷达，每日更新，收藏你的最爱私人雷达，每日更新，收藏你的最爱私人雷达，每日更新，收藏你的最爱私人雷达，每日更新，收藏你的最爱私人雷达，每日更新，收藏你的最爱私人雷达，每日更新，收藏你的最爱私人雷达，每日更新，收藏你的最爱私人雷达，每日更新，收藏你的最爱私人雷达，每日更新，收藏你的最爱私人雷达，每日更新，收藏你的最爱私人雷达，每日更新，收藏你的最爱私人雷达，每日更新，收藏你的最爱私人雷达，每日更新，收藏你的最爱私人雷达，每日更新，收藏你的最爱私人雷达，每日更新，收藏你的最爱私人雷达，每日更新，收藏你的最爱
+            </div>
+          </div>
+        </div>
       </div>
     </div>
     <div class="playlist">歌曲列表</div>
@@ -49,15 +71,18 @@
 
       .image-info {
         display: inline-block;
-        width: 160px;
-        height: 160px;
+        width: 200px;
+        height: 200px;
 
         img {
+          width: 200px;
+          height: 200px;
           border-radius: 10px;
         }
       }
 
       .concise-info {
+        margin-left: 20px;
         flex: 1;
         width: 0;
         gap: 10px;
@@ -107,7 +132,7 @@
           gap: 10px;
 
           .button-item {
-            padding: 8px 20px;
+            padding: 8px 15px;
             border: 1px solid #ddd;
             border-radius: 20px;
             cursor: pointer;
@@ -119,6 +144,40 @@
 
             i {
               margin-right: 3px;
+            }
+          }
+        }
+
+        .list-abstract {
+          display: flex;
+          flex-direction: column;
+          text-align-last: left;
+          gap: 10px;
+
+          div {
+            display: inline-block;
+            font-size: 13px;
+          }
+
+          .content {
+            color: #3c4c5c;
+          }
+
+          .tags .tag-item {
+            color: #6191c2;
+            margin-right: 5px;
+          }
+
+          .quantity .plays {
+            margin-left: 15px;
+          }
+
+          .abstract {
+            display: flex;
+
+            .content {
+              flex: 1;
+              @include overflow-omit;
             }
           }
         }
