@@ -56,22 +56,6 @@
     flex-direction: column;
     align-items: center;
 
-    &::-webkit-scrollbar-thumb {
-      /*滑块部分*/
-      border-radius: 5px;
-      background-color: #cccccc;
-    }
-
-    &::-webkit-scrollbar {
-      width: 0.6vw;
-      height: 1px;
-    }
-
-    & {
-      scrollbar-color: #cccccc #fff; /* 滑块颜色  滚动条背景颜色 */
-      scrollbar-width: thin; /* 滚动条宽度有三种：thin、auto、none */
-    }
-
     .recommend-music-list {
       display: flex;
       flex-direction: column;
