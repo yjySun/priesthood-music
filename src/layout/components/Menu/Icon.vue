@@ -2,7 +2,7 @@
   <Icon />
 </template>
 <script lang="ts" setup>
-  import { defineProps, VNode } from 'vue'
+  import { VNode } from 'vue'
 
   const props = defineProps<{
     iconNode: VNode

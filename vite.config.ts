@@ -40,6 +40,13 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
       port: VITE_PORT,
       open: true,
       proxy: createProxy(VITE_PROXY)
+    },
+    css: {
+      preprocessorOptions: {
+        scss: {
+          additionalData: '@import "./src/assets/css/global-variable.scss";'
+        }
+      }
     }
   }
 }

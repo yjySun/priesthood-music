@@ -31,7 +31,6 @@
   </template>
 </template>
 <script lang="ts" setup>
-  import { defineProps } from 'vue'
   import { MenuOption } from './type'
   import MenuTreeChild from './MenuTree.vue'
   import Icon from './Icon.vue'

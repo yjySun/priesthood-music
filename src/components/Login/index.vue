@@ -65,7 +65,7 @@
   </div>
 </template>
 <script lang="ts" setup>
-  import { reactive, ref, defineExpose, onMounted, defineEmits } from 'vue'
+  import { reactive, ref, onMounted } from 'vue'
   import { phoneLogin, getQRcodeKey, generateQRcode, checkQRcode } from '@/api/login'
   import { Lock } from '@element-plus/icons-vue'
   import { storeToRefs } from 'pinia'

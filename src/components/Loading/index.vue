@@ -4,7 +4,7 @@
   </div>
 </template>
 <script lang="ts" setup>
-  import { defineProps, onMounted } from 'vue'
+  import { onMounted } from 'vue'
   import { $ref } from 'vue/macros'
 
   const props = defineProps<{
@@ -13,11 +13,7 @@
 </script>
 <style lang="scss">
   .custom-loading {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
+    @include absolute-fill;
 
     .el-loading-spinner {
       .circular {
