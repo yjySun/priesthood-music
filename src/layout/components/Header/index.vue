@@ -154,6 +154,8 @@
 
         i {
           font-size: 35px;
+          width: 40px;
+          height: 40px;
           background: #e6e6e6;
           color: white;
           border-radius: 50%;
