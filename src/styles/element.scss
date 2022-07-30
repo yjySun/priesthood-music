@@ -61,13 +61,11 @@
             }
 
             .item-label {
+                @include overflow-omit;
                 display: inline-block;
                 line-height: $item-height - 4px;
                 width: 100%;
                 text-align: left;
-                overflow: hidden;
-                text-overflow: ellipsis;
-                white-space: nowrap;
 
                 &:hover {
                     background-color: #f5f5f6;

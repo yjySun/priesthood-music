@@ -168,9 +168,7 @@
 
         @mixin info-style {
           width: 200px;
-          overflow: hidden;
-          white-space: nowrap;
-          text-overflow: ellipsis;
+          @include overflow-omit;
         }
 
         .name {
