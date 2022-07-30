@@ -1,7 +1,7 @@
 <template>
   <div class="paly-footer">
     <audio
-      src="https://ci-sycdn.kuwo.cn/c03a56882bb2f956e080a7c22c92ba7c/62e3813e/resource/n2/67/80/2690011765.mp3"
+      :src="localMusic"
       autoplay="autoplay"
       @pause="pauseMusic"
       @play="playMusic"
@@ -64,6 +64,7 @@
   import { el } from 'element-plus/es/locale'
   import { onMounted, reactive, ref } from 'vue'
   import { $ref } from 'vue/macros'
+  import localMusic from '@/assets/等你归来.mp3'
 
   const audioPlayer = $ref<any>()
 
