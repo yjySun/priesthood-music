@@ -1,6 +1,13 @@
 <template>
   <div class="music-list-table">
-    <el-table :data="state.musicList" size="mini" stripe highlight-current-row style="width: 100%">
+    <el-table
+      :data="state.musicList"
+      size="mini"
+      stripe
+      highlight-current-row
+      style="width: 100%"
+      @row-dblclick="handlePlayMusic"
+    >
       <el-table-column type="index" :index="indexMethod" />
       <el-table-column label="操作" min-width="50">
         <div class="operate-button">
@@ -11,46 +18,77 @@
       <el-table-column prop="name" label="标题" min-width="400" />
       <el-table-column prop="ar[0].name" label="歌手" min-width="150" />
       <el-table-column prop="al.name" label="专辑" min-width="200" />
-      <el-table-column prop="dt" label="时间" min-width="80" />
+      <el-table-column prop="dt" label="时间" min-width="80" :formatter="formatterMusicTime" />
     </el-table>
   </div>
 </template>
 <script lang="ts" setup>
-  import { reactive } from 'vue'
+  import { reactive, watch, getCurrentInstance } from 'vue'
   import { prefixInteger } from '@/utils/number'
+  import { getSongs } from '@/api/song'
+  import { handleMusicTime } from '@/utils'
+
+  const { proxy } = getCurrentInstance()
 
   const state = reactive({
-    musicList: [
-      {
-        name: '1',
-        ar: [
-          {
-            name: '周杰伦#f9f9f9 !#f9f9f9 !#f9f9f9 !#f9f9f9 !#f9f9f9 !#f9f9f9 !#f9f9f9 !#f9f9f9 !#f9f9f9 !#f9f9f9 !#f9f9f9 !#f9f9f9 !#f9f9f9 !#f9f9f9 !#f9f9f9 !#f9f9f9 !'
-          }
-        ],
-        al: {
-          name: '听妈妈的话'
-        },
-        dt: '03:50'
-      },
-      {
-        name: '1',
-        ar: [
-          {
-            name: '周杰伦'
-          }
-        ],
-        al: {
-          name: '听妈妈的话'
-        },
-        dt: '03:50'
-      }
-    ]
+    trackIds: '',
+    musicList: []
   })
 
+  /**
+   * @description: 接受歌曲ids
+   * @return {*}
+   */
+  const getTrackIds = async (trackIds) => {
+    state.trackIds = trackIds
+    let trackIdsStr = ''
+
+    trackIds.forEach((item, index) => {
+      trackIdsStr = trackIdsStr.concat(item.id)
+
+      if (index !== trackIds.length - 1) {
+        trackIdsStr = trackIdsStr.concat(',')
+      }
+    })
+    const res = await getSongs({ ids: trackIdsStr, timestamp: new Date().getTime() })
+    state.musicList = res.songs
+  }
+
+  /**
+   * @description: 双击播放音乐
+   * @param {*} row
+   * @param {*} column
+   * @param {*} event
+   * @return {*}
+   */
+  const handlePlayMusic = (row, column, event) => {
+    proxy.$bus.emit('handlePlayMusic', row)
+  }
+
+  /**
+   * @description: 格式化音乐时间
+   * @param {*} row
+   * @param {*} column
+   * @param {*} cellValue
+   * @param {*} index
+   * @return {*}
+   */
+  const formatterMusicTime = (row, column, cellValue, index) => {
+    return handleMusicTime(cellValue)
+  }
+
+  /**
+   * @description: 序号格式化
+   * @param {*} index
+   * @return {*}
+   */
   const indexMethod = (index) => {
     return prefixInteger(index + 1, 2)
   }
+
+  defineExpose({
+    getTrackIds
+  })
 </script>
 <style lang="scss">
   .music-list-table {

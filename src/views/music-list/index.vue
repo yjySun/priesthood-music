@@ -1,20 +1,20 @@
 <template>
   <div class="common-music-list">
-    <div class="music-list-info">
+    <div class="music-list-info" v-if="state.playlist">
       <div class="image-info">
-        <img src="@/assets/img/album.jpg" alt="" />
+        <img :src="state.playlist.coverImgUrl" alt="" />
       </div>
       <div class="concise-info">
         <div class="title">
           <Tag value="歌单" />
           <div class="headline">
-            今天从《不可爱》听起|私人雷达天从《不可爱》听起|私人雷达天从《不可爱》听起|私人雷达天从《不可爱》听起|私人雷达天从《不可爱》听起|私人雷达天从《不可爱》听起|私人雷达天从《不可爱》听起|私人雷达天从《不可爱》听起|私人雷达天从《不可爱》听起|私人雷达天从《不可爱》听起|私人雷达天从《不可爱》听起|私人雷达天从《不可爱》听起|私人雷达
+            {{ state.playlist.name }}
           </div>
         </div>
         <div class="author-info">
-          <img src="@/assets/img/album.jpg" alt="" />
-          <span class="author-name">周杰伦</span>
-          <div class="created-time">2016-01-19创建</div>
+          <img :src="state.playlist.creator.avatarUrl" alt="" />
+          <span class="author-name">{{ state.playlist.creator.nickname }}</span>
+          <div class="created-time">{{ formatToDate(state.playlist.createTime) }}创建</div>
         </div>
         <div class="operate-button">
           <div class="button-item play-all">
@@ -31,25 +31,26 @@
           </div>
         </div>
         <div class="list-abstract">
-          <div class="tags">
+          <div class="tags" v-if="state.playlist.tags && state.playlist.tags.length > 0">
             <div>标签：</div>
-            <div class="tag-item">流行</div>
-            <div class="tag-item">摇滚</div>
+            <div class="tag-item" v-for="(item, index) in state.playlist.tags" :key="index">{{ item }}</div>
           </div>
           <div class="quantity">
             <div>
               <div>歌曲：</div>
-              <div class="content">300</div>
+              <div class="content">
+                {{ state.playlist.trackCount }}
+              </div>
             </div>
             <div class="plays">
               <div>播放：</div>
-              <div class="content">1.2亿</div>
+              <div class="content">{{ handleNum(state.playlist.playCount) }}</div>
             </div>
           </div>
-          <div class="abstract">
+          <div class="abstract" v-if="state.playlist.description">
             <div>简介：</div>
             <div class="content">
-              私人雷达，每日更新，收藏你的最爱私人雷达，每日更新，收藏你的最爱私人雷达，每日更新，收藏你的最爱私人雷达，每日更新，收藏你的最爱私人雷达，每日更新，收藏你的最爱私人雷达，每日更新，收藏你的最爱私人雷达，每日更新，收藏你的最爱私人雷达，每日更新，收藏你的最爱私人雷达，每日更新，收藏你的最爱私人雷达，每日更新，收藏你的最爱私人雷达，每日更新，收藏你的最爱私人雷达，每日更新，收藏你的最爱私人雷达，每日更新，收藏你的最爱私人雷达，每日更新，收藏你的最爱私人雷达，每日更新，收藏你的最爱私人雷达，每日更新，收藏你的最爱私人雷达，每日更新，收藏你的最爱私人雷达，每日更新，收藏你的最爱
+              {{ state.playlist.description }}
             </div>
           </div>
         </div>
@@ -61,7 +62,7 @@
           <template #label>
             <div class="head-title">歌曲列表</div>
           </template>
-          <MusicListTable />
+          <MusicListTable ref="musicListTable" :trackIds="state.playlist.trackIds" />
         </el-tab-pane>
         <el-tab-pane name="comment">
           <template #label>
@@ -80,11 +81,33 @@
   </div>
 </template>
 <script lang="ts" setup>
-  import { reactive } from 'vue'
+  import { onMounted, reactive } from 'vue'
+  import { useRoute } from 'vue-router'
+  import { getPlaylistInfo } from '@/api/playlist'
+  import { formatToDate } from '@/utils/dateUtil'
+  import { handleNum } from '@/utils/number'
+  import { $ref } from 'vue/macros'
+
+  const route = useRoute()
+  const playlistId = route.params.id
+  const musicListTable = $ref<any>()
 
   const state = reactive({
-    activeName: 'musicList'
+    activeName: 'musicList',
+    playlist: ''
   })
+
+  onMounted(() => {
+    getPlaylist()
+  })
+
+  const getPlaylist = async () => {
+    let res = await getPlaylistInfo({ id: playlistId, timestamp: new Date().getTime() })
+    state.playlist = res.playlist
+
+    const { getTrackIds } = musicListTable
+    getTrackIds(state.playlist.trackIds)
+  }
 </script>
 <style lang="scss">
   .common-music-list {

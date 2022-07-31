@@ -1,19 +1,14 @@
 <template>
   <div class="paly-footer">
-    <audio
-      :src="localMusic"
-      autoplay="autoplay"
-      @pause="pauseMusic"
-      @play="playMusic"
-      ref="audioPlayer"
-    ></audio>
+    <audio :src="state.playUrl" autoplay="autoplay" @pause="pauseMusic" @play="playMusic" ref="audioPlayer"></audio>
     <div class="music-avatar">
       <div class="avatar">
-        <img src="@/assets/img/album.jpg" alt="" />
+        <img v-if="state.profile" :src="state.profile.al.picUrl" alt="" />
+        <img v-else src="@/assets/img/album.jpg" alt="" />
       </div>
       <div class="info">
-        <div class="name">离歌</div>
-        <div class="author">信乐团</div>
+        <div class="name" v-if="state.profile">{{ state.profile.name }}</div>
+        <div class="author" v-if="state.profile">{{ state.profile.ar[0].name }}</div>
       </div>
     </div>
 
@@ -61,17 +56,17 @@
   </div>
 </template>
 <script lang="ts" setup>
-  import { el } from 'element-plus/es/locale'
-  import { onMounted, reactive, ref } from 'vue'
+  import { onMounted, reactive, ref, getCurrentInstance } from 'vue'
   import { $ref } from 'vue/macros'
-  import localMusic from '@/assets/等你归来.mp3'
 
+  const { proxy } = getCurrentInstance()
   const audioPlayer = $ref<any>()
 
   const state = reactive({
     playState: false, //播放状态
     mute: false, //静音
     playUrl: '',
+    profile: '', //歌曲信息
     duration: 0, //总播放时长
     currentTime: 0, //当前播放时间
     volume: 70, //音量，默认70%
@@ -80,6 +75,16 @@
 
   onMounted(() => {
     changeVolume()
+  })
+
+  /**
+   * @description: 监听事件播放音乐
+   * @return {*}
+   */
+  proxy.$bus.on('handlePlayMusic', async (profile) => {
+    state.profile = profile
+    state.playUrl = 'https://music.163.com/song/media/outer/url?id='.concat(profile.id).concat('.mp3')
+    playMusic()
   })
 
   /**
