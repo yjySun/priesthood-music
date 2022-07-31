@@ -34,7 +34,7 @@ const routes: Array<RouteRecordRaw> = [
           type: 'collected',
           icon: renderIcon('icon-gedan')
         },
-        component: () => import('@/components/MusicList/index.vue')
+        component: () => import('@/views/music-list/index.vue')
       }
     ]
   }

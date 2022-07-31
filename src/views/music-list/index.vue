@@ -55,19 +55,44 @@
         </div>
       </div>
     </div>
-    <div class="playlist">歌曲列表</div>
+    <div class="playlist">
+      <el-tabs class="list-tabs" v-model="state.activeName" @tab-click="handleClick">
+        <el-tab-pane name="musicList">
+          <template #label>
+            <div class="head-title">歌曲列表</div>
+          </template>
+          <MusicListTable />
+        </el-tab-pane>
+        <el-tab-pane name="comment">
+          <template #label>
+            <div class="head-title">评论</div>
+          </template>
+          评论
+        </el-tab-pane>
+        <el-tab-pane name="collector">
+          <template #label>
+            <div class="head-title">收藏者</div>
+          </template>
+          收藏者
+        </el-tab-pane>
+      </el-tabs>
+    </div>
   </div>
 </template>
-<script lang="ts" setup></script>
+<script lang="ts" setup>
+  import { reactive } from 'vue'
+
+  const state = reactive({
+    activeName: 'musicList'
+  })
+</script>
 <style lang="scss">
   .common-music-list {
-    background-color: pink;
+    padding: 30px 40px 0 40px;
     @include absolute-fill;
 
     .music-list-info {
       display: flex;
-      margin-left: 40px;
-      margin-top: 30px;
 
       .image-info {
         display: inline-block;
@@ -182,6 +207,10 @@
           }
         }
       }
+    }
+
+    .playlist {
+      margin-top: 20px;
     }
   }
 </style>
