@@ -2,10 +2,13 @@ import { createApp } from 'vue'
 import App from './App.vue'
 import router, { setupRouter } from '@/router'
 import { setupStore } from '@/store'
-import { setupElementPlusIcon, setupMitt } from '@/plugins'
+import { setupElementPlusIcon, setupElementPlusLocale, setupMitt } from '@/plugins'
 
 async function bootstrap() {
   const app = createApp(App)
+
+  //elementPlus国际化
+  setupElementPlusLocale(app)
 
   //挂载通信总线
   setupMitt(app)

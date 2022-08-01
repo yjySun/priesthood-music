@@ -1,88 +1,90 @@
 <template>
   <div class="common-music-list">
-    <div class="music-list-info" v-if="state.playlist">
-      <div class="image-info">
-        <img :src="state.playlist.coverImgUrl" alt="" />
-      </div>
-      <div class="concise-info">
-        <div class="title">
-          <Tag value="歌单" />
-          <div class="headline">
-            {{ state.playlist.name }}
+    <div class="loading-parent">
+      <Loading :loading="state.loading">
+        <div class="music-list-info" v-if="state.playlist">
+          <div class="image-info">
+            <img :src="state.playlist.coverImgUrl" alt="" />
           </div>
-        </div>
-        <div class="author-info">
-          <img :src="state.playlist.creator.avatarUrl" alt="" />
-          <span class="author-name">{{ state.playlist.creator.nickname }}</span>
-          <div class="created-time">{{ formatToDate(state.playlist.createTime) }}创建</div>
-        </div>
-        <div class="operate-button">
-          <div class="button-item play-all">
-            <i class="iconfont icon-bofang play-all"></i>
-            <span>播放全部</span>
-          </div>
-          <div class="button-item">
-            <i class="iconfont icon-xihuan"></i>
-            <span>收藏</span>
-          </div>
-          <div class="button-item">
-            <i class="iconfont icon-fenxiang"></i>
-            <span>分享</span>
-          </div>
-        </div>
-        <div class="list-abstract">
-          <div class="tags" v-if="state.playlist.tags && state.playlist.tags.length > 0">
-            <div>标签：</div>
-            <div class="tag-item" v-for="(item, index) in state.playlist.tags" :key="index">{{ item }}</div>
-          </div>
-          <div class="quantity">
-            <div>
-              <div>歌曲：</div>
-              <div class="content">
-                {{ state.playlist.trackCount }}
+          <div class="concise-info">
+            <div class="title">
+              <Tag value="歌单" />
+              <div class="headline">
+                {{ state.playlist.name }}
               </div>
             </div>
-            <div class="plays">
-              <div>播放：</div>
-              <div class="content">{{ handleNum(state.playlist.playCount) }}</div>
+            <div class="author-info">
+              <img :src="state.playlist.creator.avatarUrl" alt="" />
+              <span class="author-name">{{ state.playlist.creator.nickname }}</span>
+              <div class="created-time">{{ formatToDate(state.playlist.createTime) }}创建</div>
             </div>
-          </div>
-          <div class="abstract" v-if="state.playlist.description">
-            <div>简介：</div>
-            <div class="content">
-              {{ state.playlist.description }}
+            <div class="operate-button">
+              <div class="button-item play-all">
+                <i class="iconfont icon-bofang play-all"></i>
+                <span>播放全部</span>
+              </div>
+              <div class="button-item">
+                <i class="iconfont icon-xihuan"></i>
+                <span>收藏</span>
+              </div>
+              <div class="button-item">
+                <i class="iconfont icon-fenxiang"></i>
+                <span>分享</span>
+              </div>
+            </div>
+            <div class="list-abstract">
+              <div class="tags" v-if="state.playlist.tags && state.playlist.tags.length > 0">
+                <div>标签：</div>
+                <div class="tag-item" v-for="(item, index) in state.playlist.tags" :key="index">{{ item }}</div>
+              </div>
+              <div class="quantity">
+                <div>
+                  <div>歌曲：</div>
+                  <div class="content">
+                    {{ state.playlist.trackCount }}
+                  </div>
+                </div>
+                <div class="plays">
+                  <div>播放：</div>
+                  <div class="content">{{ handleNum(state.playlist.playCount) }}</div>
+                </div>
+              </div>
+              <div class="abstract" v-if="state.playlist.description">
+                <div>简介：</div>
+                <div class="content">
+                  {{ state.playlist.description }}
+                </div>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-    </div>
-    <div class="playlist">
-      <el-tabs class="list-tabs" v-model="state.activeName" @tab-click="handleClick">
-        <el-tab-pane name="musicList">
-          <template #label>
-            <div class="head-title">歌曲列表</div>
-          </template>
-          <MusicListTable ref="musicListTable" :trackIds="state.playlist.trackIds" />
-        </el-tab-pane>
-        <el-tab-pane name="comment">
-          <template #label>
-            <div class="head-title">评论</div>
-          </template>
-          评论
-        </el-tab-pane>
-        <el-tab-pane name="collector">
-          <template #label>
-            <div class="head-title">收藏者</div>
-          </template>
-          收藏者
-        </el-tab-pane>
-      </el-tabs>
+        <div class="playlist">
+          <el-tabs class="list-tabs" v-model="state.activeName" @tab-click="handleClick">
+            <el-tab-pane name="musicList">
+              <template #label>
+                <div class="head-title">歌曲列表</div>
+              </template>
+              <MusicListTable ref="musicListTable" :trackIds="state.playlist.trackIds" />
+            </el-tab-pane>
+            <el-tab-pane name="comment">
+              <template #label>
+                <div class="head-title">评论</div>
+              </template>
+              评论
+            </el-tab-pane>
+            <el-tab-pane name="collector">
+              <template #label>
+                <div class="head-title">收藏者</div>
+              </template>
+              收藏者
+            </el-tab-pane>
+          </el-tabs>
+        </div>
+      </Loading>
     </div>
 
     <el-backtop target=".common-music-list" :bottom="100">
-      <div>
-        <i class="iconfont icon-top"></i>
-      </div>
+      <i class="iconfont icon-top"></i>
     </el-backtop>
   </div>
 </template>
@@ -99,6 +101,7 @@
   const musicListTable = $ref<any>()
 
   const state = reactive({
+    loading: true,
     activeName: 'musicList',
     playlist: ''
   })
@@ -113,6 +116,7 @@
 
     const { getTrackIds } = musicListTable
     getTrackIds(state.playlist.trackIds)
+    state.loading = false
   }
 </script>
 <style lang="scss">
@@ -120,6 +124,12 @@
     padding: 30px 40px 0 40px;
     @include absolute-fill;
     overflow-x: hidden;
+
+    .loading-parent {
+      position: relative;
+      width: 100%;
+      height: 250px;
+    }
 
     .music-list-info {
       display: flex;

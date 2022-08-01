@@ -220,6 +220,10 @@
                 }
             }
 
+            .el-tabs__nav-wrap::after {
+                height: 0 !important;
+            }
+
             .el-tabs__item {
                 padding: 0 15px !important;
                 color: #303133;
@@ -343,7 +347,6 @@
         background-color: #f0f1f2
     }
 }
-
 
 //el-backtop css
 .el-backtop {

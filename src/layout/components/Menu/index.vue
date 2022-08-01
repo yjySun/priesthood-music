@@ -1,8 +1,10 @@
 <template>
   <div class="aside-menu">
-    <el-menu :default-active="state.defaultActive" class="el-menu-vertical" @select="selectMenuItem">
-      <MenuTree :menuOptions="state.menuOptions" />
-    </el-menu>
+    <Loading :loading="state.loading">
+      <el-menu :default-active="state.defaultActive" class="el-menu-vertical" @select="selectMenuItem">
+        <MenuTree :menuOptions="state.menuOptions" />
+      </el-menu>
+    </Loading>
   </div>
 </template>
 <script lang="ts" setup>
@@ -17,6 +19,7 @@
   const { proxy } = getCurrentInstance()
 
   const state = reactive({
+    loading: true,
     defaultActive: PageEnum.BASE_HOME,
     menuOptions: []
   })
@@ -30,8 +33,10 @@
    * @return {*}
    */
   const getMenuList = () => {
+    state.loading = true
     generatorDynamicMenu().then((res) => {
       state.menuOptions = res
+      state.loading = false
     })
   }
 
