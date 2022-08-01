@@ -6,7 +6,7 @@
   </div>
 </template>
 <script lang="ts" setup>
-  import { ref, reactive, onMounted, getCurrentInstance } from 'vue'
+  import { ref, reactive, onMounted, getCurrentInstance, watchEffect } from 'vue'
   import { useRouter } from 'vue-router'
   import { PageEnum } from '@/enums/pageEnum'
   import { MenuOption } from './type'
@@ -14,6 +14,7 @@
   import MenuTree from './MenuTree.vue'
 
   const router = useRouter()
+  const { proxy } = getCurrentInstance()
 
   const state = reactive({
     defaultActive: PageEnum.BASE_HOME,
@@ -53,7 +54,19 @@
     }
   }
 
-  const { proxy } = getCurrentInstance()
+  watchEffect(() => {
+    router.getRoutes().map((item, index) => {
+      const currentPath = router.currentRoute.value.path
+      const indexNum = currentPath.indexOf('/', 2)
+      const activePath = currentPath.slice(0, indexNum)
+
+      if (activePath === '/discover') {
+        state.defaultActive = activePath
+      } else {
+        state.defaultActive = router.currentRoute.value.path
+      }
+    })
+  })
 
   proxy.$bus.on('haveLogin', async () => {
     await getMenuList()

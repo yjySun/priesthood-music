@@ -54,6 +54,12 @@ export const generatorDynamicMenu = async () => {
             : moduleRoute.children[0].meta?.type === COLLECTED_LIST_TYPE
             ? collectedList
             : []
+        const prePath =
+          moduleRoute.children[0].meta?.type === CREATED_LIST_TYPE
+            ? '/' + CREATED_LIST_TYPE
+            : moduleRoute.children[0].meta?.type === COLLECTED_LIST_TYPE
+            ? '/' + COLLECTED_LIST_TYPE
+            : ''
 
         const originalName = <string>moduleRoute.children[0].meta?.name
         const originalIcon = moduleRoute.children[0].meta?.icon
@@ -63,7 +69,7 @@ export const generatorDynamicMenu = async () => {
         moduleRoute.children = []
         anyList.forEach((item) => {
           const route = {
-            path: '/' + pathName + '/' + item.id,
+            path: prePath + '/' + pathName + '/' + item.id,
             name: originalName,
             redirect: '',
             meta: {

@@ -1,7 +1,7 @@
 <template>
   <div class="recommend-list">
     <div class="list-card">
-      <div class="list-card-item" v-for="(item, index) in musicList" :key="index">
+      <div class="list-card-item" v-for="(item, index) in musicList" :key="index" @click="openMusicList(item.id)">
         <div class="image">
           <img :src="item.picUrl" alt="" />
         </div>
@@ -11,9 +11,17 @@
   </div>
 </template>
 <script lang="ts" setup>
+  import { useRouter } from 'vue-router'
+
+  const router = useRouter()
+
   const props = defineProps<{
     musicList: Array
   }>()
+
+  const openMusicList = (id) => {
+    router.push({ path: '/created/created-playlist/' + id })
+  }
 </script>
 <style lang="scss">
   .recommend-list {

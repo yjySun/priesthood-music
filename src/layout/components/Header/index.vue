@@ -5,8 +5,8 @@
     </div>
     <div class="move-back-search">
       <div class="move-back">
-        <i class="iconfont icon-arrow-left-bold"></i>
-        <i class="iconfont icon-arrow-right-bold"></i>
+        <i class="iconfont icon-arrow-left-bold" @click="router.go(-1)"></i>
+        <i class="iconfont icon-arrow-right-bold" @click="router.go(1)"></i>
       </div>
       <div class="search">
         <el-input
@@ -34,6 +34,7 @@
 </template>
 <script lang="ts" setup>
   import { ref, reactive, onMounted, getCurrentInstance } from 'vue'
+  import { useRouter } from 'vue-router'
   import { Search } from '@element-plus/icons-vue'
   import { request } from '@/utils/http/axios/axios'
   import { getLoginStatus } from '@/api/login'
@@ -42,6 +43,7 @@
   import { useUserStore } from '@/store/modules/user'
   import { COOKIE } from '@/store/mutation-types'
 
+  const router = useRouter()
   const userStore = useUserStore()
   const Storage = createStorage({ storage: localStorage })
   const login = ref<any>()
