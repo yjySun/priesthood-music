@@ -1,6 +1,13 @@
 <template>
   <div class="paly-footer">
-    <audio :src="state.playUrl" autoplay="autoplay" @pause="pauseMusic" @play="playMusic" ref="audioPlayer"></audio>
+    <audio
+      :src="state.playUrl"
+      autoplay="autoplay"
+      @pause="pauseMusic"
+      @play="playMusic"
+      ref="audioPlayer"
+      @timeupdate="getCurrentTime"
+    ></audio>
     <div class="music-avatar">
       <div class="avatar">
         <img v-if="state.profile" :src="state.profile.al.picUrl" alt="" />
@@ -29,9 +36,15 @@
         </span>
       </div>
       <div class="progress">
-        <span class="current-time">0:19</span>
-        <el-slider class="progress-slider" v-model="value1" size="small" :show-tooltip="false" />
-        <span class="total-time">0:19</span>
+        <span class="current-time">{{ handleMusicTimeSeconds(state.currentTime) }}</span>
+        <el-slider
+          class="progress-slider"
+          v-model="state.progress"
+          size="small"
+          :show-tooltip="false"
+          @input="changeCurrenTime"
+        />
+        <span class="total-time">{{ handleMusicTimeMS(state.duration) }}</span>
       </div>
     </div>
 
@@ -59,6 +72,7 @@
   import { onMounted, reactive, ref, getCurrentInstance } from 'vue'
   import { $ref } from 'vue/macros'
   import { getSongUrl } from '@/api/song'
+  import { handleMusicTimeMS, handleMusicTimeSeconds } from '@/utils'
 
   const { proxy } = getCurrentInstance()
   const audioPlayer = $ref<any>()
@@ -68,10 +82,11 @@
     mute: false, //静音
     playUrl: '',
     profile: '', //歌曲信息
-    duration: 0, //总播放时长
-    currentTime: 0, //当前播放时间
+    duration: '00:00', //总播放时长, 毫秒
+    currentTime: '00:00', //当前播放时间
     volume: 70, //音量，默认70%
-    volumeSave: 0 //静音前保存的音量
+    volumeSave: 0, //静音前保存的音量
+    progress: 0 //进度条进度
   })
 
   onMounted(() => {
@@ -87,6 +102,8 @@
     const res = await getSongUrl({ id: profile.id, timestamp: new Date().getTime() })
     if (res.code === 200) {
       state.playUrl = res.data[0].url
+      state.currentTime = '00:00'
+      state.duration = profile.dt
       playMusic()
     } else {
       console.log('获取歌曲失败，请稍后重试')
@@ -111,6 +128,29 @@
   const pauseMusic = (): void => {
     state.playState = false
     audioPlayer.pause()
+  }
+
+  /**
+   * @description: 获取歌曲播放时间
+   * @return {*}
+   */
+  const getCurrentTime = () => {
+    state.currentTime = audioPlayer.currentTime
+
+    //改变进度条进度
+    const durationSeconds = parseInt(state.duration / 1000)
+    state.progress = Math.ceil((audioPlayer.currentTime / durationSeconds) * 100)
+  }
+
+  /**
+   * @description: 拖动进度条改变歌曲播放进度
+   * @param {*}
+   * @return {void}
+   */
+  const changeCurrenTime = (newTime): void => {
+    const ratio = newTime / 100
+    const durationSeconds = state.duration / 1000
+    audioPlayer.currentTime = durationSeconds * ratio
   }
 
   /**

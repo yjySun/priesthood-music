@@ -26,7 +26,7 @@
   import { reactive, watch, getCurrentInstance } from 'vue'
   import { prefixInteger } from '@/utils/number'
   import { getSongs } from '@/api/song'
-  import { handleMusicTime } from '@/utils'
+  import { handleMusicTimeMS } from '@/utils'
 
   const { proxy } = getCurrentInstance()
   const emit = defineEmits(['completeLoading'])
@@ -76,7 +76,7 @@
    * @return {*}
    */
   const formatterMusicTime = (row, column, cellValue, index) => {
-    return handleMusicTime(cellValue)
+    return handleMusicTimeMS(cellValue)
   }
 
   /**
