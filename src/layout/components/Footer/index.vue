@@ -58,6 +58,7 @@
 <script lang="ts" setup>
   import { onMounted, reactive, ref, getCurrentInstance } from 'vue'
   import { $ref } from 'vue/macros'
+  import { getSongUrl } from '@/api/song'
 
   const { proxy } = getCurrentInstance()
   const audioPlayer = $ref<any>()
@@ -83,8 +84,13 @@
    */
   proxy.$bus.on('handlePlayMusic', async (profile) => {
     state.profile = profile
-    state.playUrl = 'https://music.163.com/song/media/outer/url?id='.concat(profile.id).concat('.mp3')
-    playMusic()
+    const res = await getSongUrl({ id: profile.id, timestamp: new Date().getTime() })
+    if (res.code === 200) {
+      state.playUrl = res.data[0].url
+      playMusic()
+    } else {
+      console.log('获取歌曲失败，请稍后重试')
+    }
   })
 
   /**
