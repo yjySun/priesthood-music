@@ -64,7 +64,11 @@
               <template #label>
                 <div class="head-title">歌曲列表</div>
               </template>
-              <MusicListTable ref="musicListTable" :trackIds="state.playlist.trackIds" />
+              <MusicListTable
+                ref="musicListTable"
+                :trackIds="state.playlist.trackIds"
+                @completeLoading="completeLoading"
+              />
             </el-tab-pane>
             <el-tab-pane name="comment">
               <template #label>
@@ -116,6 +120,13 @@
 
     const { getTrackIds } = musicListTable
     getTrackIds(state.playlist.trackIds)
+  }
+
+  /**
+   * @description: 完成歌曲加载
+   * @return {*}
+   */
+  const completeLoading = () => {
     state.loading = false
   }
 </script>
@@ -128,7 +139,7 @@
     .loading-parent {
       position: relative;
       width: 100%;
-      height: 250px;
+      height: 100%;
     }
 
     .music-list-info {

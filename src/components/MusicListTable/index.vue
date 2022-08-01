@@ -29,6 +29,7 @@
   import { handleMusicTime } from '@/utils'
 
   const { proxy } = getCurrentInstance()
+  const emit = defineEmits(['completeLoading'])
 
   const state = reactive({
     trackIds: '',
@@ -52,6 +53,7 @@
     })
     const res = await getSongs({ ids: trackIdsStr, timestamp: new Date().getTime() })
     state.musicList = res.songs
+    emit('completeLoading')
   }
 
   /**
