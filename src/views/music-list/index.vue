@@ -78,6 +78,12 @@
         </el-tab-pane>
       </el-tabs>
     </div>
+
+    <el-backtop target=".common-music-list" :bottom="100">
+      <div>
+        <i class="iconfont icon-top"></i>
+      </div>
+    </el-backtop>
   </div>
 </template>
 <script lang="ts" setup>
@@ -113,6 +119,7 @@
   .common-music-list {
     padding: 30px 40px 0 40px;
     @include absolute-fill;
+    overflow-x: hidden;
 
     .music-list-info {
       display: flex;
