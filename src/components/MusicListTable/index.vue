@@ -64,7 +64,7 @@
    * @return {*}
    */
   const handlePlayMusic = (row, column, event) => {
-    proxy.$bus.emit('handlePlayMusic', row)
+    proxy.$bus.emit('handlePlayMusic', { profile: row, musicList: state.musicList })
   }
 
   /**

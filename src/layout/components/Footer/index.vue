@@ -1,5 +1,5 @@
 <template>
-  <div class="paly-footer">
+  <div class="play-footer">
     <audio
       :src="state.playUrl"
       autoplay="autoplay"
@@ -63,9 +63,32 @@
         />
       </div>
       <div class="sound-icon music-list">
-        <i class="iconfont icon-music-list"></i>
+        <i class="iconfont icon-music-list" @click="state.drawer = true"></i>
       </div>
     </div>
+
+    <el-drawer v-model="state.drawer" :with-header="false">
+      <div class="music-list-drawer" v-if="state.playlist">
+        <div class="head">
+          <div class="title">当前播放</div>
+          <div class="count">总{{ state.playlist.length }}首</div>
+        </div>
+        <div class="list">
+          <el-table
+            :data="state.playlist"
+            stripe
+            style="width: 100%"
+            :show-header="false"
+            @row-dblclick="dblclickPlayMusic"
+            highlight-current-row
+          >
+            <el-table-column prop="name" min-width="180"></el-table-column>
+            <el-table-column prop="ar[0].name" min-width="90"></el-table-column>
+            <el-table-column prop="dt" min-width="60" :formatter="formatterMusicTime"></el-table-column>
+          </el-table>
+        </div>
+      </div>
+    </el-drawer>
   </div>
 </template>
 <script lang="ts" setup>
@@ -78,6 +101,7 @@
   const audioPlayer = $ref<any>()
 
   const state = reactive({
+    playlist: '', //播放列表
     playState: false, //播放状态
     mute: false, //静音
     playUrl: '',
@@ -86,7 +110,8 @@
     currentTime: '00:00', //当前播放时间
     volume: 70, //音量，默认70%
     volumeSave: 0, //静音前保存的音量
-    progress: 0 //进度条进度
+    progress: 0, //进度条进度
+    drawer: false
   })
 
   onMounted(() => {
@@ -97,18 +122,27 @@
    * @description: 监听事件播放音乐
    * @return {*}
    */
-  proxy.$bus.on('handlePlayMusic', async (profile) => {
-    state.profile = profile
-    const res = await getSongUrl({ id: profile.id, timestamp: new Date().getTime() })
+  proxy.$bus.on('handlePlayMusic', (param) => {
+    state.playlist = param.musicList
+    state.profile = param.profile
+    playMusicById()
+  })
+
+  /**
+   * @description: 根据url播放歌曲
+   * @return {*}
+   */
+  const playMusicById = async (id) => {
+    const res = await getSongUrl({ id: state.profile.id, timestamp: new Date().getTime() })
     if (res.code === 200) {
       state.playUrl = res.data[0].url
       state.currentTime = '00:00'
-      state.duration = profile.dt
+      state.duration = state.profile.dt
       playMusic()
     } else {
       console.log('获取歌曲失败，请稍后重试')
     }
-  })
+  }
 
   /**
    * @description: 播放音乐
@@ -187,9 +221,33 @@
 
     audioPlayer.volume = volume / 100
   }
+
+  /**
+   * @description: 格式化音乐时间
+   * @param {*} row
+   * @param {*} column
+   * @param {*} cellValue
+   * @param {*} index
+   * @return {*}
+   */
+  const formatterMusicTime = (row, column, cellValue, index) => {
+    return handleMusicTimeMS(cellValue)
+  }
+
+  /**
+   * @description: 双击播放歌曲
+   * @param {*} row
+   * @param {*} column
+   * @param {*} event
+   * @return {*}
+   */
+  const dblclickPlayMusic = (row, column, event) => {
+    state.profile = row
+    playMusicById()
+  }
 </script>
 <style lang="scss">
-  .paly-footer {
+  .play-footer {
     height: 100%;
     display: flex;
     align-items: center;
@@ -306,6 +364,23 @@
         display: inline-block;
         width: 80px;
         height: 10px;
+      }
+    }
+
+    .music-list-drawer {
+      .head {
+        // background-color: pink;
+        border-bottom: 1px solid #ddd;
+        .title {
+          font-size: 20px;
+          font-weight: 900;
+        }
+
+        .count {
+          font-size: 13px;
+          color: #ddd;
+          margin: 10px 0;
+        }
       }
     }
   }
