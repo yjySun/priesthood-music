@@ -42,6 +42,7 @@
           v-model="state.progress"
           size="small"
           :show-tooltip="false"
+          :disabled="state.playlist.length == 0 || !state.playlist"
           @input="changeCurrenTime"
         />
         <span class="total-time">{{ handleMusicTimeMS(state.duration) }}</span>
@@ -92,7 +93,7 @@
   </div>
 </template>
 <script lang="ts" setup>
-  import { onMounted, reactive, ref, getCurrentInstance } from 'vue'
+  import { onMounted, reactive, ref, watch, getCurrentInstance } from 'vue'
   import { $ref } from 'vue/macros'
   import { getSongUrl } from '@/api/song'
   import { handleMusicTimeMS, handleMusicTimeSeconds } from '@/utils'
@@ -164,8 +165,10 @@
    * @return {void}
    */
   const playMusic = (): void => {
-    state.playState = true
-    audioPlayer.play()
+    if (state.playUrl) {
+      state.playState = true
+      audioPlayer.play()
+    }
   }
 
   /**
@@ -200,6 +203,19 @@
     const durationSeconds = state.duration / 1000
     audioPlayer.currentTime = durationSeconds * ratio
   }
+
+  /**
+   * @description: 监听进度条，播放歌曲完毕进行下一首
+   * @return {*}
+   */
+  watch(
+    () => state.progress,
+    (newValue, oldValue) => {
+      if (newValue === 100) {
+        nextSong()
+      }
+    }
+  )
 
   /**
    * @description: 改变声音大小
