@@ -25,14 +25,14 @@
           <i class="iconfont icon-danquxunhuan"></i>
         </span>
         <span class="operate-button previous">
-          <i class="iconfont icon-shangyishou"></i>
+          <i class="iconfont icon-shangyishou" @click="preSong"></i>
         </span>
         <span class="operate-button play-pause">
           <i v-if="!state.playState" class="iconfont icon-bofang" @click="playMusic"></i>
           <i v-else class="iconfont icon-zanting" @click="pauseMusic"></i>
         </span>
         <span class="operate-button next">
-          <i class="iconfont icon-xiayishou"></i>
+          <i class="iconfont icon-xiayishou" @click="nextSong"></i>
         </span>
       </div>
       <div class="progress">
@@ -104,7 +104,8 @@
     playlist: '', //播放列表
     playState: false, //播放状态
     mute: false, //静音
-    playUrl: '',
+    playUrl: '', //歌曲url
+    currentMusicIndex: 0, //当前播放歌曲的索引
     profile: '', //歌曲信息
     duration: '00:00', //总播放时长, 毫秒
     currentTime: '00:00', //当前播放时间
@@ -125,6 +126,9 @@
   proxy.$bus.on('handlePlayMusic', (param) => {
     state.playlist = param.musicList
     state.profile = param.profile
+    console.log('state.playlist', state.playlist)
+    console.log('state.profile', state.profile)
+
     playMusicById()
   })
 
@@ -132,13 +136,16 @@
    * @description: 根据url播放歌曲
    * @return {*}
    */
-  const playMusicById = async (id) => {
+  const playMusicById = async () => {
     const res = await getSongUrl({ id: state.profile.id, timestamp: new Date().getTime() })
     if (res.code === 200) {
       state.playUrl = res.data[0].url
       state.currentTime = '00:00'
       state.duration = state.profile.dt
       playMusic()
+
+      //修改播放索引
+      changePlayIndex()
     } else {
       console.log('获取歌曲失败，请稍后重试')
     }
@@ -243,6 +250,63 @@
    */
   const dblclickPlayMusic = (row, column, event) => {
     state.profile = row
+    playMusicById()
+  }
+
+  /**
+   * @description: 修改为当前播放歌曲索引
+   * @return {*}
+   */
+  const changePlayIndex = () => {
+    const ids = state.playlist.map((item) => item.id)
+    state.currentMusicIndex = ids.indexOf(state.profile.id)
+  }
+
+  /**
+   * @description: 播放上一首歌曲
+   * @return {*}
+   */
+  const preSong = () => {
+    if (!state.playlist) {
+      return
+    }
+
+    if (state.currentMusicIndex === 0) {
+      const index = state.playlist.length - 1
+      state.currentMusicIndex = index
+      state.profile = state.playlist[index]
+    } else {
+      const ids = state.playlist.map((item) => item.id)
+      const oldIndex = ids.indexOf(state.profile.id)
+      const newIndex = oldIndex - 1
+      state.profile = state.playlist[newIndex]
+      state.currentMusicIndex = newIndex
+    }
+
+    playMusicById()
+  }
+
+  /**
+   * @description: 播放下一首歌曲
+   * @return {*}
+   */
+  const nextSong = () => {
+    if (!state.playlist) {
+      return
+    }
+
+    if (state.currentMusicIndex === (state.playlist.length - 1)) {
+      const index = 0
+      state.currentMusicIndex = index
+      state.profile = state.playlist[index]
+    } else {
+      const ids = state.playlist.map((item) => item.id)
+      const oldIndex = ids.indexOf(state.profile.id)
+      const newIndex = oldIndex + 1
+      state.profile = state.playlist[newIndex]
+      state.currentMusicIndex = newIndex
+    }
+
     playMusicById()
   }
 </script>
