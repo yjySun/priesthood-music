@@ -126,9 +126,16 @@
   proxy.$bus.on('handlePlayMusic', (param) => {
     state.playlist = param.musicList
     state.profile = param.profile
-    console.log('state.playlist', state.playlist)
-    console.log('state.profile', state.profile)
+    playMusicById()
+  })
 
+  /**
+   * @description: 监听播放所有歌曲事件
+   * @return {*}
+   */
+  proxy.$bus.on('playAllMusic', (musicList) => {
+    state.playlist = musicList
+    state.profile = musicList[0]
     playMusicById()
   })
 
@@ -295,7 +302,7 @@
       return
     }
 
-    if (state.currentMusicIndex === (state.playlist.length - 1)) {
+    if (state.currentMusicIndex === state.playlist.length - 1) {
       const index = 0
       state.currentMusicIndex = index
       state.profile = state.playlist[index]

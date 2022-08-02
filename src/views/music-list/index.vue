@@ -19,7 +19,7 @@
               <div class="created-time">{{ formatToDate(state.playlist.createTime) }}创建</div>
             </div>
             <div class="operate-button">
-              <div class="button-item play-all">
+              <div class="button-item play-all" @click="playAllMusic">
                 <i class="iconfont icon-bofang play-all"></i>
                 <span>播放全部</span>
               </div>
@@ -93,13 +93,14 @@
   </div>
 </template>
 <script lang="ts" setup>
-  import { onMounted, reactive } from 'vue'
+  import { onMounted, reactive, getCurrentInstance } from 'vue'
   import { useRoute } from 'vue-router'
   import { getPlaylistInfo } from '@/api/playlist'
   import { formatToDate } from '@/utils/dateUtil'
   import { handleNum } from '@/utils/number'
   import { $ref } from 'vue/macros'
 
+  const { proxy } = getCurrentInstance()
   const route = useRoute()
   const playlistId = route.params.id
   const musicListTable = $ref<any>()
@@ -107,13 +108,18 @@
   const state = reactive({
     loading: true,
     activeName: 'musicList',
-    playlist: ''
+    playlist: '', //歌单信息
+    musicList: '' //歌单的歌曲列表
   })
 
   onMounted(() => {
     getPlaylist()
   })
 
+  /**
+   * @description: 获取歌曲列表
+   * @return {*}
+   */
   const getPlaylist = async () => {
     let res = await getPlaylistInfo({ id: playlistId, timestamp: new Date().getTime() })
     state.playlist = res.playlist
@@ -126,8 +132,17 @@
    * @description: 完成歌曲加载
    * @return {*}
    */
-  const completeLoading = () => {
+  const completeLoading = (musicList) => {
     state.loading = false
+    state.musicList = musicList
+  }
+
+  /**
+   * @description: 播放所有歌曲
+   * @return {*}
+   */
+  const playAllMusic = () => {
+    proxy.$bus.emit('playAllMusic', state.musicList)
   }
 </script>
 <style lang="scss">

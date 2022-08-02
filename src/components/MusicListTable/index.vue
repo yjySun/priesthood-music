@@ -53,7 +53,7 @@
     })
     const res = await getSongs({ ids: trackIdsStr, timestamp: new Date().getTime() })
     state.musicList = res.songs
-    emit('completeLoading')
+    emit('completeLoading', state.musicList)
   }
 
   /**
