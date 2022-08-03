@@ -24,16 +24,21 @@
 </template>
 <script lang="ts" setup>
   import { reactive, watch, getCurrentInstance } from 'vue'
+  import { storeToRefs } from 'pinia'
+  import { useUserStore } from '@/store/modules/user'
   import { prefixInteger } from '@/utils/number'
   import { getSongs } from '@/api/song'
   import { handleMusicTimeMS } from '@/utils'
 
   const { proxy } = getCurrentInstance()
   const emit = defineEmits(['completeLoading'])
+  const userStore = useUserStore()
+  const { getLikeList } = storeToRefs(userStore)
 
   const state = reactive({
     trackIds: '',
-    musicList: []
+    musicList: [],
+    likeList: !!getLikeList ? getLikeList : '' //喜欢的音乐id
   })
 
   /**

@@ -94,11 +94,15 @@
 </template>
 <script lang="ts" setup>
   import { onMounted, reactive, ref, watch, getCurrentInstance } from 'vue'
+  import { storeToRefs } from 'pinia'
+  import { useUserStore } from '@/store/modules/user'
   import { $ref } from 'vue/macros'
   import { getSongUrl } from '@/api/song'
   import { handleMusicTimeMS, handleMusicTimeSeconds } from '@/utils'
 
   const { proxy } = getCurrentInstance()
+  const userStore = useUserStore()
+  const { getLikeList } = storeToRefs(userStore)
   const audioPlayer = $ref<any>()
 
   const state = reactive({
@@ -113,7 +117,8 @@
     volume: 70, //音量，默认70%
     volumeSave: 0, //静音前保存的音量
     progress: 0, //进度条进度
-    drawer: false
+    drawer: false,
+    likeList: !!getLikeList ? getLikeList : '' //喜欢的音乐id
   })
 
   onMounted(() => {

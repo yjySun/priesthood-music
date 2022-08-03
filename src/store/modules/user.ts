@@ -1,29 +1,21 @@
 import { defineStore } from 'pinia'
 
 export interface IUserState {
-  profile: any,
-  isLogin: boolean
+  likeList: any
 }
 
 export const useUserStore = defineStore('userStore', {
   state: (): IUserState => ({
-    profile: {},
-    isLogin: false
+    likeList: ''
   }),
   getters: {
-    getProfile(): any {
-      return this.profile
-    },
-    getIsLogin(): any {
-      return this.isLogin
+    getLikeList(): any {
+      return this.likeList
     }
   },
   actions: {
-    setProfile(profile) {
-      this.profile = profile
-    },
-    setIsLogin(isLogin) {
-      this.isLogin = isLogin
+    setLikeList(likeList) {
+      this.likeList = likeList
     }
   }
 })

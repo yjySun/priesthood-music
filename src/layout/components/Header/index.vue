@@ -34,17 +34,20 @@
 </template>
 <script lang="ts" setup>
   import { ref, reactive, onMounted, getCurrentInstance } from 'vue'
+  import { storeToRefs } from 'pinia'
+  import { useUserStore } from '@/store/modules/user'
   import { useRouter } from 'vue-router'
   import { Search } from '@element-plus/icons-vue'
   import { request } from '@/utils/http/axios/axios'
   import { getLoginStatus } from '@/api/login'
+  import { getUserLikeList } from '@/api/user'
   import { createStorage } from '@/utils/Storage'
   import { USER_ID, IS_LOGIN } from '@/store/mutation-types'
-  import { useUserStore } from '@/store/modules/user'
   import { COOKIE } from '@/store/mutation-types'
 
   const router = useRouter()
   const userStore = useUserStore()
+  const { setLikeList } = storeToRefs(userStore)
   const Storage = createStorage({ storage: localStorage })
   const login = ref<any>()
 
@@ -53,8 +56,9 @@
     profile: ''
   })
 
-  onMounted(() => {
-    getCurrentUserInfo()
+  onMounted(async () => {
+    await getCurrentUserInfo()
+    await getCurrentUserLikeList()
   })
 
   /**
@@ -71,6 +75,19 @@
       proxy.$bus.emit('haveLogin')
     } else {
       console.log('请登录')
+    }
+  }
+
+  /**
+   * @description: 获取用户喜欢的音乐id
+   * @return {*}
+   */
+  const getCurrentUserLikeList = async () => {
+    const res = await getUserLikeList({ uid: state.profile.id, timestamp: new Date().getTime() })
+    if (res.code === 200) {
+      userStore.setLikeList(res.ids)
+    } else {
+      console.log('获取用户喜欢的音乐失败')
     }
   }
 

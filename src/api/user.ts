@@ -14,9 +14,27 @@ export const getAccountInfo = (params: any): Promise<any> => {
   })
 }
 
+/**
+ * @description: 获取用户的歌单
+ * @param {any} params
+ * @return {*}
+ */
 export const getUserPayList = (params: any): Promise<any> => {
   return request({
     url: '/user/playlist',
+    method: RequestEnum.GET,
+    params
+  })
+}
+
+/**
+ * @description: 用户喜欢的音乐列表
+ * @param {any} params
+ * @return {*}
+ */
+export const getUserLikeList = (params: any): Promise<any> => {
+  return request({
+    url: '/likelist',
     method: RequestEnum.GET,
     params
   })
