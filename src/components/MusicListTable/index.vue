@@ -18,6 +18,7 @@
                 'icon-xihuan': !hasLikeMusic(scope.row.id),
                 'icon-hasxihuan': hasLikeMusic(scope.row.id)
               }"
+              @click="handleLikeMusic(scope.row.id)"
             ></i>
             <i class="iconfont icon-download"></i>
           </div>
@@ -36,12 +37,15 @@
   import { useUserStore } from '@/store/modules/user'
   import { prefixInteger } from '@/utils/number'
   import { getSongs } from '@/api/song'
+  import { likeMusic, getUserLikeList } from '@/api/user'
   import { handleMusicTimeMS } from '@/utils'
+  import { storage } from '@/utils/Storage'
+  import { IS_LOGIN, USER_ID } from '@/store/mutation-types'
 
   const { proxy } = getCurrentInstance()
   const emit = defineEmits(['completeLoading'])
   const userStore = useUserStore()
-  const { getLikeList } = storeToRefs(userStore)
+  const { getLikeList, setLikeList } = storeToRefs(userStore)
 
   const state = reactive({
     trackIds: '',
@@ -112,6 +116,40 @@
     }
 
     return state.likeList.includes(id)
+  }
+
+  /**
+   * @description: 用户喜欢某个音乐
+   * @return {*}
+   */
+  const handleLikeMusic = async (id): void => {
+    if (!storage.get(IS_LOGIN)) {
+      console.log('用户未登录')
+      return
+    }
+    //此歌曲是否已经被喜欢
+    const hasLike = hasLikeMusic(id) ? false : true
+    const res = await likeMusic({ id, like: hasLike, timestamp: new Date().getTime() })
+    if (res.code === 200) {
+      const msg = hasLike ? '已添加到我喜欢的音乐' : '取消喜欢成功'
+      console.log(msg) //TODO
+
+      //更新喜欢列表ids
+      getCurrentUserLikeList()
+    }
+  }
+
+  /**
+   * @description: 获取用户喜欢的音乐id
+   * @return {*}
+   */
+  const getCurrentUserLikeList = async () => {
+    const res = await getUserLikeList({ uid: storage.get(USER_ID), timestamp: new Date().getTime() })
+    if (res.code === 200) {
+      userStore.setLikeList(res.ids)
+    } else {
+      console.log('获取用户喜欢的音乐失败')
+    }
   }
 
   defineExpose({

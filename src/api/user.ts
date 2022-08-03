@@ -40,3 +40,16 @@ export const getUserLikeList = (params: any): Promise<any> => {
   })
 }
 
+/**
+ * @description: 喜欢某个音乐
+ * @param {any} params
+ * @return {*}
+ */
+export const likeMusic = (params: any): Promise<any> => {
+  return request({
+    url: '/like',
+    method: RequestEnum.GET,
+    params
+  })
+}
+
