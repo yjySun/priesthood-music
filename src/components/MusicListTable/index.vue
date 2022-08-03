@@ -45,7 +45,7 @@
   const { proxy } = getCurrentInstance()
   const emit = defineEmits(['completeLoading'])
   const userStore = useUserStore()
-  const { getLikeList, setLikeList } = storeToRefs(userStore)
+  const { getLikeList } = storeToRefs(userStore)
 
   const state = reactive({
     trackIds: '',
@@ -135,7 +135,17 @@
       console.log(msg) //TODO
 
       //更新喜欢列表ids
-      getCurrentUserLikeList()
+      /**
+       * @description: 并没有使用getCurrentUserLikeList(), 做一个前端假的显示。目的：提升心变成红色速度，少一次接口访问
+       */
+      const likeList = getLikeList.value
+      if (hasLike) { //添加id
+        likeList.push(id)
+      } else { //删除id
+        const del_index = likeList.indexOf(id)
+        likeList.splice(del_index, 1)
+      }
+      userStore.setLikeList(likeList)
     }
   }
 
