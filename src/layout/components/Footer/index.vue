@@ -64,17 +64,17 @@
         />
       </div>
       <div class="sound-icon music-list">
-        <i class="iconfont icon-music-list" @click="state.drawer = true"></i>
+        <i class="iconfont icon-music-list" @click="handleOpenListDraw"></i>
       </div>
     </div>
 
     <el-drawer v-model="state.drawer" :with-header="false">
-      <div class="music-list-drawer" v-if="state.playlist">
+      <div class="music-list-drawer">
         <div class="head">
           <div class="title">当前播放</div>
-          <div class="count">总{{ state.playlist.length }}首</div>
+          <div class="count">总{{ !!state.playlist.length ? state.playlist.length : 0 }}首</div>
         </div>
-        <div class="list">
+        <div class="list" v-if="state.playlist">
           <el-table
             :data="state.playlist"
             stripe
@@ -93,7 +93,7 @@
   </div>
 </template>
 <script lang="ts" setup>
-  import { onMounted, reactive, ref, watch, getCurrentInstance } from 'vue'
+  import { onMounted, reactive, ref, watch, getCurrentInstance, nextTick } from 'vue'
   import { storeToRefs } from 'pinia'
   import { useUserStore } from '@/store/modules/user'
   import { $ref } from 'vue/macros'
@@ -110,7 +110,7 @@
     playState: false, //播放状态
     mute: false, //静音
     playUrl: '', //歌曲url
-    currentMusicIndex: 0, //当前播放歌曲的索引
+    currentMusicIndex: -1, //当前播放歌曲的索引
     profile: '', //歌曲信息
     duration: '00:00', //总播放时长, 毫秒
     currentTime: '00:00', //当前播放时间
@@ -219,6 +219,17 @@
       if (newValue === 100) {
         nextSong()
       }
+    }
+  )
+
+  /**
+   * @description: 监听当前播放歌曲索引，修改正在播放样式
+   * @return {*}
+   */
+  watch(
+    () => state.currentMusicIndex,
+    (newValue, oldValue) => {
+      handleRowDomStyle(newValue, oldValue)
     }
   )
 
@@ -336,6 +347,75 @@
     }
 
     playMusicById()
+  }
+
+  /**
+   * @description: 处理打开音乐列表右侧抽屉
+   * @return {*}
+   */
+  const handleOpenListDraw = () => {
+    state.drawer = true
+    handleRowDomStyle()
+  }
+
+  /**
+   * @description: 处理正在播放的音乐在列表中显示为红色
+   * @param {*} newValue
+   * @param {*} oldValue
+   * @return {*}
+   */
+  const handleRowDomStyle = async (newValue, oldValue) => {
+    nextTick(() => {
+      //解决nextTick失效问题
+      setTimeout(() => {
+        const tableRows1 = document.querySelector('.music-list-table').querySelectorAll('.el-table__row')
+        /**
+         * music list table
+         * */
+        //当前索引行添加current-row类名
+        if (tableRows1[state.currentMusicIndex]) {
+          console.log('tableRows1[state.currentMusicIndex].children[0]', tableRows1[state.currentMusicIndex])
+
+          tableRows1[state.currentMusicIndex].children[0].classList.add('play-row')
+          tableRows1[state.currentMusicIndex].children[2].classList.add('play-row')
+        }
+
+        if (
+          tableRows1[oldValue] &&
+          tableRows1[oldValue].children[0].classList.contains('play-row') &&
+          tableRows1[oldValue].children[2].classList.contains('play-row')
+        ) {
+          // 将上一首的current-row类名删掉
+          tableRows1[oldValue].children[0].classList.remove('play-row')
+          tableRows1[oldValue].children[2].classList.remove('play-row')
+          console.log('tableRows1移除')
+        }
+
+        /**
+         * draw music list table
+         * */
+        const tableRows2 = document.querySelector('.play-footer').querySelectorAll('.el-table__row')
+        if (tableRows2[state.currentMusicIndex]) {
+          console.log(
+            'tableRows2[state.currentMusicIndex].children[0]',
+            tableRows2[state.currentMusicIndex].children[0]
+          )
+
+          tableRows2[state.currentMusicIndex].children[0].classList.add('play-row')
+          tableRows2[state.currentMusicIndex].children[1].classList.add('play-row')
+        }
+        if (
+          tableRows2[oldValue] &&
+          tableRows2[oldValue].children[0].classList.contains('play-row') &&
+          tableRows2[oldValue].children[1].classList.contains('play-row')
+        ) {
+          // 将上一首的current-row类名删掉
+          tableRows2[oldValue].children[0].classList.remove('play-row')
+          tableRows2[oldValue].children[1].classList.remove('play-row')
+          console.log('tableRows2移除')
+        }
+      }, 200)
+    })
   }
 </script>
 <style lang="scss">

@@ -177,14 +177,8 @@
                 color: #aaa !important;
             }
 
-            .current-row {
-                td:nth-child(1) .cell {
-                    color: #ec4141 !important;
-                }
-
-                td:nth-child(2) .cell {
-                    color: #ec4141 !important;
-                }
+            .play-row {
+                color: #ec4141 !important;
             }
 
             .el-table__cell {
@@ -393,14 +387,14 @@
                 background-color: #f9f9f9;
             }
 
-            .current-row {
-                td:nth-child(1) .cell {
-                    color: #ec4141 !important;
-                }
+            td:nth-child(4) .cell,
+            td:nth-child(5) .cell,
+            td:nth-child(6) .cell {
+                color: #808080 !important;
+            }
 
-                td:nth-child(3) .cell {
-                    color: #ec4141 !important;
-                }
+            .play-row {
+                color: #ec4141 !important;
             }
 
             .el-table__cell {
