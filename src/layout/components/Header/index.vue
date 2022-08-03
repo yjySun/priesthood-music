@@ -23,9 +23,22 @@
         <i class="iconfont icon-ren" @click="openLogin"></i>
         <div class="username" @click="openLogin">未登录</div>
       </div>
-      <div v-else class="in-login">
+      <!-- <div v-else class="in-login">
         <img :src="state.profile.avatarUrl" alt="" />
         <div class="nickname">{{ state.profile.nickname }}</div>
+      </div> -->
+
+      <!-- 暂时 -->
+      <div v-else class="in-login">
+        <el-popover placement="bottom" :width="100" trigger="click">
+          <template #reference>
+            <div class="popover-login">
+              <img :src="state.profile.avatarUrl" alt="" />
+              <div class="nickname">{{ state.profile.nickname }}</div>
+            </div>
+          </template>
+          <el-button type="danger" style="width: 100%" @click="logout">退出登录</el-button>
+        </el-popover>
       </div>
     </div>
   </div>
@@ -107,6 +120,19 @@
     } else {
       await getCurrentUserInfo()
     }
+  }
+
+  /**
+   * @description: 退出登录
+   * @return {*}
+   */
+  const logout = () => {
+    Storage.clearCookie()
+    Storage.clear()
+    router.push({ path: '/discover' })
+    //目的为了重置菜单
+    proxy.$bus.emit('haveLogin')
+    state.profile = ''
   }
 
   const openLogin = () => {
@@ -203,6 +229,13 @@
           margin-left: 10px;
           color: rgba(255, 255, 255, 0.9);
         }
+      }
+
+      // 暂时
+      .popover-login {
+        display: flex;
+        align-items: center;
+        cursor: pointer;
       }
     }
   }
