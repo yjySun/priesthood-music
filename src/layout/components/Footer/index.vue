@@ -99,6 +99,7 @@
   import { $ref } from 'vue/macros'
   import { getSongUrl } from '@/api/song'
   import { handleMusicTimeMS, handleMusicTimeSeconds } from '@/utils'
+  import { prefixInteger } from '@/utils/number'
 
   const { proxy } = getCurrentInstance()
   const userStore = useUserStore()
@@ -378,6 +379,11 @@
 
           tableRows1[state.currentMusicIndex].children[0].classList.add('play-row')
           tableRows1[state.currentMusicIndex].children[2].classList.add('play-row')
+
+          //改变dom为小喇叭
+          tableRows1[state.currentMusicIndex].children[0].querySelector(
+            '.cell'
+          ).innerHTML = `<div><i class="iconfont icon-yangshengqi"></i></div>`
         }
 
         if (
@@ -388,7 +394,12 @@
           // 将上一首的current-row类名删掉
           tableRows1[oldValue].children[0].classList.remove('play-row')
           tableRows1[oldValue].children[2].classList.remove('play-row')
-          console.log('tableRows1移除')
+
+          //改变去除上一个小喇叭
+          tableRows1[oldValue].children[0].querySelector('.cell').innerHTML = `<div>${prefixInteger(
+            oldValue + 1,
+            2
+          )}</div>`
         }
 
         /**
@@ -396,11 +407,6 @@
          * */
         const tableRows2 = document.querySelector('.play-footer').querySelectorAll('.el-table__row')
         if (tableRows2[state.currentMusicIndex]) {
-          console.log(
-            'tableRows2[state.currentMusicIndex].children[0]',
-            tableRows2[state.currentMusicIndex].children[0]
-          )
-
           tableRows2[state.currentMusicIndex].children[0].classList.add('play-row')
           tableRows2[state.currentMusicIndex].children[1].classList.add('play-row')
         }
@@ -412,7 +418,6 @@
           // 将上一首的current-row类名删掉
           tableRows2[oldValue].children[0].classList.remove('play-row')
           tableRows2[oldValue].children[1].classList.remove('play-row')
-          console.log('tableRows2移除')
         }
       }, 200)
     })
