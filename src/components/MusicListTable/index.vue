@@ -10,10 +10,18 @@
     >
       <el-table-column type="index" :index="indexMethod" />
       <el-table-column label="操作" min-width="50">
-        <div class="operate-button">
-          <i class="iconfont icon-xihuan"></i>
-          <i class="iconfont icon-download"></i>
-        </div>
+        <template #default="scope">
+          <div class="operate-button">
+            <i
+              :class="{
+                iconfont: true,
+                'icon-xihuan': !hasLikeMusic(scope.row.id),
+                'icon-hasxihuan': hasLikeMusic(scope.row.id)
+              }"
+            ></i>
+            <i class="iconfont icon-download"></i>
+          </div>
+        </template>
       </el-table-column>
       <el-table-column prop="name" label="标题" min-width="400" />
       <el-table-column prop="ar[0].name" label="歌手" min-width="150" />
@@ -93,6 +101,19 @@
     return prefixInteger(index + 1, 2)
   }
 
+  /**
+   * @description: 判断音乐是否被用户喜欢
+   * @param {*} id
+   * @return {*}
+   */
+  const hasLikeMusic = (id): boolean => {
+    if (!state.likeList) {
+      return false
+    }
+
+    return state.likeList.includes(id)
+  }
+
   defineExpose({
     getTrackIds
   })
@@ -106,6 +127,10 @@
     .operate-button {
       i {
         cursor: pointer;
+      }
+
+      i.icon-hasxihuan {
+        color: #ec4141;
       }
 
       i.icon-download {
