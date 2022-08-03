@@ -375,8 +375,6 @@
          * */
         //当前索引行添加current-row类名
         if (tableRows1[state.currentMusicIndex]) {
-          console.log('tableRows1[state.currentMusicIndex].children[0]', tableRows1[state.currentMusicIndex])
-
           tableRows1[state.currentMusicIndex].children[0].classList.add('play-row')
           tableRows1[state.currentMusicIndex].children[2].classList.add('play-row')
 
