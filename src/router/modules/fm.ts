@@ -30,7 +30,7 @@ const routes: Array<RouteRecordRaw> = [
         meta: {
           title: '私人FM'
         },
-        component: () => import('@/components/MusicList/index.vue')
+        component: () => import('@/views/discover/index.vue')
       }
     ]
   }

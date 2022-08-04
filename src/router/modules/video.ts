@@ -31,7 +31,7 @@ const routes: Array<RouteRecordRaw> = [
         meta: {
           title: '视频'
         },
-        component: () => import('@/components/MusicList/index.vue')
+        component: () => import('@/views/discover/index.vue')
       },
       {
         path: 'mv',
@@ -39,7 +39,7 @@ const routes: Array<RouteRecordRaw> = [
         meta: {
           title: 'MV'
         },
-        component: () => import('@/components/MusicList/index.vue')
+        component: () => import('@/views/discover/index.vue')
       }
     ]
   }
