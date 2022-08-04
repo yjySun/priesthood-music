@@ -24,6 +24,8 @@
   })
 
   onMounted(() => {
+    console.log('欢迎');
+    
     generateBanner()
     generateMusicList()
   })
