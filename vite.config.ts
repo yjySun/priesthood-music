@@ -37,8 +37,7 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
       }
     },
     server: {
-      host: true,
-      port: VITE_PORT,
+      port: 3000,
       open: true,
       // proxy: createProxy(VITE_PROXY)
       proxy: {
