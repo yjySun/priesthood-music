@@ -3,6 +3,6 @@ export const config = {
     BASE_URL: '/api' // 测试接口域名
   },
   production: {
-    BASE_URL: 'https://priesthood-music-1jd9vpdgg-yjysun.vercel.app' // 正式接口域名
+    BASE_URL: 'http://www.eliaukyjy.xyz:3000' // 正式接口域名
   }
 }
