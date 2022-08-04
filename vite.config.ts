@@ -37,16 +37,9 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
       }
     },
     server: {
-      port: 3000,
+      port: VITE_PORT,
       open: true,
-      // proxy: createProxy(VITE_PROXY)
-      proxy: {
-        '/api': {
-          target: 'https://priesthood-music-1jd9vpdgg-yjysun.vercel.app',
-          changeOrigin: true,
-          rewrite: (path) => path.replace(/^\/api/, '')
-        }
-      }
+      proxy: createProxy(VITE_PROXY)
     },
     css: {
       preprocessorOptions: {
