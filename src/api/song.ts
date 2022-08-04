@@ -26,3 +26,16 @@ export const getSongUrl = (params: any): Promise<any> => {
     params
   })
 }
+
+/**
+ * @description: 获取下载歌曲url
+ * @param {any} params
+ * @return {*}
+ */
+export const getSongDownloadUrl = (params: any): Promise<any> => {
+  return request({
+    url: '/song/download/url',
+    method: RequestEnum.GET,
+    params
+  })
+}

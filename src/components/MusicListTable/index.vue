@@ -20,7 +20,7 @@
               }"
               @click="handleLikeMusic(scope.row.id)"
             ></i>
-            <i class="iconfont icon-download"></i>
+            <i class="iconfont icon-download" @click="downloadSong(scope.row.id)"></i>
           </div>
         </template>
       </el-table-column>
@@ -36,11 +36,12 @@
   import { storeToRefs } from 'pinia'
   import { useUserStore } from '@/store/modules/user'
   import { prefixInteger } from '@/utils/number'
-  import { getSongs } from '@/api/song'
+  import { getSongs, getSongDownloadUrl } from '@/api/song'
   import { likeMusic, getUserLikeList } from '@/api/user'
   import { handleMusicTimeMS } from '@/utils'
   import { storage } from '@/utils/Storage'
   import { IS_LOGIN, USER_ID } from '@/store/mutation-types'
+  import axios from 'axios'
 
   const { proxy } = getCurrentInstance()
   const emit = defineEmits(['completeLoading'])
@@ -139,9 +140,11 @@
        * @description: 并没有使用getCurrentUserLikeList(), 做一个前端假的显示。目的：提升心变成红色速度，少一次接口访问
        */
       const likeList = getLikeList.value
-      if (hasLike) { //添加id
+      if (hasLike) {
+        //添加id
         likeList.push(id)
-      } else { //删除id
+      } else {
+        //删除id
         const del_index = likeList.indexOf(id)
         likeList.splice(del_index, 1)
       }
@@ -159,6 +162,22 @@
       userStore.setLikeList(res.ids)
     } else {
       console.log('获取用户喜欢的音乐失败')
+    }
+  }
+
+  /**
+   * @description: 下载歌曲
+   * @param {*} id
+   * @return {*}
+   */
+  const downloadSong = async (id) => {
+    const res = await getSongDownloadUrl({ id, timestamp: new Date().getTime() })
+    console.log('res', res)
+    if (res.code === 200) {
+      let url = res.data.url
+      //todo 跨域下载歌曲
+    } else {
+      console.log('下载歌曲失败')
     }
   }
 
