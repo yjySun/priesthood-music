@@ -201,6 +201,10 @@
         cursor: pointer;
       }
 
+      .icon-xihuan:hover, .icon-download:hover {
+        color: rgb(0, 0, 0);
+      }
+
       i.icon-hasxihuan {
         color: #ec4141;
       }
