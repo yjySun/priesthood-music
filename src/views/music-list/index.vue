@@ -95,6 +95,7 @@
 <script lang="ts" setup>
   import { onMounted, reactive, getCurrentInstance } from 'vue'
   import { useRoute } from 'vue-router'
+  import { useMusicStore } from '@/store/modules/music'
   import { getPlaylistInfo } from '@/api/playlist'
   import { formatToDate } from '@/utils/dateUtil'
   import { handleNum } from '@/utils/number'
@@ -102,6 +103,7 @@
 
   const { proxy } = getCurrentInstance()
   const route = useRoute()
+  const musicStore = useMusicStore();
   const playlistId = route.params.id
   const musicListTable = $ref<any>()
 
@@ -142,7 +144,8 @@
    * @return {*}
    */
   const playAllMusic = () => {
-    proxy.$bus.emit('playAllMusic', state.musicList)
+    musicStore.setPlayList(state.musicList)
+    proxy.$bus.emit('playAllMusic')
   }
 </script>
 <style lang="scss">

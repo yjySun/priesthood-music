@@ -96,6 +96,7 @@
   import { onMounted, reactive, ref, watch, getCurrentInstance, nextTick } from 'vue'
   import { storeToRefs } from 'pinia'
   import { useUserStore } from '@/store/modules/user'
+  import { useMusicStore } from '@/store/modules/music'
   import { $ref } from 'vue/macros'
   import { getSongUrl } from '@/api/song'
   import { handleMusicTimeMS, handleMusicTimeSeconds } from '@/utils'
@@ -103,7 +104,9 @@
 
   const { proxy } = getCurrentInstance()
   const userStore = useUserStore()
+  const musicStore = useMusicStore()
   const { getLikeList } = storeToRefs(userStore)
+  const { getProfile, getPlayList } = storeToRefs(musicStore)
   const audioPlayer = $ref<any>()
 
   const state = reactive({
@@ -130,9 +133,9 @@
    * @description: 监听事件播放音乐
    * @return {*}
    */
-  proxy.$bus.on('handlePlayMusic', (param) => {
-    state.playlist = param.musicList
-    state.profile = param.profile
+  proxy.$bus.on('handlePlayMusic', () => {
+    state.playlist = getPlayList
+    state.profile = getProfile
     playMusicById()
   })
 
@@ -140,9 +143,9 @@
    * @description: 监听播放所有歌曲事件
    * @return {*}
    */
-  proxy.$bus.on('playAllMusic', (musicList) => {
-    state.playlist = musicList
-    state.profile = musicList[0]
+  proxy.$bus.on('playAllMusic', () => {
+    state.playlist = getPlayList
+    state.profile = state.playlist[0]
     playMusicById()
   })
 

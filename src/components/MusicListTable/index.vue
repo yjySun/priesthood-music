@@ -35,6 +35,7 @@
   import { reactive, watch, getCurrentInstance } from 'vue'
   import { storeToRefs } from 'pinia'
   import { useUserStore } from '@/store/modules/user'
+  import { useMusicStore } from '@/store/modules/music'
   import { prefixInteger } from '@/utils/number'
   import { getSongs, getSongDownloadUrl } from '@/api/song'
   import { likeMusic, getUserLikeList } from '@/api/user'
@@ -46,7 +47,9 @@
   const { proxy } = getCurrentInstance()
   const emit = defineEmits(['completeLoading'])
   const userStore = useUserStore()
+  const musicStore = useMusicStore()
   const { getLikeList } = storeToRefs(userStore)
+  const { getPlayList } = storeToRefs(musicStore)
 
   const state = reactive({
     trackIds: '',
@@ -82,7 +85,9 @@
    * @return {*}
    */
   const handlePlayMusic = (row, column, event) => {
-    proxy.$bus.emit('handlePlayMusic', { profile: row, musicList: state.musicList })
+    musicStore.setProfile(row)
+    musicStore.setPlayList(state.musicList)
+    proxy.$bus.emit('handlePlayMusic')
   }
 
   /**
