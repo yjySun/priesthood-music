@@ -9,13 +9,35 @@
         <i class="iconfont icon-arrow-right-bold" @click="router.go(1)"></i>
       </div>
       <div class="search">
-        <el-input
-          class="search-input"
-          placeholder="请输入内容"
-          :prefix-icon="Search"
-          size="mini"
-          v-model="state.searchInput"
-        />
+        <el-popover placement="bottom" :width="400" trigger="click" popper-class="search-popover" :show-arrow="false">
+          <template #reference>
+            <el-input
+              class="search-input"
+              placeholder="请输入内容"
+              :prefix-icon="Search"
+              size="mini"
+              v-model="state.searchInput"
+              @focus="getHotSearchList"
+            />
+          </template>
+          <div class="hot-search">
+            <el-scrollbar height="500px">
+              <div class="title">热搜榜</div>
+              <div class="hot-item" v-for="(item, index) in state.hotSearchList" :key="index">
+                <div class="sort-number" :class="{ 'top-three': index <= 2 }">{{ index + 1 }}</div>
+                <div class="content">
+                  <div class="search-word">
+                    <div class="name" :class="{ 'top-three': index <= 2 }">{{ item.searchWord }}</div>
+                    <img v-if="item.iconUrl" :src="item.iconUrl" alt="" />
+                    <div class="score">{{ item.score }}</div>
+                  </div>
+                  <div class="description">{{ item.content }}</div>
+                </div>
+              </div>
+            </el-scrollbar>
+          </div>
+          <div class="search-result"></div>
+        </el-popover>
       </div>
     </div>
     <div class="user-avatar">
@@ -54,6 +76,7 @@
   import { request } from '@/utils/http/axios/axios'
   import { getLoginStatus } from '@/api/login'
   import { getUserLikeList } from '@/api/user'
+  import { getSearchHotDetail } from '@/api/search'
   import { createStorage } from '@/utils/Storage'
   import { USER_ID, IS_LOGIN } from '@/store/mutation-types'
   import { COOKIE } from '@/store/mutation-types'
@@ -66,7 +89,8 @@
 
   const state = reactive({
     searchInput: '',
-    profile: ''
+    profile: '',
+    hotSearchList: ''
   })
 
   onMounted(async () => {
@@ -119,6 +143,19 @@
       proxy.$bus.emit('haveLogin')
     } else {
       await getCurrentUserInfo()
+    }
+  }
+
+  /**
+   * @description: 获取热搜榜
+   * @return {*}
+   */
+  const getHotSearchList = async () => {
+    const res = await getSearchHotDetail()
+    if (res.code === 200) {
+      state.hotSearchList = res.data
+    } else {
+      console.log('获取热搜榜单失败')
     }
   }
 
@@ -236,6 +273,70 @@
         display: flex;
         align-items: center;
         cursor: pointer;
+      }
+    }
+  }
+
+  .search-popover {
+    padding: 0 !important;
+
+    .hot-search {
+      .title {
+        padding: 15px 0 15px 20px;
+        color: #919191;
+        font-size: 16px;
+      }
+
+      .hot-item {
+        padding: 10px 0 10px 20px;
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+
+        &:hover {
+          background-color: #f2f2f2;
+        }
+
+        .sort-number {
+          color: #aaaaaa;
+          font-size: 18px;
+
+          &.top-three {
+            color: #ff3a3a;
+          }
+        }
+
+        .content {
+          margin-left: 30px;
+          width: 300px;
+
+          .search-word {
+            display: flex;
+            align-items: center;
+            color: black;
+
+            .name.top-three {
+              font-weight: 700;
+            }
+
+            .score {
+              margin-left: 15px;
+              font-size: 12px;
+              color: #dbdbdb;
+            }
+
+            img {
+              margin-left: 10px;
+              height: 15px;
+            }
+          }
+
+          .description {
+            margin-top: 5px;
+            color: #8e8b8b;
+            @include overflow-omit;
+          }
+        }
       }
     }
   }
