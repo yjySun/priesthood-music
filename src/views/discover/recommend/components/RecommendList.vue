@@ -2,9 +2,11 @@
   <div class="recommend-list">
     <div class="list-card">
       <!-- 登录状态下显示每日推荐歌单 -->
-      <div class="list-card-item" v-if="isLogin" @click="router.push({ path: '/daily/daily-recommend' })">
+      <div class="list-card-item daily-item" v-if="isLogin" @click="router.push({ path: '/daily/daily-recommend' })">
         <div class="image">
-          <i :class="'iconfont icon-rili' + getTodyDate()"></i>
+          <div class="daily-icon">
+            <i :class="'iconfont icon-rili' + getTodyDate()"></i>
+          </div>
           <img src="@/assets/img/dailyRecommend.jpg" alt="" />
         </div>
         <div class="title">每日歌曲推荐</div>
@@ -68,6 +70,33 @@
           -webkit-line-clamp: 2;
           line-clamp: 2;
           -webkit-box-orient: vertical;
+        }
+      }
+
+      .daily-item {
+        .image {
+          position: relative;
+          overflow: hidden; //目的解决边缘模糊
+
+          .daily-icon {
+            @include absolute-fill;
+            position: absolute;
+            z-index: 2022;
+            // background-color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            i {
+              color: #fff;
+              font-size: 9em;
+            }
+          }
+
+          img {
+            -webkit-filter: blur(8px);
+            filter: blur(8px);
+          }
         }
       }
     }
