@@ -44,7 +44,12 @@
                   <i class="iconfont icon-songs"></i>
                   <div class="title-name">单曲</div>
                 </div>
-                <div class="result-item" v-for="(song, index) in state.searchResult.songs" :key="index">
+                <div
+                  class="result-item"
+                  v-for="(song, index) in state.searchResult.songs"
+                  :key="index"
+                  @click="playSong(song)"
+                >
                   <span class="name">{{ song.name }}</span>
                   <span class="link"> -</span>
                   <span class="artist" v-for="(artist, index) in song.artists" :key="index">
@@ -118,19 +123,23 @@
   import { ref, reactive, onMounted, getCurrentInstance } from 'vue'
   import { storeToRefs } from 'pinia'
   import { useUserStore } from '@/store/modules/user'
+  import { useMusicStore } from '@/store/modules/music'
   import { useRouter } from 'vue-router'
   import { Search } from '@element-plus/icons-vue'
   import { request } from '@/utils/http/axios/axios'
   import { getLoginStatus } from '@/api/login'
   import { getUserLikeList } from '@/api/user'
+  import { getSongs } from '@/api/song'
   import { getSearchHotDetail, getSearchSuggest } from '@/api/search'
   import { createStorage } from '@/utils/Storage'
-  import { USER_ID, IS_LOGIN } from '@/store/mutation-types'
-  import { COOKIE } from '@/store/mutation-types'
+  import { USER_ID, IS_LOGIN, COOKIE } from '@/store/mutation-types'
 
+  const { proxy } = getCurrentInstance()
   const router = useRouter()
   const userStore = useUserStore()
+  const musicStore = useMusicStore()
   const { setLikeList } = storeToRefs(userStore)
+  const { getPlayList } = storeToRefs(musicStore)
   const Storage = createStorage({ storage: localStorage })
   const login = ref<any>()
 
@@ -176,8 +185,6 @@
     }
   }
 
-  const { proxy } = getCurrentInstance()
-
   /**
    * @description: 赋值用户信息
    * @param {*} val
@@ -222,6 +229,18 @@
     } else {
       console.log(`获取搜索建议失败，搜索关键字为：${keywords}`)
     }
+  }
+
+  /**
+   * @description: 播放搜索的单曲
+   * @param {*} song
+   * @return {*}
+   */
+  const playSong = async (song): void => {
+    const res = await getSongs({ ids: song.id, timestamp: new Date().getTime() })
+    musicStore.setProfile(res.songs[0])
+    musicStore.getPlayList.push(res.songs[0])
+    proxy.$bus.emit('handlePlayMusic')
   }
 
   /**
