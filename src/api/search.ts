@@ -13,3 +13,17 @@ export const getSearchHotDetail = (params: any): Promise<any> => {
     params
   })
 }
+
+
+/**
+ * @description: 搜索建议
+ * @param {any} params
+ * @return {*}
+ */
+export const getSearchSuggest = (params: any): Promise<any> => {
+  return request({
+    url: '/search/suggest',
+    method: RequestEnum.GET,
+    params
+  })
+}

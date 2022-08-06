@@ -15,12 +15,13 @@
               class="search-input"
               placeholder="请输入内容"
               :prefix-icon="Search"
-              size="mini"
+              size="small"
               v-model="state.searchInput"
               @focus="getHotSearchList"
+              @input="getSearchResult"
             />
           </template>
-          <div class="hot-search">
+          <div class="hot-search" v-if="!state.searchResult">
             <el-scrollbar height="500px">
               <div class="title">热搜榜</div>
               <div class="hot-item" v-for="(item, index) in state.hotSearchList" :key="index">
@@ -36,7 +37,53 @@
               </div>
             </el-scrollbar>
           </div>
-          <div class="search-result"></div>
+          <div class="search-result" v-if="state.searchResult">
+            <el-scrollbar height="500px">
+              <div class="song" v-if="state.searchResult.songs && state.searchResult.songs.length > 0">
+                <div class="title">
+                  <i class="iconfont icon-songs"></i>
+                  <div class="title-name">单曲</div>
+                </div>
+                <div class="result-item" v-for="(song, index) in state.searchResult.songs" :key="index">
+                  <span class="name">{{ song.name }}</span>
+                  <span class="link"> -</span>
+                  <span class="artist" v-for="(artist, index) in song.artists" :key="index">
+                    <span>{{ index !== 0 ? ' ' : '' }}</span>
+                    {{ artist.name }}
+                  </span>
+                </div>
+              </div>
+              <div class="artist" v-if="state.searchResult.artists && state.searchResult.artists.length > 0">
+                <div class="title">
+                  <i class="iconfont icon-artists"></i>
+                  <div class="title-name">歌手</div>
+                </div>
+                <div class="result-item" v-for="(artist, index) in state.searchResult.artists" :key="index">
+                  <span class="name">{{ artist.name }}</span>
+                </div>
+              </div>
+              <div class="album" v-if="state.searchResult.albums && state.searchResult.albums.length > 0">
+                <div class="title">
+                  <i class="iconfont icon-albums"></i>
+                  <div class="title-name">专辑</div>
+                </div>
+                <div class="result-item" v-for="(album, index) in state.searchResult.albums" :key="index">
+                  <span class="name">{{ album.name }}</span>
+                  <span class="link"> - </span>
+                  <span class="artist">{{ album.artist.name }}</span>
+                </div>
+              </div>
+              <div class="song-list" v-if="state.searchResult.playlists && state.searchResult.playlists.length > 0">
+                <div class="title">
+                  <i class="iconfont icon-playlists"></i>
+                  <div class="title-name">歌单</div>
+                </div>
+                <div class="result-item" v-for="(playlist, index) in state.searchResult.playlists" :key="index">
+                  <span class="name">{{ playlist.name }}</span>
+                </div>
+              </div>
+            </el-scrollbar>
+          </div>
         </el-popover>
       </div>
     </div>
@@ -76,7 +123,7 @@
   import { request } from '@/utils/http/axios/axios'
   import { getLoginStatus } from '@/api/login'
   import { getUserLikeList } from '@/api/user'
-  import { getSearchHotDetail } from '@/api/search'
+  import { getSearchHotDetail, getSearchSuggest } from '@/api/search'
   import { createStorage } from '@/utils/Storage'
   import { USER_ID, IS_LOGIN } from '@/store/mutation-types'
   import { COOKIE } from '@/store/mutation-types'
@@ -90,7 +137,8 @@
   const state = reactive({
     searchInput: '',
     profile: '',
-    hotSearchList: ''
+    hotSearchList: '',
+    searchResult: ''
   })
 
   onMounted(async () => {
@@ -156,6 +204,23 @@
       state.hotSearchList = res.data
     } else {
       console.log('获取热搜榜单失败')
+    }
+  }
+
+  /**
+   * @description: 获取搜索建议
+   * @return {*}
+   */
+  const getSearchResult = async (keywords: string) => {
+    const res = await getSearchSuggest({ keywords, timestamp: new Date().getTime() })
+    console.log('searchResult', res)
+
+    if (res.code === 200) {
+      state.searchResult = res.result
+    } else if (res.code === 400) {
+      state.searchResult = ''
+    } else {
+      console.log(`获取搜索建议失败，搜索关键字为：${keywords}`)
     }
   }
 
@@ -336,6 +401,30 @@
             color: #8e8b8b;
             @include overflow-omit;
           }
+        }
+      }
+    }
+
+    .search-result {
+      .title {
+        display: flex;
+        align-items: center;
+        color: #9f9f9f;
+        font-size: 16px;
+        padding: 10px 0 10px 10px;
+
+        .title-name {
+          margin-left: 8px;
+        }
+      }
+
+      .result-item {
+        color: #373737;
+        padding: 5px 0 5px 35px;
+        cursor: pointer;
+
+        &:hover {
+          background-color: #f2f2f2;
         }
       }
     }

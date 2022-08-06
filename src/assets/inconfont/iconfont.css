@@ -1,8 +1,8 @@
 @font-face {
   font-family: "iconfont"; /* Project id 3525807 */
-  src: url('iconfont.woff2?t=1659530753380') format('woff2'),
-       url('iconfont.woff?t=1659530753380') format('woff'),
-       url('iconfont.ttf?t=1659530753380') format('truetype');
+  src: url('iconfont.woff2?t=1659769195219') format('woff2'),
+       url('iconfont.woff?t=1659769195219') format('woff'),
+       url('iconfont.ttf?t=1659769195219') format('truetype');
 }
 
 .iconfont {
@@ -11,6 +11,26 @@
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-31sousuo:before {
+  content: "\e624";
+}
+
+.icon-songs:before {
+  content: "\e625";
+}
+
+.icon-albums:before {
+  content: "\e626";
+}
+
+.icon-artists:before {
+  content: "\e627";
+}
+
+.icon-playlists:before {
+  content: "\e6bf";
 }
 
 .icon-yangshengqi:before {
