@@ -24,7 +24,14 @@
           </div>
         </template>
       </el-table-column>
-      <el-table-column prop="name" label="标题" min-width="400" />
+      <el-table-column label="标题" min-width="400">
+        <template #default="scope">
+          <span>{{ scope.row.name }}</span>
+          <span class="alia" v-for="(item, index) in scope.row.alia" :key="index">
+            （{{ item }}）
+          </span>
+        </template>
+      </el-table-column>
       <el-table-column prop="ar[0].name" label="歌手" min-width="150" />
       <el-table-column prop="al.name" label="专辑" min-width="200" />
       <el-table-column prop="dt" label="时间" min-width="80" :formatter="formatterMusicTime" />
@@ -72,6 +79,8 @@
     })
     const res = await getSongs({ ids: trackIdsStr, timestamp: new Date().getTime() })
     state.musicList = res.songs
+    console.log('state.musicList', state.musicList)
+
     emit('completeLoading', state.musicList)
   }
 
@@ -212,6 +221,10 @@
       i.icon-download {
         margin-left: 10px;
       }
+    }
+
+    .alia {
+      color: #9f9f9f;
     }
   }
 </style>
