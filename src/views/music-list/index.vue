@@ -145,7 +145,8 @@
    */
   const playAllMusic = () => {
     musicStore.setPlayList(state.musicList)
-    proxy.$bus.emit('playAllMusic')
+    musicStore.setProfile(state.musicList[0])
+    proxy.$bus.emit('handlePlayMusic')
   }
 </script>
 <style lang="scss">

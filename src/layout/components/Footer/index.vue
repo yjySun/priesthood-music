@@ -3,11 +3,12 @@
     <audio
       :src="state.playUrl"
       autoplay="autoplay"
+      ref="audioPlayer"
       @pause="pauseMusic"
       @play="playMusic"
-      ref="audioPlayer"
       @timeupdate="getCurrentTime"
     ></audio>
+    <!-- @ended="overMusic" -->
     <div class="music-avatar">
       <div class="avatar">
         <img v-if="state.profile" :src="state.profile.al.picUrl" alt="" />
@@ -110,12 +111,12 @@
   const audioPlayer = $ref<any>()
 
   const state = reactive({
-    playlist: '', //播放列表
+    playlist: !!getPlayList ? getPlayList : '', //播放列表
     playState: false, //播放状态
     mute: false, //静音
     playUrl: '', //歌曲url
     currentMusicIndex: -1, //当前播放歌曲的索引
-    profile: '', //歌曲信息
+    profile: !!getProfile ? getProfile : '', //歌曲信息
     duration: '00:00', //总播放时长, 毫秒
     currentTime: '00:00', //当前播放时间
     volume: 70, //音量，默认70%
@@ -134,18 +135,6 @@
    * @return {*}
    */
   proxy.$bus.on('handlePlayMusic', () => {
-    state.playlist = getPlayList
-    state.profile = getProfile
-    playMusicById()
-  })
-
-  /**
-   * @description: 监听播放所有歌曲事件
-   * @return {*}
-   */
-  proxy.$bus.on('playAllMusic', () => {
-    state.playlist = getPlayList
-    state.profile = state.playlist[0]
     playMusicById()
   })
 
@@ -199,7 +188,7 @@
 
     //改变进度条进度
     const durationSeconds = parseInt(state.duration / 1000)
-    state.progress = Math.ceil((audioPlayer.currentTime / durationSeconds) * 100)
+    state.progress = Math.floor((audioPlayer.currentTime / durationSeconds) * 100)
   }
 
   /**
@@ -221,6 +210,8 @@
     () => state.progress,
     (newValue, oldValue) => {
       if (newValue === 100) {
+        console.log('newValue', newValue)
+
         nextSong()
       }
     }
@@ -317,12 +308,12 @@
     if (state.currentMusicIndex === 0) {
       const index = state.playlist.length - 1
       state.currentMusicIndex = index
-      state.profile = state.playlist[index]
+      musicStore.setProfile(state.playlist[index])
     } else {
       const ids = state.playlist.map((item) => item.id)
       const oldIndex = ids.indexOf(state.profile.id)
       const newIndex = oldIndex - 1
-      state.profile = state.playlist[newIndex]
+      musicStore.setProfile(state.playlist[newIndex])
       state.currentMusicIndex = newIndex
     }
 
@@ -341,12 +332,12 @@
     if (state.currentMusicIndex === state.playlist.length - 1) {
       const index = 0
       state.currentMusicIndex = index
-      state.profile = state.playlist[index]
+      musicStore.setProfile(state.playlist[index])
     } else {
       const ids = state.playlist.map((item) => item.id)
       const oldIndex = ids.indexOf(state.profile.id)
       const newIndex = oldIndex + 1
-      state.profile = state.playlist[newIndex]
+      musicStore.setProfile(state.playlist[newIndex])
       state.currentMusicIndex = newIndex
     }
 
