@@ -343,12 +343,14 @@
   }
 
   /**
-   * @description: 处理打开音乐列表右侧抽屉
+   * @description: 处理打开关闭音乐列表右侧抽屉
    * @return {*}
    */
   const handleOpenListDraw = () => {
-    state.drawer = true
-    handleRowDomStyle()
+    state.drawer = !state.drawer
+    if (state.drawer) {
+      handleRowDomStyle()
+    }
   }
 
   /**
