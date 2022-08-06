@@ -83,7 +83,12 @@
                   <i class="iconfont icon-playlists"></i>
                   <div class="title-name">歌单</div>
                 </div>
-                <div class="result-item" v-for="(playlist, index) in state.searchResult.playlists" :key="index">
+                <div
+                  class="result-item"
+                  v-for="(playlist, index) in state.searchResult.playlists"
+                  :key="index"
+                  @click="router.push({ path: '/created/created-playlist/' + playlist.id })"
+                >
                   <span class="name">{{ playlist.name }}</span>
                 </div>
               </div>
