@@ -42,14 +42,12 @@
   import { handleMusicTimeMS } from '@/utils'
   import { storage } from '@/utils/Storage'
   import { IS_LOGIN, USER_ID } from '@/store/mutation-types'
-  import axios from 'axios'
 
   const { proxy } = getCurrentInstance()
   const emit = defineEmits(['completeLoading'])
   const userStore = useUserStore()
   const musicStore = useMusicStore()
   const { getLikeList } = storeToRefs(userStore)
-  const { getPlayList } = storeToRefs(musicStore)
 
   const state = reactive({
     trackIds: '',
@@ -86,7 +84,9 @@
    */
   const handlePlayMusic = (row, column, event) => {
     musicStore.setProfile(row)
-    musicStore.setPlayList(state.musicList)
+    //进行深拷贝，目的为了解决state.musicList赋值给store存储了，store中的值改变时state.musicList值也会改变
+    const musicList = JSON.parse(JSON.stringify(state.musicList))
+    musicStore.setPlayList(musicList)
     proxy.$bus.emit('handlePlayMusic')
   }
 
@@ -177,7 +177,6 @@
    */
   const downloadSong = async (id) => {
     const res = await getSongDownloadUrl({ id, timestamp: new Date().getTime() })
-    console.log('res', res)
     if (res.code === 200) {
       let url = res.data.url
       //todo 跨域下载歌曲
@@ -201,7 +200,8 @@
         cursor: pointer;
       }
 
-      .icon-xihuan:hover, .icon-download:hover {
+      .icon-xihuan:hover,
+      .icon-download:hover {
         color: rgb(0, 0, 0);
       }
 

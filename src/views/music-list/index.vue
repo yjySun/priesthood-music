@@ -144,8 +144,9 @@
    * @return {*}
    */
   const playAllMusic = () => {
-    musicStore.setPlayList(state.musicList)
-    musicStore.setProfile(state.musicList[0])
+    const musicList = JSON.parse(JSON.stringify(state.musicList))
+    musicStore.setPlayList(musicList)
+    musicStore.setProfile(musicList[0])
     proxy.$bus.emit('handlePlayMusic')
   }
 </script>

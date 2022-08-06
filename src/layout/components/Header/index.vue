@@ -220,8 +220,6 @@
    */
   const getSearchResult = async (keywords: string) => {
     const res = await getSearchSuggest({ keywords, timestamp: new Date().getTime() })
-    console.log('searchResult', res)
-
     if (res.code === 200) {
       state.searchResult = res.result
     } else if (res.code === 400) {
