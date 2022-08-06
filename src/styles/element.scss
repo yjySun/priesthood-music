@@ -47,17 +47,14 @@
 
             &:focus,
             &:hover {
-                background-color: #fff !important;
+                background-color: #f5f5f6;
             }
 
             &.is-active {
                 color: black !important;
                 font-weight: 600;
-
-                .item-label {
-                    background-color: #f5f5f6;
-                    border-radius: $label-border-radius;
-                }
+                background-color: #f5f5f6;
+                border-radius: $label-border-radius;
             }
 
             .item-label {
@@ -66,11 +63,6 @@
                 line-height: $item-height - 4px;
                 width: 100%;
                 text-align: left;
-
-                &:hover {
-                    background-color: #f5f5f6;
-                    border-radius: $label-border-radius;
-                }
             }
 
             i {
