@@ -2,7 +2,6 @@ import { App } from 'vue'
 import { createRouter, createWebHashHistory, RouteRecordRaw } from 'vue-router'
 import { BaseRoutes } from './base'
 
-
 const allRouteList: RouteRecordRaw[] = []
 const routeModuleList: RouteRecordRaw[] = []
 

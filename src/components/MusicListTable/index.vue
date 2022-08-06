@@ -27,9 +27,7 @@
       <el-table-column label="标题" min-width="400">
         <template #default="scope">
           <span>{{ scope.row.name }}</span>
-          <span class="alia" v-for="(item, index) in scope.row.alia" :key="index">
-            （{{ item }}）
-          </span>
+          <span class="alia" v-for="(item, index) in scope.row.alia" :key="index"> （{{ item }}） </span>
         </template>
       </el-table-column>
       <el-table-column prop="ar[0].name" label="歌手" min-width="150" />
@@ -79,9 +77,17 @@
     })
     const res = await getSongs({ ids: trackIdsStr, timestamp: new Date().getTime() })
     state.musicList = res.songs
-    console.log('state.musicList', state.musicList)
 
     emit('completeLoading', state.musicList)
+  }
+
+  /**
+   * @description: 接收传入过来的每日推荐的歌曲
+   * @param {*} songs
+   * @return {*}
+   */
+  const getDailyPlayList = (songs) => {
+    state.musicList = songs
   }
 
   /**
@@ -195,7 +201,8 @@
   }
 
   defineExpose({
-    getTrackIds
+    getTrackIds,
+    getDailyPlayList
   })
 </script>
 <style lang="scss">

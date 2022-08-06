@@ -1,4 +1,5 @@
 import { RouteRecordRaw } from 'vue-router'
+import { Layout } from '@/router/constant'
 import { PageEnum } from '@/enums/pageEnum'
 
 export const RootRoute: RouteRecordRaw = {
@@ -10,4 +11,18 @@ export const RootRoute: RouteRecordRaw = {
   }
 }
 
-export const BaseRoutes: RouteRecordRaw[] = [RootRoute]
+const DailyRecommendRoute: RouteRecordRaw = {
+  path: '/daily',
+  name: 'daily',
+  redirect: '/daily/daily-recommend',
+  component: Layout,
+  children: [
+    {
+      path: 'daily-recommend',
+      name: 'daily-recommend',
+      component: () => import('@/views/recommend-daily/index.vue')
+    }
+  ]
+}
+
+export const BaseRoutes: RouteRecordRaw[] = [RootRoute, DailyRecommendRoute]

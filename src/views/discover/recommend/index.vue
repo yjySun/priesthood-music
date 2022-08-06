@@ -16,6 +16,8 @@
   import Banner from './components/Banner.vue'
   import RecommendList from './components/RecommendList.vue'
   import { getBanner, getRecommendMusicList } from '@/api/discover/recommend'
+  import { storage } from '@/utils/Storage'
+  import { IS_LOGIN } from '@/store/mutation-types'
 
   const state = reactive({
     loading: true,
@@ -42,7 +44,8 @@
    * @return {*}
    */
   const generateMusicList = async () => {
-    const res = await getRecommendMusicList({ limit: 10 })
+    const limit = storage.get(IS_LOGIN) ? 9 : 10
+    const res = await getRecommendMusicList({ limit })
     state.musicList = res.result
     state.loading = false
   }

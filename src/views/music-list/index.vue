@@ -66,7 +66,6 @@
               </template>
               <MusicListTable
                 ref="musicListTable"
-                :trackIds="state.playlist.trackIds"
                 @completeLoading="completeLoading"
               />
             </el-tab-pane>
