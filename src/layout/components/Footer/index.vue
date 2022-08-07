@@ -8,10 +8,9 @@
       @play="playMusic"
       @timeupdate="getCurrentTime"
     ></audio>
-    <!-- @ended="overMusic" -->
     <div class="music-avatar">
       <div class="avatar">
-        <img v-if="state.profile" :src="state.profile.al.picUrl" alt="" />
+        <img v-if="state.profile" :src="state.profile.al.picUrl" alt="" @click="openLyricDrawer" />
         <img v-else src="@/assets/img/album.jpg" alt="" />
       </div>
       <div class="info">
@@ -92,6 +91,8 @@
       </div>
     </el-drawer>
   </div>
+
+  <LyricDrawer ref="lyricDrawer" />
 </template>
 <script lang="ts" setup>
   import { onMounted, reactive, ref, watch, getCurrentInstance, nextTick } from 'vue'
@@ -102,13 +103,15 @@
   import { getSongUrl } from '@/api/song'
   import { handleMusicTimeMS, handleMusicTimeSeconds } from '@/utils'
   import { prefixInteger } from '@/utils/number'
+  import LyricDrawer from './LyricDrawer.vue'
 
+  const audioPlayer = $ref<any>()
+  const lyricDrawer = $ref<any>()
   const { proxy } = getCurrentInstance()
   const userStore = useUserStore()
   const musicStore = useMusicStore()
   const { getLikeList } = storeToRefs(userStore)
   const { getProfile, getPlayList } = storeToRefs(musicStore)
-  const audioPlayer = $ref<any>()
 
   const state = reactive({
     playlist: !!getPlayList ? getPlayList : '', //播放列表
@@ -354,6 +357,17 @@
   }
 
   /**
+   * @description: 处理打开歌词抽屉
+   * @return {*}
+   */
+  const openLyricDrawer = () => {
+    console.log('lyricDrawer', lyricDrawer)
+
+    const { open } = lyricDrawer
+    open()
+  }
+
+  /**
    * @description: 处理正在播放的音乐在列表中显示为红色
    * @param {*} newValue
    * @param {*} oldValue
@@ -432,6 +446,7 @@
 
         height: $avatar-height;
         margin-left: 20px;
+        cursor: pointer;
 
         img {
           border-radius: 5px;
@@ -538,8 +553,8 @@
 
     .music-list-drawer {
       .head {
-        // background-color: pink;
         border-bottom: 1px solid #ddd;
+
         .title {
           font-size: 20px;
           font-weight: 900;

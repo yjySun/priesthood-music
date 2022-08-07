@@ -409,3 +409,23 @@
         color: #888;
     }
 }
+
+//lyric-drawer css
+.lyric-drawer {
+    .el-overlay {
+        padding: 0;
+        height: auto;
+        top: 0;
+        bottom: 70px;
+        text-align: left;
+    }
+
+    .el-drawer.btt.open {
+        position: absolute;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        height: auto !important;
+    }
+}
