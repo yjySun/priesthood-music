@@ -77,6 +77,7 @@
         .image {
           position: relative;
           overflow: hidden; //目的解决边缘模糊
+          border-radius: 20px;
 
           .daily-icon {
             @include absolute-fill;
