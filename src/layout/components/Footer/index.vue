@@ -168,6 +168,7 @@
   const playMusic = (): void => {
     if (state.playUrl) {
       state.playState = true
+      musicStore.setIsPlay(state.playState)
       audioPlayer.play()
     }
   }
@@ -179,6 +180,7 @@
    */
   const pauseMusic = (): void => {
     state.playState = false
+    musicStore.setIsPlay(state.playState)
     audioPlayer.pause()
   }
 
