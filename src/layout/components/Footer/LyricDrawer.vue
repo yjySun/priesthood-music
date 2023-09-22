@@ -24,9 +24,8 @@
               <img class="disc-outer" src="@/assets/img/disc.png" alt="" />
             </div>
           </div>
-          <div class="lyric-scroll">
-            <div class="title">歌曲名称</div>
-            <div class="lyric-content">歌曲歌词</div>
+          <div class="lyric-content">
+            <LyricScroll />
           </div>
         </div>
         <div class="comment">评论部分</div>
@@ -35,9 +34,11 @@
   </div>
 </template>
 <script lang="ts" setup>
-  import { reactive } from 'vue'
+  import { onMounted, reactive } from 'vue'
   import { storeToRefs } from 'pinia'
   import { useMusicStore } from '@/store/modules/music'
+  import { getLyric } from '@/api/song'
+  import LyricScroll from './LyricScroll.vue'
 
   const musicStore = useMusicStore()
   const { getProfile, getIsPlay } = storeToRefs(musicStore)
@@ -58,6 +59,7 @@
 </script>
 <style lang="scss">
   .lyric-drawer {
+
     .major {
       display: flex;
       align-items: center;
@@ -86,7 +88,7 @@
           }
 
           img.play-point {
-            transform: rotate(20deg);
+            transform: rotate(25deg);
             transition: $needle-delay;
           }
         }
@@ -101,8 +103,8 @@
 
           img.disc-outer {
             position: relative;
-            width: 300px;
-            height: 300px;
+            width: 350px;
+            height: 350px;
             z-index: 1;
           }
 
@@ -125,7 +127,7 @@
         }
       }
 
-      .lyric-scroll {
+      .lyric-content {
         display: inline-block;
         width: 400px;
       }

@@ -3,14 +3,16 @@ import { defineStore } from 'pinia'
 export interface IMusicState {
   profile: any
   playList: Array<any>
-  isPlay: Boolean
+  isPlay: boolean
+  currentTime: number
 }
 
 export const useMusicStore = defineStore('musicStore', {
   state: (): IMusicState => ({
     profile: '', //当前播放歌曲信息
     playList: [], //当前播放歌曲列表
-    isPlay: false //是否正在播放歌曲
+    isPlay: false, //是否正在播放歌曲
+    currentTime: 0 //当前播放时间
   }),
   getters: {
     getProfile(): string {
@@ -21,6 +23,9 @@ export const useMusicStore = defineStore('musicStore', {
     },
     getIsPlay(): boolean {
       return this.isPlay
+    },
+    getCurrentTime(): number {
+      return this.currentTime
     }
   },
   actions: {
@@ -32,6 +37,9 @@ export const useMusicStore = defineStore('musicStore', {
     },
     setIsPlay(isPlay) {
       this.isPlay = isPlay
+    },
+    setCurrentTime(currentTime) {
+      this.currentTime = currentTime
     }
   }
 })

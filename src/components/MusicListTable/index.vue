@@ -153,7 +153,6 @@
     const res = await likeMusic(id, hasLike, new Date().getTime())
     if (res.code === 200) {
       const msg = hasLike ? '已添加到我喜欢的音乐' : '取消喜欢成功'
-      console.log(msg) //TODO
 
       //更新喜欢列表ids
       /**

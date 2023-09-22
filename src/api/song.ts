@@ -52,6 +52,6 @@ export const getLyric = (id: number): Promise<any> => {
   return request({
     url: '/lyric',
     method: RequestEnum.GET,
-    params: {id}
+    params: { id }
   })
 }

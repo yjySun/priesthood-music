@@ -190,6 +190,7 @@
    */
   const getCurrentTime = () => {
     state.currentTime = audioPlayer.currentTime
+    musicStore.setCurrentTime(audioPlayer.currentTime)
 
     //改变进度条进度
     const durationSeconds = parseInt(state.duration / 1000)
@@ -363,8 +364,6 @@
    * @return {*}
    */
   const openLyricDrawer = () => {
-    console.log('lyricDrawer', lyricDrawer)
-
     const { open } = lyricDrawer
     open()
   }
