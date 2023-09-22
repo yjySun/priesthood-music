@@ -240,7 +240,7 @@
    * @return {*}
    */
   const playSong = async (song): void => {
-    const res = await getSongs({ ids: song.id, timestamp: new Date().getTime() })
+    const res = await getSongs(song.id, new Date().getTime())
     musicStore.setProfile(res.songs[0])
     musicStore.getPlayList.push(res.songs[0])
     proxy.$bus.emit('handlePlayMusic')

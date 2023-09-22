@@ -75,7 +75,7 @@
         trackIdsStr = trackIdsStr.concat(',')
       }
     })
-    const res = await getSongs({ ids: trackIdsStr, timestamp: new Date().getTime() })
+    const res = await getSongs(trackIdsStr, new Date().getTime())
     state.musicList = res.songs
 
     emit('completeLoading', state.musicList)
@@ -191,7 +191,7 @@
    * @return {*}
    */
   const downloadSong = async (id) => {
-    const res = await getSongDownloadUrl({ id, timestamp: new Date().getTime() })
+    const res = await getSongDownloadUrl(id, new Date().getTime())
     if (res.code === 200) {
       let url = res.data.url
       //todo 跨域下载歌曲

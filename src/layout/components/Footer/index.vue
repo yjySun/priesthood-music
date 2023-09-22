@@ -146,7 +146,7 @@
    * @return {*}
    */
   const playMusicById = async () => {
-    const res = await getSongUrl({ id: state.profile.id, timestamp: new Date().getTime() })
+    const res = await getSongUrl(state.profile.id, new Date().getTime())
     if (res.code === 200) {
       state.playUrl = res.data[0].url
       state.currentTime = '00:00'
