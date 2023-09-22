@@ -124,6 +124,8 @@
                 top: -7.5px;
 
                 .el-slider__button {
+                    position: relative;
+                    top: -2px;
                     width: $slider-button-height;
                     height: $slider-button-height;
                     border: 1px solid $color;
