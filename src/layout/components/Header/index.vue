@@ -224,7 +224,7 @@
    * @return {*}
    */
   const getSearchResult = async (keywords: string) => {
-    const res = await getSearchSuggest({ keywords, timestamp: new Date().getTime() })
+    const res = await getSearchSuggest(keywords, new Date().getTime())
     if (res.code === 200) {
       state.searchResult = res.result
     } else if (res.code === 400) {
@@ -240,8 +240,6 @@
    * @return {*}
    */
   const playSong = async (song): void => {
-    console.log(`nihao`, typeof song.id);
-    
     const res = await getSongs(song.id, new Date().getTime())
     musicStore.setProfile(res.songs[0])
     musicStore.getPlayList.push(res.songs[0])

@@ -3,27 +3,27 @@ import { RequestEnum } from '@/enums/httpEnum'
 
 /**
  * @description: 获取歌曲
- * @param {any} params
+ * @param {*} Promise
  * @return {*}
  */
-export const getSearchHotDetail = (params: any): Promise<any> => {
+export const getSearchHotDetail = (): Promise<any> => {
   return request({
     url: '/search/hot/detail',
     method: RequestEnum.GET,
-    params
+    params: {}
   })
 }
 
-
 /**
  * @description: 搜索建议
- * @param {any} params
+ * @param {string} keywords
+ * @param {number} timestamp
  * @return {*}
  */
-export const getSearchSuggest = (params: any): Promise<any> => {
+export const getSearchSuggest = (keywords: string, timestamp: number): Promise<any> => {
   return request({
     url: '/search/suggest',
     method: RequestEnum.GET,
-    params
+    params: { keywords, timestamp }
   })
 }
