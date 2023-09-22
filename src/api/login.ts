@@ -2,7 +2,7 @@ import { request } from '@/utils/http/axios'
 import { RequestEnum } from '@/enums/httpEnum'
 
 /**
- * @description: 手机号密码登录
+ * @description: 手机号密码登录(接口有问题)
  * @param {any} params
  * @return {*}
  */
@@ -17,52 +17,56 @@ export const phoneLogin = (params: any): Promise<any> => {
 
 /**
  * @description: {二维码登录} 1.生成一个 key
- * @param {any} params
+ * @param {number} timestamp
  * @return {*}
  */
-export const getQRcodeKey = (params: any): Promise<any> => {
+export const getQRcodeKey = (timestamp: number): Promise<any> => {
   return request({
     url: '/login/qr/key',
     method: RequestEnum.GET,
-    params
+    params: { timestamp }
   })
 }
 
 /**
  * @description: {二维码登录} 2.传入key获取二维码
- * @param {any} params
+ * @param {string} key
+ * @param {boolean} qrimg
+ * @param {number} timestamp
  * @return {*}
  */
-export const generateQRcode = (params: any): Promise<any> => {
+export const generateQRcode = (key: string, qrimg: boolean, timestamp: number): Promise<any> => {
   return request({
     url: '/login/qr/create',
     method: RequestEnum.GET,
-    params
+    params: { key, qrimg, timestamp }
   })
 }
 
 /**
  * @description: {二维码登录} 3.传入key轮询此接口获取二维码状态
- * @param {any} params
+ * @param {string} key
+ * @param {number} timestamp
  * @return {*}
  */
-export const checkQRcode = (params: any): Promise<any> => {
+export const checkQRcode = (key: string, timestamp: number): Promise<any> => {
   return request({
     url: '/login/qr/check',
     method: RequestEnum.GET,
-    params
+    params: { key, timestamp }
   })
 }
 
 /**
  * @description: 获取登录状态
- * @param {any} params
+ * @param {object} cookie
+ * @param {number} timestamp
  * @return {*}
  */
-export const getLoginStatus = (params?: any): Promise<any> => {
+export const getLoginStatus = (cookie: object, timestamp: number): Promise<any> => {
   return request({
     url: '/login/status',
     method: RequestEnum.GET,
-    params
+    params: {cookie, timestamp}
   })
 }

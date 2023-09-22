@@ -165,8 +165,7 @@
    * @return {*}
    */
   const getCurrentUserInfo = async () => {
-    const res = await getLoginStatus({ cookie: Storage.get(COOKIE), timestamp: new Date().getTime() })
-
+    const res = await getLoginStatus(Storage.get(COOKIE), new Date().getTime())
     if (res.data.profile) {
       state.profile = res.data.profile
       Storage.set(IS_LOGIN, true)

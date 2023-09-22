@@ -122,7 +122,7 @@
    * @return {*}
    */
   const getPlaylist = async () => {
-    let res = await getPlaylistInfo({ id: playlistId, timestamp: new Date().getTime() })
+    let res = await getPlaylistInfo(playlistId, new Date().getTime())
     state.playlist = res.playlist
 
     const { getTrackIds } = musicListTable

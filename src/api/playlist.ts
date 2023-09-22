@@ -3,13 +3,14 @@ import { RequestEnum } from '@/enums/httpEnum'
 
 /**
  * @description: 获取歌单详情
- * @param {any} params
+ * @param {number} id
+ * @param {number} timestamp
  * @return {*}
  */
-export const getPlaylistInfo = (params: any): Promise<any> => {
+export const getPlaylistInfo = (id: number, timestamp: number): Promise<any> => {
   return request({
     url: '/playlist/detail',
     method: RequestEnum.GET,
-    params
+    params: { id, timestamp }
   })
 }

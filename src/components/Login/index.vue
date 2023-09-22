@@ -99,10 +99,9 @@
    * @return {*}
    */
   const QRcode = () => {
-    getQRcodeKey({ timestamp: new Date().getTime() }).then((res) => {
+    getQRcodeKey(new Date().getTime()).then((res) => {
       let key = res.data.unikey
-
-      generateQRcode({ key, qrimg: true, timestamp: new Date().getTime() }).then((res) => {
+      generateQRcode(key, true, new Date().getTime()).then((res) => {
         state.qrCode = res.data.qrimg
         state.loading = false
 
@@ -117,7 +116,7 @@
    */
   const checkQRcodeStatus = (key) => {
     const timer = setInterval(async () => {
-      const statusRes = await checkQRcode({ key, timestamp: new Date().getTime() })
+      const statusRes = await checkQRcode(key, new Date().getTime())
       if (statusRes.code === 800) {
         //二维码过期
         state.qrCodeExpired = true

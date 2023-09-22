@@ -45,7 +45,7 @@
    */
   const generateMusicList = async () => {
     const limit = storage.get(IS_LOGIN) ? 9 : 10
-    const res = await getRecommendMusicList({ limit, timestamp: new Date().getTime() })
+    const res = await getRecommendMusicList(limit, new Date().getTime())
     state.musicList = res.result
     state.loading = false
   }
