@@ -19,7 +19,7 @@ export const generatorDynamicMenu = async () => {
   let menuOptions: MenuOption[] = []
 
   if (loginStatus) {
-    const res = await getUserPayList({ uid: Storage.get(USER_ID), timestamp: new Date().getTime })
+    const res = await getUserPayList(Storage.get(USER_ID), new Date().getTime())
     playlist = res.playlist
   }
 

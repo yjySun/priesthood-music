@@ -3,11 +3,11 @@ import { RequestEnum } from '@/enums/httpEnum'
 
 /**
  * @description: 获取歌曲
- * @param {any} ids
- * @param {Date} timestamp
+ * @param {number | string} ids
+ * @param {number} timestamp
  * @return {*}
  */
-export const getSongs = (ids: any, timestamp: Date): Promise<any> => {
+export const getSongs = (ids: number | string, timestamp: number): Promise<any> => {
   return request({
     url: '/song/detail',
     method: RequestEnum.GET,
@@ -17,11 +17,11 @@ export const getSongs = (ids: any, timestamp: Date): Promise<any> => {
 
 /**
  * @description: 获取歌曲url
- * @param {any} id
- * @param {Date} timestamp
+ * @param {number} id
+ * @param {number} timestamp
  * @return {*}
  */
-export const getSongUrl = (id: any, timestamp: Date): Promise<any> => {
+export const getSongUrl = (id: number, timestamp: number): Promise<any> => {
   return request({
     url: '/song/url',
     method: RequestEnum.GET,
@@ -31,11 +31,11 @@ export const getSongUrl = (id: any, timestamp: Date): Promise<any> => {
 
 /**
  * @description: 获取下载歌曲url
- * @param {any} id
- * @param {Date} timestamp
+ * @param {number} id
+ * @param {number} timestamp
  * @return {*}
  */
-export const getSongDownloadUrl = (id: any, timestamp: Date): Promise<any> => {
+export const getSongDownloadUrl = (id: number, timestamp: number): Promise<any> => {
   return request({
     url: '/song/download/url',
     method: RequestEnum.GET,
@@ -45,10 +45,10 @@ export const getSongDownloadUrl = (id: any, timestamp: Date): Promise<any> => {
 
 /**
  * @description: 获取歌词
- * @param {any} id
+ * @param {number} id
  * @return {*}
  */
-export const getLyric = (id: any): Promise<any> => {
+export const getLyric = (id: number): Promise<any> => {
   return request({
     url: '/lyric',
     method: RequestEnum.GET,

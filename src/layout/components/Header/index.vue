@@ -182,7 +182,7 @@
    * @return {*}
    */
   const getCurrentUserLikeList = async () => {
-    const res = await getUserLikeList({ uid: state.profile.id, timestamp: new Date().getTime() })
+    const res = await getUserLikeList(state.profile.id, new Date().getTime())
     if (res.code === 200) {
       userStore.setLikeList(res.ids)
     } else {
@@ -240,6 +240,8 @@
    * @return {*}
    */
   const playSong = async (song): void => {
+    console.log(`nihao`, typeof song.id);
+    
     const res = await getSongs(song.id, new Date().getTime())
     musicStore.setProfile(res.songs[0])
     musicStore.getPlayList.push(res.songs[0])

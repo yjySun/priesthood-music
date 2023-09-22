@@ -16,40 +16,44 @@ export const getAccountInfo = (params: any): Promise<any> => {
 
 /**
  * @description: 获取用户的歌单
- * @param {any} params
+ * @param {number} uid
+ * @param {number} timestamp
  * @return {*}
  */
-export const getUserPayList = (params: any): Promise<any> => {
+export const getUserPayList = (uid: number, timestamp: number): Promise<any> => {
   return request({
     url: '/user/playlist',
     method: RequestEnum.GET,
-    params
+    params: {uid, timestamp}
   })
 }
 
 /**
  * @description: 用户喜欢的音乐列表
- * @param {any} params
+ * @param {number} uid
+ * @param {number} timestamp
  * @return {*}
  */
-export const getUserLikeList = (params: any): Promise<any> => {
+export const getUserLikeList = (uid: number, timestamp: number): Promise<any> => {
   return request({
     url: '/likelist',
     method: RequestEnum.GET,
-    params
+    params: {uid, timestamp}
   })
 }
 
 /**
  * @description: 喜欢某个音乐
- * @param {any} params
+ * @param {number} id
+ * @param {boolean} like
+ * @param {number} timestamp
  * @return {*}
  */
-export const likeMusic = (params: any): Promise<any> => {
+export const likeMusic = (id: number, like: boolean, timestamp: number): Promise<any> => {
   return request({
     url: '/like',
     method: RequestEnum.GET,
-    params
+    params: {id, like, timestamp}
   })
 }
 

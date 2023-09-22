@@ -150,7 +150,7 @@
     }
     //此歌曲是否已经被喜欢
     const hasLike = hasLikeMusic(id) ? false : true
-    const res = await likeMusic({ id, like: hasLike, timestamp: new Date().getTime() })
+    const res = await likeMusic(id, hasLike, new Date().getTime())
     if (res.code === 200) {
       const msg = hasLike ? '已添加到我喜欢的音乐' : '取消喜欢成功'
       console.log(msg) //TODO
@@ -177,7 +177,7 @@
    * @return {*}
    */
   const getCurrentUserLikeList = async () => {
-    const res = await getUserLikeList({ uid: storage.get(USER_ID), timestamp: new Date().getTime() })
+    const res = await getUserLikeList(storage.get(USER_ID), new Date().getTime())
     if (res.code === 200) {
       userStore.setLikeList(res.ids)
     } else {
