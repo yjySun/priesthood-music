@@ -7,7 +7,7 @@
         <div class="album">专辑：{{ state.profile.al.name }}</div>
       </div>
     </div>
-    <div class="lyric-any-one">
+    <div class="lyric-any-one" @wheel="state.lastScrollTime = new Date()">
       <div
         :class="{ 'lyric-item': true, 'lyric-current': state.lyricIndex === index }"
         v-for="(item, index) in state.lyric"
@@ -33,7 +33,8 @@
     isPlay: getIsPlay,
     lyric: [], //歌词
     currentTime: getCurrentTime, //当前歌曲播放时间
-    lyricIndex: 0 //歌词位置
+    lyricIndex: 0, //歌词位置
+    lastScrollTime: '' //歌词滚动面板上次手动鼠标滚动时间
   })
 
   onMounted(() => {
@@ -91,10 +92,14 @@
       const placeholderHeight = lyricArr[0].offsetTop - lyric.offsetTop - 70
       if (state.lyricIndex > 0) {
         const distance = lyricArr[state.lyricIndex - 1].offsetTop - lyric.offsetTop
-        lyric.scrollTo({
-          behavior: 'smooth',
-          top: distance - placeholderHeight
-        })
+        const elapsed = new Date() - state.lastScrollTime
+        //如果鼠标滚动歌词没有超过3秒则停止滚动
+        if (elapsed > 2000) {
+          lyric.scrollTo({
+            behavior: 'smooth',
+            top: distance - placeholderHeight
+          })
+        }
       }
     }
   }
