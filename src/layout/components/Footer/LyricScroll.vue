@@ -88,7 +88,7 @@
     // 获取歌词框
     let lyric = document.querySelector('.lyric-any-one')
     if (lyricArr.length !== 0) {
-      const placeholderHeight = lyricArr[0].offsetTop - lyric.offsetTop + 70
+      const placeholderHeight = lyricArr[0].offsetTop - lyric.offsetTop - 70
       if (state.lyricIndex > 0) {
         const distance = lyricArr[state.lyricIndex - 1].offsetTop - lyric.offsetTop
         lyric.scrollTo({
@@ -163,6 +163,14 @@
       .lyric-item {
         margin-top: 20px;
         transition: all 0.5s;
+
+        //为了占位能让第一行歌词和最后一行歌词都能居中滚动
+        &:first-child {
+          margin-top: 170px;
+        }
+        &:last-child {
+          margin-bottom: 1000px;
+        }
       }
 
       .lyric-current {
