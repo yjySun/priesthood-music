@@ -7,7 +7,7 @@
         <div class="album">专辑：{{ state.profile.al.name }}</div>
       </div>
     </div>
-    <div class="lyric-content">
+    <div class="lyric-any-one">
       <div
         :class="{ 'lyric-item': true, 'lyric-current': state.lyricIndex === index }"
         v-for="(item, index) in state.lyric"
@@ -108,6 +108,7 @@
 </script>
 <style lang="scss">
   .lyric-scroll {
+
     .song-head {
       .title {
         font-size: 30px;
@@ -129,10 +130,8 @@
       }
     }
 
-    .lyric-content {
-      position: absolute;
-      top: 150px;
-      max-height: 300px; /* 您可以根据需要设置所需的固定高度 */
+    .lyric-any-one {
+      max-height: 350px;
       overflow-y: auto;
 
       .lyric-item {

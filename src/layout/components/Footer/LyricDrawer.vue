@@ -67,18 +67,19 @@
 
       .phonograph {
         $needle-delay: 0.8s;
+        $phonograph-width: 350px;
 
         display: inline-block;
         position: relative;
-        top: 20px;
-        width: 400px;
+        margin-top: 20px;
+        width: $phonograph-width;
         height: 500px;
 
         .needle {
-          position: relative;
+          position: absolute;
           z-index: 3;
           text-align: right;
-          margin-right: 100px;
+          right: 50px;
 
           img.point {
             width: 100px;
@@ -94,27 +95,28 @@
         }
 
         .optical-disc {
-          position: absolute;
-          top: 80px;
-          right: 50px;
+          position: relative;
           animation: disc-rotate 40s linear infinite;
-          /* 动画延迟一秒 */
+          /* 动画延迟0.8秒 */
           animation-delay: $needle-delay;
+          width: $phonograph-width;
+          height: $phonograph-width;
+          top: 80px;
 
           img.disc-outer {
-            position: relative;
-            width: 350px;
-            height: 350px;
+            position: absolute;
+            width: $phonograph-width;
+            height: $phonograph-width;
             z-index: 1;
           }
 
           img.music-picture {
-            $picture-height: 210px;
+            $picture-height: 250px;
 
             position: absolute;
             border-radius: 20px;
             top: 45px;
-            left: 48px;
+            left: 50px;
             width: $picture-height;
             height: $picture-height;
             z-index: 0;
@@ -127,9 +129,15 @@
         }
       }
 
+      .lyric-content, .phonograph {
+        vertical-align: top;
+      }
+
       .lyric-content {
+        position:relative;
         display: inline-block;
-        width: 400px;
+        width: 500px;
+        margin: 20px 0 0 40px;
       }
     }
   }
