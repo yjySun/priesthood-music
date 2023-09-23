@@ -13,7 +13,7 @@
         v-for="(item, index) in state.lyric"
         :key="index"
       >
-        {{ item[1] }}
+        {{ item.lyricText }}
       </div>
     </div>
   </div>
@@ -59,22 +59,44 @@
     () => state.currentTime,
     (newValue, oldValue) => {
       changeBoldLyric()
+      changePositionLyric()
     }
   )
 
   /**
-   * @description: 改变歌词位置，加粗歌词
+   * @description: 加粗歌词
    * @return {*}
    */
   const changeBoldLyric = () => {
     state.lyric.some((item, index) => {
-      if (state.currentTime >= item[0]) {
+      if (state.currentTime >= item.totalInSeconds) {
         state.lyricIndex = index
         return false
       }
       state.lyricIndex = index - 1
       return true
     })
+  }
+
+  /**
+   * @description: 歌词滚动
+   * @return {*}
+   */
+  const changePositionLyric = () => {
+    // 获取歌词item
+    let lyricArr = document.querySelectorAll('.lyric-item')
+    // 获取歌词框
+    let lyric = document.querySelector('.lyric-any-one')
+    if (lyricArr.length !== 0) {
+      const placeholderHeight = lyricArr[0].offsetTop - lyric.offsetTop + 70
+      if (state.lyricIndex > 0) {
+        const distance = lyricArr[state.lyricIndex - 1].offsetTop - lyric.offsetTop
+        lyric.scrollTo({
+          behavior: 'smooth',
+          top: distance - placeholderHeight
+        })
+      }
+    }
   }
 
   /**
@@ -94,11 +116,11 @@
         const minutes = parseInt(matches[1], 10)
         const seconds = parseInt(matches[2], 10)
         const milliseconds = parseInt(matches[3], 10)
-        const text = matches[4]
+        const lyricText = matches[4]
 
         // 将分钟、秒和毫秒部分转换为秒为单位，并存储总秒数
         const totalInSeconds = minutes * 60 + seconds + milliseconds / 1000
-        result.push([totalInSeconds, text])
+        result.push({ totalInSeconds, lyricText })
       }
     })
     state.lyric = result
@@ -108,12 +130,11 @@
 </script>
 <style lang="scss">
   .lyric-scroll {
-
     .song-head {
       .title {
         font-size: 30px;
         color: #222;
-        // font-weight: bold;
+        font-weight: 500;
       }
 
       .detail {
@@ -131,8 +152,13 @@
     }
 
     .lyric-any-one {
+      margin-top: 20px;
       max-height: 350px;
       overflow-y: auto;
+
+      &::-webkit-scrollbar {
+        display: none;
+      }
 
       .lyric-item {
         margin-top: 20px;
