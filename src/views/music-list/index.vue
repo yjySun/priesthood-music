@@ -126,7 +126,7 @@
     state.playlist = res.playlist
 
     const { getTrackIds } = musicListTable
-    getTrackIds(state.playlist.trackIds)
+    getTrackIds(state.playlist.trackIds.map(item => item.id))
   }
 
   /**

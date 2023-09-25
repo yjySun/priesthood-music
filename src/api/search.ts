@@ -27,3 +27,29 @@ export const getSearchSuggest = (keywords: string, timestamp: number): Promise<a
     params: { keywords, timestamp }
   })
 }
+
+/**
+ * @description: 多重匹配，获取搜索结果
+ * @param {string} keywords
+ * @return {*}
+ */
+export const getMultiMatch = (keywords: string): Promise<any> => {
+  return request({
+    url: '/search/multimatch',
+    method: RequestEnum.GET,
+    params: { keywords }
+  })
+}
+
+/**
+ * @description: 传入搜索关键词可以搜索该音乐 /专辑/歌手/歌单/用户
+ * @param {string} keywords
+ * @return {*}
+ */
+export const getSearchResult = (keywords: string, offset: number, limit: number): Promise<any> => {
+  return request({
+    url: '/cloudsearch',
+    method: RequestEnum.GET,
+    params: { keywords, offset, limit }
+  })
+}

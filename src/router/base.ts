@@ -11,6 +11,7 @@ export const RootRoute: RouteRecordRaw = {
   }
 }
 
+//不在菜单蓝内显示的router
 const DailyRecommendRoute: RouteRecordRaw = {
   path: '/daily',
   name: 'daily',
@@ -25,4 +26,18 @@ const DailyRecommendRoute: RouteRecordRaw = {
   ]
 }
 
-export const BaseRoutes: RouteRecordRaw[] = [RootRoute, DailyRecommendRoute]
+const SearchRoute: RouteRecordRaw = {
+  path: '/search',
+  name: 'search',
+  redirect: '/search/search/:keywords',
+  component: Layout,
+  children: [
+    {
+      path: 'search/:keywords',
+      name: 'search',
+      component: () => import('@/views/search-list/index.vue')
+    }
+  ]
+}
+
+export const BaseRoutes: RouteRecordRaw[] = [RootRoute, DailyRecommendRoute, SearchRoute]

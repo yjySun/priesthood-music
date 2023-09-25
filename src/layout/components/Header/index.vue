@@ -18,10 +18,11 @@
               size="small"
               v-model="state.searchInput"
               @focus="getHotSearchList"
-              @input="getSearchResult"
+              @input="getSearchSuggestResult"
+              @keydown.enter="router.push({ path: '/search/search/' + state.searchInput })"
             />
           </template>
-          <div class="hot-search" v-if="!state.searchResult">
+          <div class="hot-search" v-if="!state.suggestResult">
             <el-scrollbar height="500px">
               <div class="title">热搜榜</div>
               <div class="hot-item" v-for="(item, index) in state.hotSearchList" :key="index">
@@ -37,16 +38,16 @@
               </div>
             </el-scrollbar>
           </div>
-          <div class="search-result" v-if="state.searchResult">
+          <div class="search-result" v-if="state.suggestResult">
             <el-scrollbar height="500px">
-              <div class="song" v-if="state.searchResult.songs && state.searchResult.songs.length > 0">
+              <div class="song" v-if="state.suggestResult.songs && state.suggestResult.songs.length > 0">
                 <div class="title">
                   <i class="iconfont icon-songs"></i>
                   <div class="title-name">单曲</div>
                 </div>
                 <div
                   class="result-item"
-                  v-for="(song, index) in state.searchResult.songs"
+                  v-for="(song, index) in state.suggestResult.songs"
                   :key="index"
                   @click="playSong(song)"
                 >
@@ -58,34 +59,34 @@
                   </span>
                 </div>
               </div>
-              <div class="artist" v-if="state.searchResult.artists && state.searchResult.artists.length > 0">
+              <div class="artist" v-if="state.suggestResult.artists && state.suggestResult.artists.length > 0">
                 <div class="title">
                   <i class="iconfont icon-artists"></i>
                   <div class="title-name">歌手</div>
                 </div>
-                <div class="result-item" v-for="(artist, index) in state.searchResult.artists" :key="index">
+                <div class="result-item" v-for="(artist, index) in state.suggestResult.artists" :key="index">
                   <span class="name">{{ artist.name }}</span>
                 </div>
               </div>
-              <div class="album" v-if="state.searchResult.albums && state.searchResult.albums.length > 0">
+              <div class="album" v-if="state.suggestResult.albums && state.suggestResult.albums.length > 0">
                 <div class="title">
                   <i class="iconfont icon-albums"></i>
                   <div class="title-name">专辑</div>
                 </div>
-                <div class="result-item" v-for="(album, index) in state.searchResult.albums" :key="index">
+                <div class="result-item" v-for="(album, index) in state.suggestResult.albums" :key="index">
                   <span class="name">{{ album.name }}</span>
                   <span class="link"> - </span>
                   <span class="artist">{{ album.artist.name }}</span>
                 </div>
               </div>
-              <div class="song-list" v-if="state.searchResult.playlists && state.searchResult.playlists.length > 0">
+              <div class="song-list" v-if="state.suggestResult.playlists && state.suggestResult.playlists.length > 0">
                 <div class="title">
                   <i class="iconfont icon-playlists"></i>
                   <div class="title-name">歌单</div>
                 </div>
                 <div
                   class="result-item"
-                  v-for="(playlist, index) in state.searchResult.playlists"
+                  v-for="(playlist, index) in state.suggestResult.playlists"
                   :key="index"
                   @click="router.push({ path: '/created/created-playlist/' + playlist.id })"
                 >
@@ -135,7 +136,7 @@
   import { getLoginStatus } from '@/api/login'
   import { getUserLikeList } from '@/api/user'
   import { getSongs } from '@/api/song'
-  import { getSearchHotDetail, getSearchSuggest } from '@/api/search'
+  import { getSearchHotDetail, getSearchSuggest, getMultiMatch, getSearchResult } from '@/api/search'
   import { createStorage } from '@/utils/Storage'
   import { USER_ID, IS_LOGIN, COOKIE } from '@/store/mutation-types'
 
@@ -152,7 +153,7 @@
     searchInput: '',
     profile: '',
     hotSearchList: '',
-    searchResult: ''
+    suggestResult: ''
   })
 
   onMounted(async () => {
@@ -222,12 +223,12 @@
    * @description: 获取搜索建议
    * @return {*}
    */
-  const getSearchResult = async (keywords: string) => {
+  const getSearchSuggestResult = async (keywords: string) => {
     const res = await getSearchSuggest(keywords, new Date().getTime())
     if (res.code === 200) {
-      state.searchResult = res.result
+      state.suggestResult = res.result
     } else if (res.code === 400) {
-      state.searchResult = ''
+      state.suggestResult = ''
     } else {
       console.log(`获取搜索建议失败，搜索关键字为：${keywords}`)
     }

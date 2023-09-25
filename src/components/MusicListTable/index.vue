@@ -55,7 +55,6 @@
   const { getLikeList } = storeToRefs(userStore)
 
   const state = reactive({
-    trackIds: '',
     musicList: [],
     likeList: !!getLikeList ? getLikeList : '' //喜欢的音乐id
   })
@@ -65,16 +64,7 @@
    * @return {*}
    */
   const getTrackIds = async (trackIds) => {
-    state.trackIds = trackIds
-    let trackIdsStr = ''
-
-    trackIds.forEach((item, index) => {
-      trackIdsStr = trackIdsStr.concat(item.id)
-
-      if (index !== trackIds.length - 1) {
-        trackIdsStr = trackIdsStr.concat(',')
-      }
-    })
+    const trackIdsStr = trackIds.join(',')
     const res = await getSongs(trackIdsStr, new Date().getTime())
     state.musicList = res.songs
 

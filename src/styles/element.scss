@@ -431,3 +431,46 @@
         height: auto !important;
     }
 }
+
+//分页 css
+.el-pagination.is-background {
+    @mixin el-pagination-li-style {
+        background-color: #fff !important;
+        border: 1px solid #cccccc !important;
+        color: #606266 !important;
+    }
+
+    .el-pager li {
+        @include el-pagination-li-style;
+        border-radius: 4px !important;
+
+        //选中页
+        &.is-active {
+            background-color: #ec4141 !important;
+            color: #fff !important;
+        }
+
+        &:not(.is-active):hover {
+            background-color: #f4f4f4 !important;
+            color: #000 !important;
+        }
+    }
+
+    //上一页的按钮
+    .btn-prev {
+        @include el-pagination-li-style;
+
+        &:hover {
+            color: #000;
+        }
+    }
+
+    //下一页按钮
+    .btn-next {
+        @include el-pagination-li-style;
+
+        &:hover {
+            color: #000;
+        }
+    }
+}

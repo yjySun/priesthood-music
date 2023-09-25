@@ -128,7 +128,7 @@
         result.push({ totalInSeconds, lyricText })
       }
     })
-    state.lyric = result
+    state.lyric = result.length !== 0 ? result : [{ totalInSeconds: 0, lyricText: '暂无歌词' }]
   }
 
   defineExpose({})
