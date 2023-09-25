@@ -1,8 +1,8 @@
 @font-face {
   font-family: "iconfont"; /* Project id 3525807 */
-  src: url('iconfont.woff2?t=1659769195219') format('woff2'),
-       url('iconfont.woff?t=1659769195219') format('woff'),
-       url('iconfont.ttf?t=1659769195219') format('truetype');
+  src: url('iconfont.woff2?t=1695640551284') format('woff2'),
+       url('iconfont.woff?t=1695640551284') format('woff'),
+       url('iconfont.ttf?t=1695640551284') format('truetype');
 }
 
 .iconfont {
@@ -11,6 +11,10 @@
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-yaoshi:before {
+  content: "\e628";
 }
 
 .icon-31sousuo:before {

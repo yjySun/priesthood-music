@@ -2,16 +2,30 @@ import { request } from '@/utils/http/axios'
 import { RequestEnum } from '@/enums/httpEnum'
 
 /**
- * @description: 手机号密码登录(接口有问题)
- * @param {any} params
+ * @description: 手机号密码登录
+ * @param {string} phone
+ * @param {string} captcha
  * @return {*}
  */
-export const phoneLogin = (params: any): Promise<any> => {
+export const phoneLogin = (phone: string, captcha: string): Promise<any> => {
   return request({
     url: '/login/cellphone',
     method: RequestEnum.GET,
-    params,
+    params: {phone, captcha},
     returnRes: true
+  })
+}
+
+/**
+ * @description: 发送验证码
+ * @param {string} phone
+ * @return {*}
+ */
+export const sendCaptcha = (phone: string): Promise<any> => {
+  return request({
+    url: '/captcha/sent',
+    method: RequestEnum.GET,
+    params: { phone }
   })
 }
 

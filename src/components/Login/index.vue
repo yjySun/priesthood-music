@@ -36,20 +36,32 @@
               </el-input>
             </el-form-item>
             <el-form-item>
-              <el-input
-                v-model="state.password"
-                placeholder="请输入密码"
-                type="password"
-                show-password
-                class="input-password"
-              >
+              <el-input v-model="state.captcha" placeholder="请输入验证码" class="input-password">
                 <template #prepend>
                   <el-icon>
-                    <Lock />
+                    <i class="iconfont icon-yaoshi" style="font-size: 20px"></i>
                   </el-icon>
+                </template>
+                <template #append>
+                  <el-button key="获取验证码" type="info" @click="sendCaptchaCode">获取验证码</el-button>
+                  <!-- <div class="get-code" @click="handlePhoneLogin">获取验证码</div> -->
                 </template>
               </el-input>
             </el-form-item>
+            <!-- <el-form-item label="手机号:" prop="phone">
+              <div>
+                <el-input v-model="state.loginForm.phone" placeholder="请输入手机号" autocomplete="true"></el-input>
+              </div>
+            </el-form-item>
+            <el-form-item label="验证码:" prop="captcha">
+              <div>
+                <el-input
+                  v-model="state.loginForm.captcha"
+                  placeholder="请输入验证码"
+                  autocomplete="true"
+                ></el-input>
+              </div>
+            </el-form-item> -->
           </el-form>
           <div class="hint">{{ state.hint }}</div>
           <div class="login-button">
@@ -66,7 +78,7 @@
 </template>
 <script lang="ts" setup>
   import { reactive, ref, onMounted } from 'vue'
-  import { phoneLogin, getQRcodeKey, generateQRcode, checkQRcode } from '@/api/login'
+  import { phoneLogin, getQRcodeKey, generateQRcode, checkQRcode, sendCaptcha } from '@/api/login'
   import { Lock } from '@element-plus/icons-vue'
   import { storeToRefs } from 'pinia'
   import { USER_ID } from '@/store/mutation-types'
@@ -84,7 +96,7 @@
       visible: false,
       loading: true,
       phone: '',
-      password: '',
+      captcha: '',
       qrCode: '',
       qrLogin: true, //默认显示扫码登录
       qrCodeExpired: false,
@@ -142,7 +154,16 @@
     state.loading = true
     QRcode()
   }
-
+  /**
+   * @description: 发送验证码
+   * @return {*}
+   */
+  const sendCaptchaCode = async () => {
+    const res = await sendCaptcha(state.phone)
+    if (res.code === 200 && res.data === true) {
+      alert('发送成功')
+    }
+  }
   /**
    * @description: 手机号密码登录
    * @return {*}
@@ -150,10 +171,10 @@
   const handlePhoneLogin = () => {
     if (!state.phone) {
       state.hint = '请输入手机号'
-    } else if (!state.password) {
-      state.hint = '请输入登录密码'
+    } else if (!state.captcha) {
+      state.hint = '请输入验证码'
     } else {
-      phoneLogin({ phone: state.phone, password: state.password, timestamp: new Date().getTime() }).then((res) => {
+      phoneLogin({ phone: state.phone, captcha: state.captcha, timestamp: new Date().getTime() }).then((res) => {
         if (res) {
           if (res.data.code === 200) {
             //登陆成功
