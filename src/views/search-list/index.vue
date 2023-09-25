@@ -53,11 +53,8 @@
   import { onMounted, reactive, getCurrentInstance } from 'vue'
   import { useRoute } from 'vue-router'
   import { useMusicStore } from '@/store/modules/music'
-  import { getPlaylistInfo } from '@/api/playlist'
-  import { formatToDate } from '@/utils/dateUtil'
-  import { handleNum } from '@/utils/number'
   import { $ref } from 'vue/macros'
-  import { getSearchHotDetail, getSearchSuggest, getMultiMatch, getSearchResult } from '@/api/search'
+  import { getSearchResult } from '@/api/search'
 
   const { proxy } = getCurrentInstance()
   const route = useRoute()
@@ -157,7 +154,5 @@
     .playlist {
       margin-top: 20px;
     }
-
-    
   }
 </style>
