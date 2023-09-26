@@ -26,16 +26,7 @@ axios.interceptors.response.use(
   },
   (err) => {
     console.log('error info:', [err])
-    if (err.response) {
-      if (err.response.msg && err.response.msg == '需要登录') {
-        console.log('need login')
-      } else if (err.response.data.message && err.response.data.message == '当前登录存在安全风险，请稍后再试') {
-        loginStore.setErrorMsg('当前登录存在安全风险，请稍后再试')
-      }
-    }
-    if (err.message && err.message == 'timeout of 30000ms exceeded') {
-      loginStore.setErrorMsg('访问超时')
-    }
+    loginStore.setErrorMsg('发生未知错误，请到控制台查看')
   }
 )
 

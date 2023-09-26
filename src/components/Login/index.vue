@@ -46,29 +46,15 @@
                   <el-button key="获取验证码" type="info" @click="sendCaptchaCode" :disabled="state.isSendCaptcha">
                     {{ state.isSendCaptcha ? state.seconds + ' s' : '获取验证码' }}
                   </el-button>
-                  <!-- <div class="get-code" @click="handlePhoneLogin">获取验证码</div> -->
                 </template>
               </el-input>
             </el-form-item>
-            <!-- <el-form-item label="手机号:" prop="phone">
-              <div>
-                <el-input v-model="state.loginForm.phone" placeholder="请输入手机号" autocomplete="true"></el-input>
-              </div>
-            </el-form-item>
-            <el-form-item label="验证码:" prop="captcha">
-              <div>
-                <el-input
-                  v-model="state.loginForm.captcha"
-                  placeholder="请输入验证码"
-                  autocomplete="true"
-                ></el-input>
-              </div>
-            </el-form-item> -->
           </el-form>
           <div class="hint">{{ state.hint }}</div>
           <div class="login-button">
             <el-button color="#ec4141" @click="handlePhoneLogin">登录</el-button>
           </div>
+          <div class="login-hint">提示：若登陆失败请使用二维码登录</div>
         </div>
       </div>
 
@@ -165,8 +151,9 @@
   const sendCaptchaCode = async () => {
     if (!state.phone) {
       state.hint = '请输入手机号'
+      return
     }
-    const res = await sendCaptcha(state.phone)
+    const res = await sendCaptcha(state.phone, new Date().getTime())
     if (res.code === 200 && res.data === true) {
       state.hint = '' //清空提示信息
       state.isSendCaptcha = true
@@ -185,7 +172,7 @@
     }
   }
   /**
-   * @description: 手机号密码登录
+   * @description: 手机号密验证码登录
    * @return {*}
    */
   const handlePhoneLogin = () => {
@@ -194,7 +181,7 @@
     } else if (!state.captcha) {
       state.hint = '请输入验证码'
     } else {
-      phoneLogin({ phone: state.phone, captcha: state.captcha, timestamp: new Date().getTime() }).then((res) => {
+      phoneLogin(state.phone, state.captcha, new Date().getTime()).then((res) => {
         if (res) {
           if (res.data.code === 200) {
             //登陆成功
@@ -209,10 +196,7 @@
           }
         } else {
           if (!!errorMsg) {
-            let error = JSON.parse(JSON.stringify(errorMsg))
-            state.hint = error['_object'].errorMsg
-          } else {
-            state.hint = '该手机号尚未注册'
+            state.hint = errorMsg
           }
         }
       })
@@ -302,6 +286,14 @@
         position: absolute;
         top: 300px;
         left: 55px;
+      }
+
+      .login-hint {
+        position: absolute;
+        top: 350px;
+        left: 80px;
+        font-size: 12px;
+        color: #8e8b8b;
       }
     }
 

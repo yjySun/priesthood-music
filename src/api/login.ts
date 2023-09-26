@@ -2,30 +2,47 @@ import { request } from '@/utils/http/axios'
 import { RequestEnum } from '@/enums/httpEnum'
 
 /**
- * @description: 手机号密码登录
+ * @description: 手机号验证码登录
  * @param {string} phone
  * @param {string} captcha
+ * @param {number} timestamp
  * @return {*}
  */
-export const phoneLogin = (phone: string, captcha: string): Promise<any> => {
+export const phoneLogin = (phone: string, captcha: string, timestamp: number): Promise<any> => {
   return request({
     url: '/login/cellphone',
     method: RequestEnum.GET,
-    params: {phone, captcha},
+    params: { phone, captcha, timestamp },
     returnRes: true
+  })
+}
+
+/**
+ * @description: 手机号验证码验证(暂时没用到)
+ * @param {string} phone
+ * @param {string} captcha
+ * @param {number} timestamp
+ * @return {*}
+ */
+export const captchaVerify = (phone: string, captcha: string, timestamp: number): Promise<any> => {
+  return request({
+    url: '/captcha/verify',
+    method: RequestEnum.GET,
+    params: { phone, captcha, timestamp }
   })
 }
 
 /**
  * @description: 发送验证码
  * @param {string} phone
+ * @param {number} timestamp
  * @return {*}
  */
-export const sendCaptcha = (phone: string): Promise<any> => {
+export const sendCaptcha = (phone: string, timestamp: number): Promise<any> => {
   return request({
     url: '/captcha/sent',
     method: RequestEnum.GET,
-    params: { phone }
+    params: { phone, timestamp }
   })
 }
 
@@ -81,7 +98,7 @@ export const getLoginStatus = (cookie: object, timestamp: number): Promise<any> 
   return request({
     url: '/login/status',
     method: RequestEnum.GET,
-    params: {cookie, timestamp}
+    params: { cookie, timestamp }
   })
 }
 
