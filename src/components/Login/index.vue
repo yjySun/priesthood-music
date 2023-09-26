@@ -43,7 +43,9 @@
                   </el-icon>
                 </template>
                 <template #append>
-                  <el-button key="获取验证码" type="info" @click="sendCaptchaCode">获取验证码</el-button>
+                  <el-button key="获取验证码" type="info" @click="sendCaptchaCode" :disabled="state.isSendCaptcha">
+                    {{ state.isSendCaptcha ? state.seconds + ' s' : '获取验证码' }}
+                  </el-button>
                   <!-- <div class="get-code" @click="handlePhoneLogin">获取验证码</div> -->
                 </template>
               </el-input>
@@ -100,7 +102,9 @@
       qrCode: '',
       qrLogin: true, //默认显示扫码登录
       qrCodeExpired: false,
-      hint: ''
+      hint: '',
+      isSendCaptcha: false,
+      seconds: 60
     }
   }
 
@@ -159,9 +163,25 @@
    * @return {*}
    */
   const sendCaptchaCode = async () => {
+    if (!state.phone) {
+      state.hint = '请输入手机号'
+    }
     const res = await sendCaptcha(state.phone)
     if (res.code === 200 && res.data === true) {
-      alert('发送成功')
+      state.hint = '' //清空提示信息
+      state.isSendCaptcha = true
+      setInterval(() => {
+        if (state.seconds > 0) {
+          state.seconds--
+        } else {
+          state.isSendCaptcha = false
+          state.seconds = 60
+        }
+      }, 1000)
+    } else if (res.code === 400) {
+      state.hint = res.message
+    } else {
+      alter('获取验证码失败')
     }
   }
   /**
