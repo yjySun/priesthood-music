@@ -133,7 +133,7 @@
   import { useRouter } from 'vue-router'
   import { Search } from '@element-plus/icons-vue'
   import { request } from '@/utils/http/axios/axios'
-  import { getLoginStatus } from '@/api/login'
+  import { getLoginStatus, getLogout } from '@/api/login'
   import { getUserLikeList } from '@/api/user'
   import { getSongs } from '@/api/song'
   import { getSearchHotDetail, getSearchSuggest, getMultiMatch, getSearchResult } from '@/api/search'
@@ -251,7 +251,7 @@
    * @return {*}
    */
   const logout = () => {
-    Storage.clearCookie()
+    getLogout();
     Storage.clear()
     router.push({ path: '/discover' })
     //目的为了重置菜单

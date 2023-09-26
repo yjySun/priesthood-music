@@ -84,3 +84,16 @@ export const getLoginStatus = (cookie: object, timestamp: number): Promise<any> 
     params: {cookie, timestamp}
   })
 }
+
+/**
+ * @description: 退出登录
+ * @param {*} Promise
+ * @return {*}
+ */
+export const getLogout = (): Promise<any> => {
+  return request({
+    url: '/logout',
+    method: RequestEnum.GET,
+    params: {}
+  })
+}
