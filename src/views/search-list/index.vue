@@ -120,6 +120,9 @@
   const completeLoading = (musicList) => {
     state.loading = false
     state.musicList = musicList
+    
+    //页码改变发送footer页面调整喇叭
+    proxy.$bus.emit('changeMusicList', state.musicList)
   }
 
   /**

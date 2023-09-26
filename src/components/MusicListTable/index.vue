@@ -8,7 +8,11 @@
       style="width: 100%"
       @row-dblclick="handlePlayMusic"
     >
-      <el-table-column type="index" :index="indexMethod" />
+      <el-table-column type="index">
+        <template #default="scope">
+          <div class="song-id" :songId="scope.row.id">{{ indexMethod(scope.$index) }}</div>
+        </template>
+      </el-table-column>
       <el-table-column label="操作" min-width="50">
         <template #default="scope">
           <div class="operate-button">
@@ -93,6 +97,7 @@
     const musicList = JSON.parse(JSON.stringify(state.musicList))
     musicStore.setPlayList(musicList)
     proxy.$bus.emit('handlePlayMusic')
+    proxy.$bus.emit('changeMusicList', musicList)
   }
 
   /**

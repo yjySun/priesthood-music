@@ -115,10 +115,13 @@
 
   const state = reactive({
     playlist: !!getPlayList ? getPlayList : '', //播放列表
+    musicList: [], //正在显示的音乐列表
     playState: false, //播放状态
     mute: false, //静音
     playUrl: '', //歌曲url
     currentMusicIndex: -1, //当前播放歌曲的索引
+    newCurrentMusicIndex: -1,
+    oldCurrentMusicIndex: -1,
     profile: !!getProfile ? getProfile : '', //歌曲信息
     duration: '00:00', //总播放时长, 毫秒
     currentTime: '00:00', //当前播放时间
@@ -140,6 +143,25 @@
   proxy.$bus.on('handlePlayMusic', () => {
     playMusicById()
   })
+
+  /**
+   * @description: 监听翻页
+   * @return {*}
+   */
+  proxy.$bus.on('changeMusicList', (musicList) => {
+    state.musicList = musicList
+  })
+
+  /**
+   * @description: 监听查看的列表
+   * @return {*}
+   */
+  watch(
+    () => state.musicList,
+    (newValue, oldValue) => {
+      handleRowDomStyle(state.newCurrentMusicIndex, state.oldCurrentMusicIndex)
+    }
+  )
 
   /**
    * @description: 根据url播放歌曲
@@ -228,6 +250,8 @@
   watch(
     () => state.currentMusicIndex,
     (newValue, oldValue) => {
+      state.newCurrentMusicIndex = newValue
+      state.oldCurrentMusicIndex = oldValue
       handleRowDomStyle(newValue, oldValue)
     }
   )
@@ -384,13 +408,33 @@
          * */
         //当前索引行添加current-row类名
         if (tableRows1[state.currentMusicIndex]) {
-          tableRows1[state.currentMusicIndex].children[0].classList.add('play-row')
-          tableRows1[state.currentMusicIndex].children[2].classList.add('play-row')
+          const songDiv = tableRows1[state.currentMusicIndex].children[0].querySelector('.song-id')
+          if (!!songDiv) {
+            const songId = songDiv.getAttribute('songId')
+            if (!!songId && songId.toString() === state.profile.id.toString()) {
+              console.log(`dom change la ba`)
+              tableRows1[state.currentMusicIndex].children[0].classList.add('play-row')
+              tableRows1[state.currentMusicIndex].children[2].classList.add('play-row')
 
-          //改变dom为小喇叭
-          tableRows1[state.currentMusicIndex].children[0].querySelector(
-            '.cell'
-          ).innerHTML = `<div><i class="iconfont icon-yangshengqi"></i></div>`
+              //改变dom为小喇叭
+              tableRows1[state.currentMusicIndex].children[0].querySelector(
+                '.cell'
+              ).innerHTML = `<div><i class="i-song-id iconfont icon-yangshengqi songId="${
+                state.musicList[state.currentMusicIndex].id
+              }"></i></div>`
+            }
+          } else {
+            console.log(`dom change origin`)
+            tableRows1[state.currentMusicIndex].children[0].classList.remove('play-row')
+            tableRows1[state.currentMusicIndex].children[2].classList.remove('play-row')
+
+            //改变dom为原来的样式
+            tableRows1[state.currentMusicIndex].children[0].querySelector(
+              '.cell'
+            ).innerHTML = `<div class="song-id" songId="${state.musicList[state.currentMusicIndex].id}">${
+              state.currentMusicIndex + 1
+            }</div>`
+          }
         }
 
         if (
