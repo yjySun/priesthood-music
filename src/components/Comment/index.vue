@@ -8,7 +8,11 @@
           <span>{{ item.content }}</span>
         </div>
         <div class="content-operate">
+          <div>
           <div class="timestamp">{{ formatToDateTime(item.time) }}</div>
+          <div class="ip" style="margin-left: 5px">· {{ item.ipLocation.location }}</div>
+
+          </div>
           <div class="operate">
             <div class="like-button" :commentId="item.commentId">
               <i class="iconfont icon-dianzan"></i>
