@@ -24,7 +24,7 @@ export const getUserPayList = (uid: number, timestamp: number): Promise<any> => 
   return request({
     url: '/user/playlist',
     method: RequestEnum.GET,
-    params: {uid, timestamp}
+    params: { uid, timestamp }
   })
 }
 
@@ -38,7 +38,7 @@ export const getUserLikeList = (uid: number, timestamp: number): Promise<any> =>
   return request({
     url: '/likelist',
     method: RequestEnum.GET,
-    params: {uid, timestamp}
+    params: { uid, timestamp }
   })
 }
 
@@ -53,7 +53,6 @@ export const likeMusic = (id: number, like: boolean, timestamp: number): Promise
   return request({
     url: '/like',
     method: RequestEnum.GET,
-    params: {id, like, timestamp}
+    params: { id, like, timestamp }
   })
 }
-

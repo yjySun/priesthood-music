@@ -28,7 +28,12 @@
             <LyricScroll />
           </div>
         </div>
-        <div class="comment">评论部分</div>
+        <div class="comment">
+          <div class="title">热门评论</div>
+          <div class="content">
+            <Comment :commentInfo="{ id: state.profile.id, type: commentEnum.SONG }" />
+          </div>
+        </div>
       </div>
     </el-drawer>
   </div>
@@ -39,6 +44,8 @@
   import { useMusicStore } from '@/store/modules/music'
   import { getLyric } from '@/api/song'
   import LyricScroll from './LyricScroll.vue'
+  import { Comment } from '@/components/Comment'
+  import { commentEnum } from '@/enums/CommentEnum'
 
   const musicStore = useMusicStore()
   const { getProfile, getIsPlay } = storeToRefs(musicStore)
@@ -59,85 +66,100 @@
 </script>
 <style lang="scss">
   .lyric-drawer {
-
     .major {
       display: flex;
       align-items: center;
       flex-direction: column;
 
-      .phonograph {
-        $needle-delay: 0.8s;
-        $phonograph-width: 350px;
+      $children-width: 850px;
+      .lyric {
+        width: $children-width;
 
-        display: inline-block;
-        position: relative;
-        margin-top: 20px;
-        width: $phonograph-width;
-        height: 500px;
+        .phonograph {
+          $needle-delay: 0.8s;
+          $phonograph-width: 350px;
 
-        .needle {
-          position: absolute;
-          z-index: 3;
-          text-align: right;
-          right: 50px;
-
-          img.point {
-            width: 100px;
-            height: 100px;
-            transform-origin: 0 0;
-            transition: $needle-delay;
-          }
-
-          img.play-point {
-            transform: rotate(25deg);
-            transition: $needle-delay;
-          }
-        }
-
-        .optical-disc {
+          display: inline-block;
           position: relative;
-          animation: disc-rotate 40s linear infinite;
-          /* 动画延迟0.8秒 */
-          animation-delay: $needle-delay;
+          margin-top: 20px;
           width: $phonograph-width;
-          height: $phonograph-width;
-          top: 80px;
+          height: 470px;
 
-          img.disc-outer {
+          .needle {
             position: absolute;
+            z-index: 3;
+            text-align: right;
+            right: 50px;
+
+            img.point {
+              width: 100px;
+              height: 100px;
+              transform-origin: 0 0;
+              transition: $needle-delay;
+            }
+
+            img.play-point {
+              transform: rotate(25deg);
+              transition: $needle-delay;
+            }
+          }
+
+          .optical-disc {
+            position: relative;
+            animation: disc-rotate 40s linear infinite;
+            /* 动画延迟0.8秒 */
+            animation-delay: $needle-delay;
             width: $phonograph-width;
             height: $phonograph-width;
-            z-index: 1;
+            top: 80px;
+
+            img.disc-outer {
+              position: absolute;
+              width: $phonograph-width;
+              height: $phonograph-width;
+              z-index: 1;
+            }
+
+            img.music-picture {
+              $picture-height: 250px;
+
+              position: absolute;
+              border-radius: 20px;
+              top: 45px;
+              left: 50px;
+              width: $picture-height;
+              height: $picture-height;
+              z-index: 0;
+            }
           }
 
-          img.music-picture {
-            $picture-height: 250px;
-
-            position: absolute;
-            border-radius: 20px;
-            top: 45px;
-            left: 50px;
-            width: $picture-height;
-            height: $picture-height;
-            z-index: 0;
+          .optical-disc-paused {
+            animation-play-state: paused;
+            -webkit-animation-play-state: paused;
           }
         }
 
-        .optical-disc-paused {
-          animation-play-state: paused;
-          -webkit-animation-play-state: paused;
+        .lyric-content,
+        .phonograph {
+          vertical-align: top;
+        }
+
+        .lyric-content {
+          position: relative;
+          display: inline-block;
+          width: 400px;
+          margin: 20px 0 0 80px;
         }
       }
 
-      .lyric-content, .phonograph {
-        vertical-align: top;
-      }
-
-      .lyric-content {
-        position:relative;
-        display: inline-block;
-        width: 500px;
-        margin: 20px 0 0 40px;
+      .comment {
+        text-align: left;
+        width: $children-width;
+        .title {
+          font-size: 20px;
+          font-weight: 600;
+          color: #000;
+        }
       }
     }
   }
