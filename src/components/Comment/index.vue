@@ -5,13 +5,12 @@
       <div class="content">
         <div class="content-text">
           <span class="user-name" :userId="item.user.id">{{ item.user.nickname }}: </span>
-          <span>{{ item.content }}</span>
+          <span class="text">{{ item.content }}</span>
         </div>
         <div class="content-operate">
           <div>
-          <div class="timestamp">{{ formatToDateTime(item.time) }}</div>
-          <div class="ip" style="margin-left: 5px">· {{ item.ipLocation.location }}</div>
-
+            <div class="timestamp">{{ formatToDateTime(item.time) }}</div>
+            <div v-if="item.ipLocation.location" class="ip" style="margin-left: 5px">· {{ item.ipLocation.location }}</div>
           </div>
           <div class="operate">
             <div class="like-button" :commentId="item.commentId">
@@ -31,7 +30,7 @@
   </div>
 </template>
 <script lang="ts" setup>
-  import { onMounted, reactive } from 'vue'
+  import { onMounted, reactive, toRefs, watch } from 'vue'
   import { storeToRefs } from 'pinia'
   import { useMusicStore } from '@/store/modules/music'
   import { getSongComment, getPlayListComment } from '@/api/comment'
@@ -47,22 +46,45 @@
     commentInfo: ICommentInfo
   }>()
 
+  //为了将defineProps接收的变量变成响应式传入state，如果不用toRefs则响应式失效
+  const { commentInfo } = toRefs(props)
+
   const musicStore = useMusicStore()
 
   const state = reactive({
-    commentInfo: props.commentInfo,
+    commentInfo: commentInfo,
     comments: [] //评论
   })
 
-  onMounted(async () => {
+  onMounted(() => {
+    getSongComments()
+  })
+
+  /**
+   * @description: 监听传入评论信息
+   * @return {*}
+   */
+  watch(
+    () => state.commentInfo,
+    (newValue, oldValue) => {
+      getSongComments()
+    }
+  )
+
+  /**
+   * @description: 获取歌曲评论
+   * @return {*}
+   */
+  const getSongComments = async () => {
     if (state.commentInfo.type === commentEnum.SONG) {
       const res = await getSongComment(state.commentInfo.id, 0, 20)
       if (res.code === 200) {
         state.comments = res.comments
+      } else {
+        console.log(`获取评论失败`, res)
       }
-      console.log(res)
     }
-  })
+  }
 
   defineExpose({})
 </script>
@@ -94,6 +116,10 @@
           .user-name {
             color: #5a8ab9;
             cursor: pointer;
+          }
+
+          .text {
+            line-height: 30px;
           }
         }
 
