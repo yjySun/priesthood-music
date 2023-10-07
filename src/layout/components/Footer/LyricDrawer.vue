@@ -33,6 +33,15 @@
           <div class="content">
             <Comment :commentInfo="{ id: state.profile.id, type: commentEnum.SONG }" />
           </div>
+          <div class="pagination">
+            <el-pagination
+              background
+              layout="prev, pager, next"
+              :page-size="state.pageSize"
+              :total="state.commentCount"
+              @current-change="currentPageChange"
+            />
+          </div>
         </div>
       </div>
     </el-drawer>
@@ -51,10 +60,24 @@
   const { getProfile, getIsPlay } = storeToRefs(musicStore)
 
   const state = reactive({
+    loading: true,
     visible: false,
     profile: !!getProfile ? getProfile : '', //歌曲信息
-    isPlay: getIsPlay
+    isPlay: getIsPlay,
+    commentCount: 20,
+    pageSize: 30,
+    currentPage: 1
   })
+
+  /**
+   * @description: 当前页数改变
+   * @param {*} currentPage
+   * @return {*}
+   */
+  const currentPageChange = (currentPage) => {
+    state.currentPage = currentPage
+    state.loading = true
+  }
 
   const open = (visible) => {
     state.visible = !state.visible
@@ -155,10 +178,18 @@
       .comment {
         text-align: left;
         width: $children-width;
+
         .title {
           font-size: 20px;
           font-weight: 600;
           color: #000;
+        }
+        
+        .pagination {
+          width: 100%;
+          margin-top: 20px;
+          display: flex;
+          justify-content: center;
         }
       }
     }
