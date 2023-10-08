@@ -29,20 +29,23 @@
           </div>
         </div>
         <div class="comment">
-          <div class="title">热门评论</div>
-          <div class="content">
-            <Comment :commentList="state.comments" />
+          <div class="title">全部评论</div>
+          <div v-if="!state.comments">
+            <div class="content">
+              <Comment :commentList="state.comments" />
+            </div>
+            <div class="pagination" v-if="!!state.comments">
+              <el-pagination
+                background
+                layout="prev, pager, next"
+                :page-size="state.pageSize"
+                :total="state.total"
+                :current-page="state.currentPage"
+                @current-change="currentPageChange"
+              />
+            </div>
           </div>
-          <div class="pagination" v-if="!!state.comments">
-            <el-pagination
-              background
-              layout="prev, pager, next"
-              :page-size="state.pageSize"
-              :total="state.total"
-              :current-page="state.currentPage"
-              @current-change="currentPageChange"
-            />
-          </div>
+          <div v-else style="display: flex; justify-content: center; margin-top: 20px">暂无评论</div>
         </div>
       </div>
     </el-drawer>
