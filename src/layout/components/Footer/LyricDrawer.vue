@@ -33,7 +33,7 @@
           <div class="content">
             <Comment :commentList="state.comments" />
           </div>
-          <div class="pagination">
+          <div class="pagination" v-if="!!state.comments">
             <el-pagination
               background
               layout="prev, pager, next"
@@ -66,7 +66,7 @@
     profile: !!getProfile ? getProfile : '', //歌曲信息
     isPlay: getIsPlay,
     comments: [], //评论
-    total: 20,
+    total: 0,
     pageSize: 30,
     currentPage: 1
   })
