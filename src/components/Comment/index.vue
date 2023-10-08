@@ -35,58 +35,22 @@
   import { onMounted, reactive, toRefs, watch } from 'vue'
   import { storeToRefs } from 'pinia'
   import { useMusicStore } from '@/store/modules/music'
-  import { getSongComment, getPlayListComment } from '@/api/comment'
   import { IS_LOGIN, USER_ID } from '@/store/mutation-types'
   import { commentEnum } from '@/enums/CommentEnum'
   import { formatToDateTime } from '@/utils/dateUtil'
 
-  interface ICommentInfo {
-    id: number
-    type: commentEnum
-  }
   const props = defineProps<{
-    commentInfo: ICommentInfo
+    commentList: array
   }>()
 
   //为了将defineProps接收的变量变成响应式传入state，如果不用toRefs则响应式失效
-  const { commentInfo } = toRefs(props)
+  const { commentList } = toRefs(props)
 
   const musicStore = useMusicStore()
 
   const state = reactive({
-    commentInfo: commentInfo,
-    comments: [] //评论
+    comments: commentList //评论
   })
-
-  onMounted(() => {
-    getSongComments()
-  })
-
-  /**
-   * @description: 监听传入评论信息
-   * @return {*}
-   */
-  watch(
-    () => state.commentInfo,
-    (newValue, oldValue) => {
-      getSongComments()
-    }
-  )
-
-  /**
-   * @description: 获取歌曲评论
-   * @return {*}
-   */
-  const getSongComments = async () => {
-    if (state.commentInfo.type === commentEnum.SONG) {
-      const res = await getSongComment(state.commentInfo.id, 0, 20)
-      if (res.code === 200) {
-        state.comments = res.comments
-      } else {
-        console.log(`获取评论失败`, res)
-      }
-    }
-  }
 
   defineExpose({})
 </script>

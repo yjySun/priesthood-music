@@ -31,7 +31,7 @@
         <div class="comment">
           <div class="title">热门评论</div>
           <div class="content">
-            <Comment :commentInfo="{ id: state.profile.id, type: commentEnum.SONG }" />
+            <Comment :commentList="state.comments" />
           </div>
           <div class="pagination">
             <el-pagination
@@ -48,12 +48,13 @@
   </div>
 </template>
 <script lang="ts" setup>
-  import { onMounted, reactive } from 'vue'
+  import { onMounted, reactive, watch } from 'vue'
   import { storeToRefs } from 'pinia'
   import { useMusicStore } from '@/store/modules/music'
   import { getLyric } from '@/api/song'
   import LyricScroll from './LyricScroll.vue'
   import { Comment } from '@/components/Comment'
+  import { getSongComment } from '@/api/comment'
   import { commentEnum } from '@/enums/CommentEnum'
 
   const musicStore = useMusicStore()
@@ -64,6 +65,7 @@
     visible: false,
     profile: !!getProfile ? getProfile : '', //歌曲信息
     isPlay: getIsPlay,
+    comments: [], //评论
     commentCount: 20,
     pageSize: 30,
     currentPage: 1
@@ -78,6 +80,30 @@
     state.currentPage = currentPage
     state.loading = true
   }
+
+  /**
+   * @description: 获取歌曲评论
+   * @return {*}
+   */
+  const getSongComments = async (id, offset, limit) => {
+      const res = await getSongComment(id, offset, limit)
+      if (res.code === 200) {
+        state.comments = res.comments
+      } else {
+        console.log(`获取评论失败`, res)
+      }
+  }
+
+  /**
+   * @description: 监听传入评论信息
+   * @return {*}
+   */
+  watch(
+    () => state.profile,
+    (newValue, oldValue) => {
+      getSongComments(state.profile.id, 0, 20)
+    }
+  )
 
   const open = (visible) => {
     state.visible = !state.visible
@@ -184,7 +210,7 @@
           font-weight: 600;
           color: #000;
         }
-        
+
         .pagination {
           width: 100%;
           margin-top: 20px;
