@@ -2,6 +2,7 @@
   <div class="search-music-list">
     <div class="loading-parent">
       <Loading :loading="state.loading">
+        <div class="search-title">搜索 {{ keywords }}</div>
         <div class="playlist">
           <el-tabs class="list-tabs" v-model="state.activeName" @tab-click="handleClick">
             <el-tab-pane name="song">
@@ -120,7 +121,7 @@
   const completeLoading = (musicList) => {
     state.loading = false
     state.musicList = musicList
-    
+
     //页码改变发送footer页面调整喇叭
     proxy.$bus.emit('changeMusicList', state.musicList)
   }
@@ -146,6 +147,15 @@
       position: relative;
       width: 100%;
       height: 100%;
+
+      .search-title {
+        font-size: 24px;
+        color: #000;
+        font-weight: bold;
+        display: flex;
+        justify-content: left;
+        padding-left: 10px;
+      }
     }
 
     .pagination {

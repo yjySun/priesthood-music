@@ -19,7 +19,7 @@
               v-model="state.searchInput"
               @focus="getHotSearchList"
               @input="getSearchSuggestResult"
-              @keydown.enter="router.push({ path: '/search/search/' + state.searchInput })"
+              @keydown.enter="searchSong(state.searchInput)"
             />
           </template>
           <div class="hot-search" v-if="!state.suggestResult">
@@ -247,11 +247,22 @@
   }
 
   /**
+   * @description: 搜索歌曲
+   * @param {*} keywords
+   * @return {*}
+   */
+  const searchSong = (keywords) => {
+    if (!!keywords) {
+      router.push({ path: '/search/search/' + keywords })
+    }
+  }
+
+  /**
    * @description: 退出登录
    * @return {*}
    */
   const logout = () => {
-    getLogout();
+    getLogout()
     Storage.clear()
     router.push({ path: '/discover' })
     //目的为了重置菜单
