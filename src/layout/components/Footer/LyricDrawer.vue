@@ -1,6 +1,7 @@
 <template>
   <div class="lyric-drawer">
-    <el-drawer v-model="state.visible" :with-header="false" direction="btt">
+    <el-drawer v-model="state.visible" :with-header="false" direction="btt" custom-class="lyric-card">
+      <i class="iconfont icon-xiajiantou close-drawer" @click="state.visible = false"></i>
       <div class="major">
         <div class="lyric">
           <div class="phonograph">
@@ -120,6 +121,18 @@
 </script>
 <style lang="scss">
   .lyric-drawer {
+    .close-drawer {
+      position: absolute;
+      font-size: 30px;
+      cursor: pointer;
+      color: #9f9f9f;
+    }
+    
+    .lyric-card {
+      background-color: white;
+      background-image: linear-gradient(to bottom, #e3e2e3, white);
+    }
+
     .major {
       display: flex;
       align-items: center;
