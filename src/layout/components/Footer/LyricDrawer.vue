@@ -38,7 +38,8 @@
               background
               layout="prev, pager, next"
               :page-size="state.pageSize"
-              :total="state.commentCount"
+              :total="state.total"
+              :current-page="state.currentPage"
               @current-change="currentPageChange"
             />
           </div>
@@ -61,12 +62,11 @@
   const { getProfile, getIsPlay } = storeToRefs(musicStore)
 
   const state = reactive({
-    loading: true,
     visible: false,
     profile: !!getProfile ? getProfile : '', //歌曲信息
     isPlay: getIsPlay,
     comments: [], //评论
-    commentCount: 20,
+    total: 20,
     pageSize: 30,
     currentPage: 1
   })
@@ -78,7 +78,7 @@
    */
   const currentPageChange = (currentPage) => {
     state.currentPage = currentPage
-    state.loading = true
+    getSongComments(state.profile.id, (state.currentPage - 1) * state.pageSize, state.pageSize)
   }
 
   /**
@@ -86,12 +86,13 @@
    * @return {*}
    */
   const getSongComments = async (id, offset, limit) => {
-      const res = await getSongComment(id, offset, limit)
-      if (res.code === 200) {
-        state.comments = res.comments
-      } else {
-        console.log(`获取评论失败`, res)
-      }
+    const res = await getSongComment(id, offset, limit)
+    if (res.code === 200) {
+      state.total = res.total
+      state.comments = res.comments
+    } else {
+      console.log(`获取评论失败`, res)
+    }
   }
 
   /**
@@ -101,7 +102,8 @@
   watch(
     () => state.profile,
     (newValue, oldValue) => {
-      getSongComments(state.profile.id, 0, 20)
+      state.currentPage = 1
+      getSongComments(state.profile.id, (state.currentPage - 1) * state.pageSize, state.pageSize)
     }
   )
 
