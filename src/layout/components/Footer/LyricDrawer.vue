@@ -30,11 +30,11 @@
         </div>
         <div class="comment">
           <div class="title">全部评论</div>
-          <div v-if="!state.comments">
+          <div v-if="!!state.comments">
             <div class="content">
               <Comment :commentList="state.comments" />
             </div>
-            <div class="pagination" v-if="!!state.comments">
+            <div class="pagination">
               <el-pagination
                 background
                 layout="prev, pager, next"
